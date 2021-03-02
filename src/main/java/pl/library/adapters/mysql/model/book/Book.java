@@ -1,10 +1,7 @@
-package pl.library.domain.model.book;
+package pl.library.adapters.mysql.model.book;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import pl.library.domain.model.user.User;
+import lombok.*;
+import pl.library.adapters.mysql.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -28,16 +26,9 @@ public class Book {
     private String publisher;
     @NotNull
     private BookType bookType;
-    private BookStatus status;
+    @Builder.Default
+    private BookStatus status = BookStatus.AVAILABLE;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public void test() {
-
-    }
-
-    public Book(Long id) {
-
-    }
 }

@@ -1,12 +1,12 @@
-package pl.library.controller;
+package pl.library.domain.controller.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.library.domain.model.book.Book;
+import pl.library.adapters.mysql.model.book.Book;
 import pl.library.exception.BookExistsException;
 import pl.library.exception.BookNotFoundException;
-import pl.library.service.BookService;
+import pl.library.domain.service.book.BookService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,11 +18,11 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/book/id/{id}")
-    public Book getBookById(@PathVariable long id) throws BookNotFoundException {
+    public Book getSingleBookById(@PathVariable long id) throws BookNotFoundException {
         return bookService.getById(id);
     }
 
-    @GetMapping("/book")
+    @GetMapping("/books")
     public List<Book> getAllBooks() throws BookNotFoundException {
         return bookService.getAll();
     }
@@ -44,13 +44,13 @@ public class BookController {
 
     @PostMapping("/book")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book postBook(@Valid @RequestBody Book book) throws BookExistsException {
+    public Book addBook(@Valid @RequestBody Book book) throws BookExistsException {
         return bookService.add(book);
     }
 
     @PutMapping("/book/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book putBook(@PathVariable long id, @Valid @RequestBody Book book) throws BookExistsException, BookNotFoundException {
+    public Book updateBook(@PathVariable long id, @Valid @RequestBody Book book) throws BookExistsException, BookNotFoundException {
         return bookService.update(id, book);
     }
 

@@ -1,10 +1,8 @@
-package pl.library.service;
+package pl.library.domain.service.book;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import pl.library.domain.model.book.Book;
+import pl.library.adapters.mysql.model.book.Book;
 import pl.library.exception.BookExistsException;
 import pl.library.exception.BookNotFoundException;
 import pl.library.repository.BookRepository;

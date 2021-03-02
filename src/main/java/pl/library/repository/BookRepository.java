@@ -1,7 +1,7 @@
 package pl.library.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.library.domain.model.book.Book;
+import pl.library.adapters.mysql.model.book.Book;
 
 import java.util.List;
 

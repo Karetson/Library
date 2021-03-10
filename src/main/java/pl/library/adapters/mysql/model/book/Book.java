@@ -26,8 +26,7 @@ public class Book {
     private String publisher;
     @NotNull
     private BookType bookType;
-    @Builder.Default
-    private BookStatus status = BookStatus.AVAILABLE;
+    private Integer amount;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;

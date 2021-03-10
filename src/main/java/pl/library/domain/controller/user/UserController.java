@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.user.User;
+import pl.library.adapters.mysql.model.user.UserRole;
 import pl.library.domain.service.user.UserService;
 import pl.library.exception.UserExistsException;
 import pl.library.exception.UserNotFoundException;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/user/role/{role}")
-    public List<User> getAllUsersByRole(@PathVariable String role) throws UserNotFoundException {
+    public List<User> getAllUsersByRole(@PathVariable UserRole role) throws UserNotFoundException {
         return userService.getByRole(role);
     }
 
@@ -50,7 +51,7 @@ public class UserController {
 
     @PutMapping("/sign-in/profile/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public User updateUser(@PathVariable long id, @Valid @RequestBody User user) throws UserNotFoundException {
+    public User updateUser(@PathVariable long id, @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {
         return userService.update(id, user);
     }
 

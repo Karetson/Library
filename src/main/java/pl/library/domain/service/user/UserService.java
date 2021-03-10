@@ -3,6 +3,7 @@ package pl.library.domain.service.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.user.User;
+import pl.library.adapters.mysql.model.user.UserRole;
 import pl.library.exception.UserExistsException;
 import pl.library.exception.UserNotFoundException;
 import pl.library.repository.UserRepository;
@@ -39,7 +40,7 @@ public class UserService {
             throw new UserNotFoundException("User with that first or last name not found!");
     }
 
-    public List<User> getByRole(String role) throws UserNotFoundException {
+    public List<User> getByRole(UserRole role) throws UserNotFoundException {
         if (userRepository.findByRole(role).size() > 0) {
             return userRepository.findByRole(role);
         } else
@@ -55,7 +56,7 @@ public class UserService {
     }
 
     @Transactional
-    public User update(long id, User userDetails) throws UserNotFoundException {
+    public User update(long id, User userDetails) throws UserNotFoundException, UserExistsException {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new UserNotFoundException("User with " + id + " ID not found!"));
 
@@ -63,8 +64,11 @@ public class UserService {
         user.setLastName(userDetails.getLastName());
         user.setEmail(userDetails.getEmail());
         user.setPassword(userDetails.getPassword());
-
-        return userRepository.save(user);
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new UserExistsException("User with '" + user.getEmail() + "' email already exists!");
+        } else {
+            return userRepository.save(user);
+        }
     }
 
     @Transactional

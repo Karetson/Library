@@ -1,12 +1,12 @@
-package pl.library.domain.service.user;
+package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.adapters.mysql.model.user.UserRole;
-import pl.library.exception.UserExistsException;
-import pl.library.exception.UserNotFoundException;
-import pl.library.repository.UserRepository;
+import pl.library.domain.user.exception.UserExistsException;
+import pl.library.domain.user.exception.UserNotFoundException;
+import pl.library.domain.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;

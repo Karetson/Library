@@ -1,13 +1,14 @@
-package pl.library.domain.controller.user;
+/*
+package pl.library.api.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.adapters.mysql.model.user.UserRole;
-import pl.library.domain.service.user.UserService;
-import pl.library.exception.UserExistsException;
-import pl.library.exception.UserNotFoundException;
+import pl.library.domain.user.UserService;
+import pl.library.domain.user.exception.UserExistsException;
+import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -61,3 +62,4 @@ public class UserController {
         userService.delete(id);
     }
 }
+*/

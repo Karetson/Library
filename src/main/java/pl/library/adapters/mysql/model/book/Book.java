@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,15 +17,15 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty
+    @NotEmpty(message = "Title must not be empty")
     private String title;
-    @NotEmpty
+    @NotEmpty(message = "Author must not be empty")
     private String author;
-    @NotEmpty
+    @NotEmpty(message = "Publisher must not be empty")
     private String publisher;
-    @NotNull
+    @NotNull(message = "Invalid book type")
     private BookType bookType;
-    private Integer amount;
+    private Integer amount = 1;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;

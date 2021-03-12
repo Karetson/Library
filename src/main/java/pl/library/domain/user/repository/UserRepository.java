@@ -1,4 +1,4 @@
-package pl.library.repository;
+package pl.library.domain.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.library.adapters.mysql.model.user.User;

@@ -5,8 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.domain.book.BookServiceImpl;
-import pl.library.domain.book.exception.BookExistsException;
-import pl.library.domain.book.exception.BookNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,35 +14,16 @@ import java.util.List;
 @RequestMapping("/api/book")
 public class BookController {
     private final BookServiceImpl bookService;
-
-    @GetMapping("/search")
+    @GetMapping("/search/phrase")
     @ResponseStatus(HttpStatus.OK)
-    public Book getSingleBookById(@RequestParam Long id) {
-        return bookService.getById(id);
+    public List<Book> getAllBooksByPhrase(@RequestParam String phrase)  {
+        return bookService.getAllByPhrase(phrase);
     }
 
-    @GetMapping("/search/all")
+    @GetMapping("/search/genre")
     @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooks() {
-        return bookService.getAll();
-    }
-
-    @GetMapping("/search/title/{title}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooksByTitle(@PathVariable String title)  {
-        return bookService.getAllByTitle(title);
-    }
-
-    @GetMapping("/search/author/{author}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooksByAuthor(@PathVariable String author) {
-        return bookService.getAllByAuthor(author);
-    }
-
-    @GetMapping("/search/type/{bookType}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooksByBookType(@PathVariable String bookType) {
-        return bookService.getAllByBookType(bookType);
+    public List<Book> getAllBooksByGenres(@RequestParam String genre) {
+        return bookService.getAllByGenres(genre);
     }
 
     @PostMapping("/add")

@@ -1,4 +1,3 @@
-/*
 package pl.library.api.user;
 
 import lombok.RequiredArgsConstructor;
@@ -6,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.adapters.mysql.model.user.UserRole;
-import pl.library.domain.user.UserService;
+import pl.library.domain.user.UserServiceImpl;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
@@ -15,51 +14,63 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    @GetMapping("/sign-in/profile/{id}")
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public User getSingleUserById(@PathVariable long id) throws UserNotFoundException {
         return userService.getById(id);
     }
 
-    @GetMapping("/user/email/{email}")
-    public User getSingleUserByEmail(@PathVariable String email) throws UserNotFoundException {
+    @GetMapping("search/email")
+    @ResponseStatus(HttpStatus.OK)
+    public User getSingleUserByEmail(@RequestParam String email) throws UserNotFoundException {
         return userService.getByEmail(email);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/search/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() throws UserNotFoundException {
         return userService.getAll();
     }
 
-    @GetMapping("/user/name/{name}")
-    public List<User> getAllUsersByFirstNameOrLastName(@PathVariable String firstName, String lastName) throws UserNotFoundException {
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getAllUsersByFirstNameOrLastName(@RequestParam String firstName,
+                                                       @RequestParam String lastName) throws UserNotFoundException {
         return userService.getByFirstNameOrLastName(firstName, lastName);
     }
 
-    @GetMapping("/user/role/{role}")
+    @GetMapping("/role/{role}")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsersByRole(@PathVariable UserRole role) throws UserNotFoundException {
         return userService.getByRole(role);
+    }
+
+    @GetMapping("/sign-in")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserByEmailAndPassword(@RequestBody User user) throws UserNotFoundException {
+        return userService.login(user.getEmail(), user.getPassword());
     }
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public User addUser(@Valid @RequestBody User user) throws UserExistsException {
-        return userService.add(user);
+        return userService.registry(user);
     }
 
     @PutMapping("/sign-in/profile/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public User updateUser(@PathVariable long id, @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {
+    public User updateUser(@RequestParam Long id,
+                           @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {
         return userService.update(id, user);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable long id) throws UserNotFoundException {
+    public void deleteUser(@RequestParam Long id) throws UserNotFoundException {
         userService.delete(id);
     }
 }
-*/

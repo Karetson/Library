@@ -1,11 +1,10 @@
 package pl.library.adapters.mysql.model.book;
 
 import lombok.*;
-import pl.library.adapters.mysql.model.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -23,10 +22,10 @@ public class Book {
     private String author;
     @NotEmpty(message = "Publisher must not be empty")
     private String publisher;
-    @NotNull(message = "Invalid book type")
-    private BookType bookType;
+    private BookGenre genres;
+    private Integer count;
     private Integer amount = 1;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne(cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 }

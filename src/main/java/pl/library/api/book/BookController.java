@@ -21,6 +21,17 @@ public class BookController {
         return bookService.getAllByPhrase(phrase);
     }
 
+    @GetMapping("/search/random")
+    public List<Book> getNBooksByRandom(@RequestParam Integer number) {
+        return bookService.getNBooksByRandom(number);
+    }
+
+    @GetMapping("/search/{id}/{title}")
+    @ResponseStatus(HttpStatus.OK)
+    public Book getBookByIdAndTitle(@PathVariable Long id, @PathVariable String title) {
+        return bookService.getByIdAndTitle(id, title);
+    }
+
     @GetMapping("/search/genre")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getAllBooksByGenres(@RequestParam String genre) {

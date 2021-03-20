@@ -23,8 +23,23 @@ public class BookServiceImpl implements BookService {
         if (bookRepository.searchAllByTitleOrAuthorLike(phrase).size() > 0) {
             return bookRepository.searchAllByTitleOrAuthorLike(phrase);
         } else {
-            throw new BookNotFoundException("Book with title: '" + phrase + "' doesn't exists!");
+            throw new BookNotFoundException("Book with phrase: '" + phrase + "' doesn't exists!");
         }
+    }
+
+    @Override
+    public List<Book> getNBooksByRandom(Integer number) {
+        if (number > 0 && number <= bookRepository.findAll().size()) {
+            return bookRepository.searchNBooksByRandom(number);
+        } else {
+            throw new ArithmeticException("There are not enough books or number is not greater than 0.");
+        }
+    }
+
+    @Override
+    public Book getByIdAndTitle(Long id, String title) {
+        return bookRepository.findByIdAndTitle(id, title).orElseThrow(()
+                -> new BookNotFoundException("Book with title: '" + title + "' doesn't exists!"));
     }
 
     @Override

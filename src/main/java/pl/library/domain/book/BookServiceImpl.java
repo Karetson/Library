@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getByIdAndTitle(Long id, String title) {
         return bookRepository.findByIdAndTitle(id, title).orElseThrow(()
-                -> new BookNotFoundException("Book with title: '" + title + "' doesn't exists!"));
+                -> new BookNotFoundException("Book with id: '" + id + "' and title: '" + title + "' doesn't exists!"));
     }
 
     @Override

@@ -21,10 +21,10 @@ public class Book {
     private String author;
     @NotEmpty(message = "Publisher must not be empty")
     private String publisher;
+//    @ManyToOne(cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "genre_id")
     private BookGenre genres;
     private Integer count;
     private Integer amount = 1;
-//    @ManyToOne(cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "user_id")
-//    private User user;
+
 }

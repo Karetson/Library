@@ -35,6 +35,5 @@ public class User {
 //    @OneToMany(mappedBy = "user",
 //            fetch = FetchType.EAGER,
 //            cascade = CascadeType.PERSIST)
-//    private List<Book> books;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

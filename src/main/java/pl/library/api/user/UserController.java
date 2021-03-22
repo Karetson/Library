@@ -18,11 +18,11 @@ import java.util.List;
 public class UserController {
     private final UserServiceImpl userService;
 
-    @GetMapping("/{id}")
+/**    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public User getSingleUserById(@PathVariable long id) throws UserNotFoundException {
         return userService.getById(id);
-    }
+    }*/
 
     @GetMapping("search/email")
     @ResponseStatus(HttpStatus.OK)
@@ -30,7 +30,7 @@ public class UserController {
         return userService.getByEmail(email);
     }
 
-    @GetMapping("/search/all")
+/**    @GetMapping("/search/all")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() throws UserNotFoundException {
         return userService.getAll();
@@ -41,7 +41,7 @@ public class UserController {
     public List<User> getAllUsersByFirstNameOrLastName(@RequestParam String firstName,
                                                        @RequestParam String lastName) throws UserNotFoundException {
         return userService.getByFirstNameOrLastName(firstName, lastName);
-    }
+    }*/
 
     @GetMapping("/role/{role}")
     @ResponseStatus(HttpStatus.OK)
@@ -68,9 +68,9 @@ public class UserController {
         return userService.update(id, user);
     }
 
-    @DeleteMapping("/delete")
+/**    @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@RequestParam Long id) throws UserNotFoundException {
         userService.delete(id);
-    }
+    }*/
 }

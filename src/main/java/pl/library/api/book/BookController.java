@@ -26,7 +26,7 @@ public class BookController {
         return bookService.getNBooksByRandom(number);
     }
 
-    @GetMapping("/search/{id}/{title}")
+    @GetMapping("/{id}/{title}")
     @ResponseStatus(HttpStatus.OK)
     public Book getBookByIdAndTitle(@PathVariable Long id, @PathVariable String title) {
         return bookService.getByIdAndTitle(id, title);

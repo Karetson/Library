@@ -17,17 +17,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    @Override
-    public User login (String email, String password) throws UserNotFoundException {
-        return userRepository.findByEmailAndPassword(email, password).orElseThrow(()
-                -> new UserNotFoundException("User with that email or password doesn't exists!"));
-    }
-
+    /** getByToken except getById
     @Override
     public User getById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(()
                 -> new UserNotFoundException("User with '" + id + "' ID not found!"));
-    }
+    }*/
 
     @Override
     public User getByEmail(String email) throws UserNotFoundException {
@@ -35,21 +30,21 @@ public class UserServiceImpl implements UserService {
                 -> new UserNotFoundException("User with '" + email + "' email not found!"));
     }
 
-    @Override
+/**    @Override
     public List<User> getAll() throws UserNotFoundException {
         if (userRepository.findAll().size() > 0) {
             return userRepository.findAll();
         } else
             throw new UserNotFoundException("There are no users in database");
-    }
+    }*/
 
-    @Override
+/**    @Override
     public List<User> getByFirstNameOrLastName(String firstname, String lastName) throws UserNotFoundException {
         if (userRepository.findByFirstNameOrLastName(firstname, lastName).size() > 0) {
             return userRepository.findByFirstNameOrLastName(firstname, lastName);
         } else
             throw new UserNotFoundException("User with that first or last name not found!");
-    }
+    }*/
 
     @Override
     public List<User> getByRole(UserRole role) throws UserNotFoundException {
@@ -57,6 +52,12 @@ public class UserServiceImpl implements UserService {
             return userRepository.findByRole(role);
         } else
             throw new UserNotFoundException("User with " + role + " role not found!");
+    }
+
+    @Override
+    public User login (String email, String password) throws UserNotFoundException {
+        return userRepository.findByEmailAndPassword(email, password).orElseThrow(()
+                -> new UserNotFoundException("User with that email or password doesn't exists!"));
     }
 
     @Override
@@ -85,12 +86,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
+/**    @Override
     @Transactional
     public void delete(Long id) throws UserNotFoundException {
         if (userRepository.findById(id).isPresent()) {
             userRepository.deleteById(id);
         } else
             throw new UserNotFoundException("User with " + id + " ID not found!");
-    }
+    }*/
 }

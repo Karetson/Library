@@ -15,13 +15,14 @@ import java.util.List;
 public class BookController {
     private final BookServiceImpl bookService;
 
-    @GetMapping("/search/phrase")
+    @GetMapping("/search/")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getAllBooksByPhrase(@RequestParam String phrase)  {
         return bookService.getAllByPhrase(phrase);
     }
 
-    @GetMapping("/search/random")
+    @GetMapping("/search/random/")
+    @ResponseStatus(HttpStatus.OK)
     public List<Book> getNBooksByRandom(@RequestParam Integer number) {
         return bookService.getNBooksByRandom(number);
     }
@@ -32,11 +33,11 @@ public class BookController {
         return bookService.getByIdAndTitle(id, title);
     }
 
-    @GetMapping("/search/genre")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooksByGenres(@RequestParam String genre) {
-        return bookService.getAllByGenres(genre);
-    }
+//    @GetMapping("/search/genre")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Book> getAllBooksByGenres(@RequestParam String genre) {
+//        return bookService.getAllByGenres(genre);
+//    }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)

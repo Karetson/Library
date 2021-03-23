@@ -8,7 +8,7 @@ public interface BookService {
     List<Book> getAllByPhrase(String phrase);
     List<Book> getNBooksByRandom(Integer number);
     Book getByIdAndTitle(Long id, String title);
-    List<Book> getAllByGenres(String genre);
+//    List<Book> getAllByGenres(String genre);
     Book addition(Book book);
     Book addAmount(Long id, Integer amount);
     Book subtractAmount(Long id, Integer amount);

@@ -1,30 +1,37 @@
 package pl.library.adapters.mysql.model.book;
 
 import lombok.*;
+import pl.library.adapters.mysql.model.genre.Genre;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "books")
+@Entity(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotEmpty(message = "Title must not be empty")
     private String title;
+
     @NotEmpty(message = "Author must not be empty")
     private String author;
+
     @NotEmpty(message = "Publisher must not be empty")
     private String publisher;
-//    @ManyToOne(cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "genre_id")
-    private BookGenre genres;
+
+    @ManyToMany
+    private Set<Genre> genres = new HashSet<>();
+
     private Integer count;
+
     private Integer amount = 1;
 
 }

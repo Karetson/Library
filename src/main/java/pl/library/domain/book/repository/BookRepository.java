@@ -13,7 +13,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> searchAllByTitleOrAuthorLike(@Param("phrase") String phrase);
     @Query(value = "SELECT * FROM books ORDER BY RAND() LIMIT :number", nativeQuery = true)
     List<Book> searchNBooksByRandom(@Param("number") Integer number);
+
     Optional<Book> findByIdAndTitle(Long id, String title);
-    List<Book> findAllByGenres(String genre);
+//    List<Book> findAllByGenres(String genre);
     Boolean existsByTitleAndAuthor(String title, String author);
 }

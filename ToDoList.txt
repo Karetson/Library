@@ -23,6 +23,7 @@ others:
 - Http headers
 - testy
 - DTO
+- nowa baza danych
 
 :::NOWE_ENCJE:::
 wypozyczenie:
@@ -40,6 +41,9 @@ favoriteBooks:
 
 genre:
 - pola (Long id, BookGenre genre)
-- POST (@reqparam genre) [utworzenie genre] - dodanie gatunku
+- POST (@reqbody genre) [utworzenie genre] - dodanie gatunku
 - GET () [wyswietlic wszystkie genre] - odczyt wszystkich gatunkow
 - DEL (@reqparam genreid) [znalezc genreid, usun genreid] - usuwanie gatunku
+- polaczenie Book z BookGenre
+- MULTI DODAWANIE: lista obiektow(String genre)
+- MULTI USUWANIE: lista obiektow(Long id)

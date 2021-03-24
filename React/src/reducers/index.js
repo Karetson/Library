@@ -17,7 +17,16 @@ import {
   SEARCH_BOOK_FAILURE,
   BOOK_DETAILS_FAILURE,
   BOOK_DETAILS_SUCCESS,
-  MIN_THREE_CHAR
+  MIN_THREE_CHAR,
+  REMOVE_GENRE,
+  REMOVE_GENRE2,
+  REMOVE_GENRE3,
+  ADD_GENRE,
+  // GET_GENRE_REQUEST,
+  GET_GENRE_SUCCESS,
+  // GET_GENRE_FAILURE
+  SEND_ADD_GENRELIST,
+  SEND_REMOVE_GENRELIST
 } from '../actions';
  
  //initial store
@@ -25,6 +34,34 @@ import {
    books:[],
    bookDetails:[],
    searchbooks:[],
+   genreList:[
+      {
+          "id": 1,
+          "genre": "Horror"
+      },
+      {
+          "id": 2,
+          "genre": "Comedy"
+      },
+      {
+          "id": 3,
+          "genre": "Dokumentalny"
+      },
+      {
+          "id": 4,
+          "genre": "Mlodzieżowy"
+      },
+      {
+          "id": 5,
+          "genre": "Autobiofrafia"
+      },
+      {
+          "id": 6,
+          "genre": "co badz"
+      }
+    ],
+   genreRemoved:[],
+   genreNews:[],
    totalbooks:0,
    user:{
      userToken:'',
@@ -33,7 +70,9 @@ import {
    },
    loading:true,
    applicationError:null,
-   searchFormValue:''
+   searchFormValue:'',
+
+   showErrors:[]
  }
 
 //  const newStore={
@@ -46,6 +85,60 @@ import {
  
  //reducer(old-state,action) return update or old state
  export const reducer=(state=initialStore,action)=>{
+   if(action.type===ADD_GENRE){
+     console.log(action.payload);
+     return {
+       ...state,
+       genreNews:[
+         ...state.genreNews,
+         action.payload.genre
+       ]
+     }
+   }
+   if(action.type===REMOVE_GENRE){
+     return {
+       ...state,
+       genreList: [
+         ...state.genreList.filter(item=>item.id!==action.payload.item.id)
+       ],
+       genreRemoved: [
+         ...state.genreRemoved,
+         action.payload.item
+       ]
+     }
+   }
+   if(action.type===REMOVE_GENRE2){
+     return {
+       ...state,
+       genreRemoved: [
+         ...state.genreRemoved.filter(item=>item.id!==action.payload.item.id)
+       ],
+       genreList: [
+         ...state.genreList,
+         action.payload.item
+       ]
+     }
+   }
+   if(action.type===REMOVE_GENRE3){
+     return {
+       ...state,
+       genreNews: [
+         ...state.genreNews.filter(item=>item!==action.payload.item)
+       ]
+     }
+   }
+   if(action.type===SEND_REMOVE_GENRELIST){
+     return {
+       ...state,
+       genreRemoved:[]
+     }
+   }
+   if(action.type===SEND_ADD_GENRELIST){
+     return {
+       ...state,
+       genreNews:[]
+     }
+   }
    if(action.type===MIN_THREE_CHAR){
      return {
        ...state,
@@ -88,6 +181,13 @@ import {
       ...state,
       books: action.payload.data,
       totalbooks: action.payload.data.length
+    }
+  }
+  if(action.type===GET_GENRE_SUCCESS){
+    // console.log(action.payload.data);
+    return {
+      ...state,
+      genreList: action.payload.data
     }
   }
   if(action.type===AUTH_SUCCESS){
@@ -145,7 +245,7 @@ import {
   if(action.type===CLEAR_ERROR){
     return {
       ...state,
-      applicationError:null
+      showErrors:[]
     }
   }
   //  if(action.type===GET_TOTALS){

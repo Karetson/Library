@@ -1,6 +1,7 @@
 book:
 - count: ile dostepnych ksiazek
 - String(255 znakow) opis
+- zmienic nazwe amount na availables
 
 user:
 - potwierdzenie maila (optional)
@@ -40,10 +41,5 @@ favoriteBooks:
 - DEL(@reqparam favoriteBookid) [znalezc favoriteBookid, usunac favoriteBookid] - usuniecie z ulubionych ksiazek
 
 genre:
-- pola (Long id, BookGenre genre)
-- POST (@reqbody genre) [utworzenie genre] - dodanie gatunku
-- GET () [wyswietlic wszystkie genre] - odczyt wszystkich gatunkow
-- DEL (@reqparam genreid) [znalezc genreid, usun genreid] - usuwanie gatunku
-- polaczenie Book z BookGenre
 - MULTI DODAWANIE: lista obiektow(String genre)
 - MULTI USUWANIE: lista obiektow(Long id)

@@ -15,28 +15,23 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotEmpty
     private String firstName;
-
     @NotEmpty
     private String lastName;
-
     @Email
     private String email;
-
     @Pattern(regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&+=]).*$",
             message = "The password must be at least 8 characters long. One uppercase letter, one lowercase letter, one number and a special character(@#$%^!&+=)")
     private String password;
-
     @Builder.Default
     private UserRole role = UserRole.USER;
-
+    @ManyToMany
+    private List<Book> favoriteBooks;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

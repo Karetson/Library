@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.library.api.error.ErrorResponse;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
-import pl.library.domain.book.exception.GenreException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,15 +46,6 @@ public class BookControllerAdvice {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Wrong number", details);
-        return error;
-    }
-
-    @ExceptionHandler(GenreException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public final ErrorResponse handleBookGenreException(GenreException exception) {
-        List<String> details = new ArrayList<>();
-        details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Invalid Genre", details);
         return error;
     }
 }

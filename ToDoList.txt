@@ -36,8 +36,7 @@ wypozyczenie:
 
 favoriteBooks:
 - pola (Long id, User userid, Book bookid)
-- POST (@reqparam userid, bookid) [utworzenie favoriteBook za pomoca userid, bookid] - dodaje do ulubionych ksiazek
-- GET (@reqparam userid) [znalezc userid, wyswietlic wszystkie favoritBook tego userid] - lista ulubionych ksiazek
+- PUT (@reqparam userid, bookid) [utworzenie favoriteBook za pomoca userid, bookid] - dodaje do ulubionych ksiazek
 - DEL(@reqparam favoriteBookid) [znalezc favoriteBookid, usunac favoriteBookid] - usuniecie z ulubionych ksiazek
 
 genre:

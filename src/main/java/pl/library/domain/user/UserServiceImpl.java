@@ -2,8 +2,11 @@ package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.adapters.mysql.model.user.UserRole;
+import pl.library.domain.book.exception.BookNotFoundException;
+import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
@@ -16,42 +19,44 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final BookRepository bookRepository;
 
-    /** getByToken except getById
-    @Override
-    public User getById(Long id) throws UserNotFoundException {
+     @Override
+     public User getById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(()
                 -> new UserNotFoundException("User with '" + id + "' ID not found!"));
-    }*/
+     }
 
     @Override
     public User getByEmail(String email) throws UserNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(()
-                -> new UserNotFoundException("User with '" + email + "' email not found!"));
+                -> new UserNotFoundException("User with email: '" + email + "' not found!"));
     }
 
-/**    @Override
-    public List<User> getAll() throws UserNotFoundException {
-        if (userRepository.findAll().size() > 0) {
-            return userRepository.findAll();
-        } else
-            throw new UserNotFoundException("There are no users in database");
-    }*/
-
-/**    @Override
-    public List<User> getByFirstNameOrLastName(String firstname, String lastName) throws UserNotFoundException {
-        if (userRepository.findByFirstNameOrLastName(firstname, lastName).size() > 0) {
-            return userRepository.findByFirstNameOrLastName(firstname, lastName);
-        } else
-            throw new UserNotFoundException("User with that first or last name not found!");
-    }*/
+//    @Override
+//    public List<User> getAll() throws UserNotFoundException {
+//        if (userRepository.findAll().size() > 0) {
+//            return userRepository.findAll();
+//        } else {
+//            throw new UserNotFoundException("There are no users in database");
+//        }
+//}
+//
+//    @Override
+//    public List<User> getByFirstNameOrLastName(String firstname, String lastName) throws UserNotFoundException {
+//        if (userRepository.findByFirstNameOrLastName(firstname, lastName).size() > 0) {
+//            return userRepository.findByFirstNameOrLastName(firstname, lastName);
+//        } else {
+//            throw new UserNotFoundException("User with that first or last name not found!");
+//        }
+//    }
 
     @Override
     public List<User> getByRole(UserRole role) throws UserNotFoundException {
         if (userRepository.findByRole(role).size() > 0) {
             return userRepository.findByRole(role);
         } else
-            throw new UserNotFoundException("User with " + role + " role not found!");
+            throw new UserNotFoundException("User with role: '" + role + "' not found!");
     }
 
     @Override
@@ -71,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User update(Long id, User userDetails) throws UserNotFoundException, UserExistsException {
+    public User editProfile(Long id, User userDetails) throws UserNotFoundException, UserExistsException {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new UserNotFoundException("User with " + id + " ID not found!"));
 
@@ -86,12 +91,43 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-/**    @Override
+    @Override
     @Transactional
-    public void delete(Long id) throws UserNotFoundException {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-        } else
-            throw new UserNotFoundException("User with " + id + " ID not found!");
-    }*/
+    public User addFavorite(Long user_id, Long book_id) throws UserNotFoundException {
+        User user = userRepository.findById(user_id).orElseThrow(()
+                -> new UserNotFoundException("User with " + user_id + " ID not found!"));
+        Book book = bookRepository.findById(book_id).orElseThrow(()
+                -> new BookNotFoundException("Book with " + book_id + " ID not found!"));
+
+        List<Book> favorites = user.getFavoriteBooks();
+        favorites.add(book);
+        user.setFavoriteBooks(favorites);
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void subtractFavorite(Long user_id, Long book_id) throws UserNotFoundException {
+        User user = userRepository.findById(user_id).orElseThrow(()
+                -> new UserNotFoundException("User with " + user_id + " ID not found!"));
+        Book book = bookRepository.findById(book_id).orElseThrow(()
+                -> new BookNotFoundException("Book with " + book_id + " ID not found!"));
+
+        List<Book> favorites = user.getFavoriteBooks();
+        favorites.remove(book);
+        user.setFavoriteBooks(favorites);
+
+        userRepository.save(user);
+    }
+
+//    @Override
+//    @Transactional
+//    public void delete(Long id) throws UserNotFoundException {
+//        if (userRepository.findById(id).isPresent()) {
+//            userRepository.deleteById(id);
+//        } else {
+//            throw new UserNotFoundException("User with " + id + " ID not found!");
+//        }
+//    }
 }

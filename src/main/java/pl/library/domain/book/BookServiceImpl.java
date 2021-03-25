@@ -7,7 +7,6 @@ import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookService;
 import pl.library.domain.book.repository.BookRepository;
-import pl.library.domain.genre.repository.GenreRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    private final GenreRepository genreRepository;
 
     @Override
     public List<Book> getAllByPhrase(String phrase) {
@@ -47,58 +45,57 @@ public class BookServiceImpl implements BookService {
 //        if (bookRepository.findAllByGenres(genre).size() > 0) {
 //            return bookRepository.findAllByGenres(genre);
 //        } else {
-//            throw new BookNotFoundException("Book with genre: '" + genre + "' doesn't exists!");
+//            throw new BookNotFoundException("Book with type: '" + genre + "' doesn't exists!");
 //        }
 //    }
 
-    @Override
     @Transactional
+    @Override
     public Book addition(Book book) {
         if (bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
             throw new BookExistsException("Book with title: '" + book.getTitle() + "' and author: '" + book.getAuthor() + "' already exists!");
         }
-        if (book.getAmount() > 0) {
+        if (book.getAvailable() > 0) {
             return bookRepository.save(book);
-
         } else {
             throw new ArithmeticException("Amount must be greater than 0!");
         }
     }
 
-    @Override
     @Transactional
-    public Book addAmount(Long id, Integer amount) {
+    @Override
+    public Book addAvailables(Long id, Integer amount) {
         Book book = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
 
         if (amount > 0) {
             book.setTitle(book.getTitle());
             book.setAuthor(book.getAuthor());
-            book.setAmount(book.getAmount() + amount);
+            book.setAvailable(book.getAvailable() + amount);
             return bookRepository.save(book);
         } else {
             throw new ArithmeticException("Amount must be greater than 0!");
         }
     }
 
-    @Override
     @Transactional
-    public Book subtractAmount(Long id, Integer amount) {
+    @Override
+    public Book subtractAvailables(Long id, Integer amount) {
         Book book = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
 
-        if (amount > 0 && amount <= book.getAmount()) {
+        if (amount > 0 && amount <= book.getAvailable()) {
             book.setTitle(book.getTitle());
             book.setAuthor(book.getAuthor());
-            book.setAmount(book.getAmount() - amount);
+            book.setAvailable(book.getAvailable() - amount);
             return bookRepository.save(book);
         } else {
-            throw new ArithmeticException("Amount must be greater than 0 and less than or equal " + book.getAmount() + "!");
+            throw new ArithmeticException("Amount must be greater than 0 and less than or equal " + book.getAvailable() + "!");
         }
     }
 
-    @Override
     @Transactional
+    @Override
     public void bookDeletion(Long id) {
         if (bookRepository.findById(id).isPresent()) {
             bookRepository.deleteById(id);

@@ -14,14 +14,13 @@ import java.util.List;
 @RequestMapping("/api/book")
 public class BookController {
     private final BookServiceImpl bookService;
-
-    @GetMapping("/search/")
+    @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getAllBooksByPhrase(@RequestParam String phrase)  {
         return bookService.getAllByPhrase(phrase);
     }
 
-    @GetMapping("/search/random/")
+    @GetMapping("/search/random")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getNBooksByRandom(@RequestParam Integer number) {
         return bookService.getNBooksByRandom(number);
@@ -48,15 +47,15 @@ public class BookController {
     @PutMapping("/edit/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Book addBookAmount(@RequestParam Long id,
-                               @RequestParam Integer amount) {
-        return bookService.addAmount(id, amount);
+                              @RequestParam Integer amount) {
+        return bookService.addAvailables(id, amount);
     }
 
     @PutMapping("/edit/subtract")
     @ResponseStatus(HttpStatus.CREATED)
     public Book subtractBookAmount(@RequestParam Long id,
-                              @RequestParam Integer amount) {
-        return bookService.subtractAmount(id, amount);
+                                   @RequestParam Integer amount) {
+        return bookService.subtractAvailables(id, amount);
     }
 
     @DeleteMapping("/delete")

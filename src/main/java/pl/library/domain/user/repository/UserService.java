@@ -10,7 +10,6 @@ import java.util.List;
 public interface UserService {
     User getById(Long id) throws UserNotFoundException;
     User getByEmail(String email) throws UserNotFoundException;
-//    List<User> getAll() throws UserNotFoundException;
 //    List<User> getByFirstNameOrLastName(String firstName, String lastName) throws UserNotFoundException;
     List<User> getByRole(UserRole role) throws UserNotFoundException;
     User login(String email, String password) throws UserNotFoundException;
@@ -18,5 +17,4 @@ public interface UserService {
     User editProfile(Long id, User user) throws UserNotFoundException, UserExistsException;
     User addFavorite(Long user_id, Long book_id) throws UserNotFoundException;
     void subtractFavorite(Long user_id, Long book_id) throws UserNotFoundException;
-//    void delete(Long id) throws UserNotFoundException;
 }

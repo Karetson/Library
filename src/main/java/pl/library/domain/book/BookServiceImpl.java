@@ -64,7 +64,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book addAvailables(Long id, Integer amount) {
+    public Book addAvailable(Long id, Integer amount) {
         Book book = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
 
@@ -72,6 +72,7 @@ public class BookServiceImpl implements BookService {
             book.setTitle(book.getTitle());
             book.setAuthor(book.getAuthor());
             book.setAvailable(book.getAvailable() + amount);
+            book.setGenres(book.getGenres());
             return bookRepository.save(book);
         } else {
             throw new ArithmeticException("Amount must be greater than 0!");
@@ -80,7 +81,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book subtractAvailables(Long id, Integer amount) {
+    public Book subtractAvailable(Long id, Integer amount) {
         Book book = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
 
@@ -88,6 +89,7 @@ public class BookServiceImpl implements BookService {
             book.setTitle(book.getTitle());
             book.setAuthor(book.getAuthor());
             book.setAvailable(book.getAvailable() - amount);
+            book.setGenres(book.getGenres());
             return bookRepository.save(book);
         } else {
             throw new ArithmeticException("Amount must be greater than 0 and less than or equal " + book.getAvailable() + "!");

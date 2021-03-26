@@ -10,7 +10,7 @@ public interface BookService {
     Book getByIdAndTitle(Long id, String title);
     //    List<Book> getAllByGenres(String genre);
     Book addition(Book book);
-    Book addAvailables(Long id, Integer amount);
-    Book subtractAvailables(Long id, Integer amount);
+    Book addAvailable(Long id, Integer amount);
+    Book subtractAvailable(Long id, Integer amount);
     void bookDeletion(Long id);
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/book")
 public class BookController {
     private final BookServiceImpl bookService;
+
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getAllBooksByPhrase(@RequestParam String phrase)  {
@@ -46,16 +47,16 @@ public class BookController {
 
     @PutMapping("/edit/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book addBookAmount(@RequestParam Long id,
-                              @RequestParam Integer amount) {
-        return bookService.addAvailables(id, amount);
+    public Book addBookAvailable(@RequestParam Long id,
+                              @RequestParam Integer available) {
+        return bookService.addAvailable(id, available);
     }
 
     @PutMapping("/edit/subtract")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book subtractBookAmount(@RequestParam Long id,
-                                   @RequestParam Integer amount) {
-        return bookService.subtractAvailables(id, amount);
+    public Book subtractBookAvailable(@RequestParam Long id,
+                                   @RequestParam Integer available) {
+        return bookService.subtractAvailable(id, available);
     }
 
     @DeleteMapping("/delete")

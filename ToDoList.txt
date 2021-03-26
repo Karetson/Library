@@ -1,30 +1,29 @@
 book:
 - count: ile dostepnych ksiazek
-- String(255 znakow) opis
-- zmienic nazwe amount na availables
+- opis
 
 user:
 - potwierdzenie maila (optional)
 - registry: bcrypt
 - login: token, bcrypt
 - logout
-- update: @requestbody z id, dto dla edycji, bez edycji maila,
 - ban
 
 exceptiony:
 - zbieranie wiekszego zakresu wyjatkow
+- sprawdzic czy w kazdym serwisie sa exceptions
 
 security:
 - token
 - potwierdzenie maila
 - bcrypt
+- role
 
 others:
 - logging
 - Http headers
 - testy
 - DTO
-- nowa baza danych
 
 :::NOWE_ENCJE:::
 wypozyczenie:
@@ -33,11 +32,6 @@ wypozyczenie:
 - GET(@reqparam: userid) [znalezc userid, wyswietlic wszystkie wypozyczenia tego userid jesli status=true] - aktywne wypozyczenia
 - GET(@reqparam userid) [znalezc userid, wyswietl wszystkie wypozyczenia tego userid jesli status=false] - historia wypozyczen
 - PUT(@reqparam: wypozyczenieid) [znalezc wypozyczenieid, zmienic status=false(ended), zmienic amount+1] - oddanie ksiazki
-
-favoriteBooks:
-- pola (Long id, User userid, Book bookid)
-- PUT (@reqparam userid, bookid) [utworzenie favoriteBook za pomoca userid, bookid] - dodaje do ulubionych ksiazek
-- DEL(@reqparam favoriteBookid) [znalezc favoriteBookid, usunac favoriteBookid] - usuniecie z ulubionych ksiazek
 
 genre:
 - MULTI DODAWANIE: lista obiektow(String genre)

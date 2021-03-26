@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,6 +32,6 @@ public class User {
     @Builder.Default
     private UserRole role = UserRole.USER;
     @ManyToMany
-    private List<Book> favoriteBooks;
+    private Set<Book> favoriteBooks;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

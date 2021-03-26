@@ -14,6 +14,7 @@ import pl.library.domain.user.repository.UserService;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -33,15 +34,7 @@ public class UserServiceImpl implements UserService {
                 -> new UserNotFoundException("User with email: '" + email + "' not found!"));
     }
 
-//    @Override
-//    public List<User> getAll() throws UserNotFoundException {
-//        if (userRepository.findAll().size() > 0) {
-//            return userRepository.findAll();
-//        } else {
-//            throw new UserNotFoundException("There are no users in database");
-//        }
-//}
-//
+
 //    @Override
 //    public List<User> getByFirstNameOrLastName(String firstname, String lastName) throws UserNotFoundException {
 //        if (userRepository.findByFirstNameOrLastName(firstname, lastName).size() > 0) {
@@ -99,7 +92,7 @@ public class UserServiceImpl implements UserService {
         Book book = bookRepository.findById(book_id).orElseThrow(()
                 -> new BookNotFoundException("Book with " + book_id + " ID not found!"));
 
-        List<Book> favorites = user.getFavoriteBooks();
+        Set<Book> favorites = user.getFavoriteBooks();
         favorites.add(book);
         user.setFavoriteBooks(favorites);
 
@@ -114,20 +107,10 @@ public class UserServiceImpl implements UserService {
         Book book = bookRepository.findById(book_id).orElseThrow(()
                 -> new BookNotFoundException("Book with " + book_id + " ID not found!"));
 
-        List<Book> favorites = user.getFavoriteBooks();
+        Set<Book> favorites = user.getFavoriteBooks();
         favorites.remove(book);
         user.setFavoriteBooks(favorites);
 
         userRepository.save(user);
     }
-
-//    @Override
-//    @Transactional
-//    public void delete(Long id) throws UserNotFoundException {
-//        if (userRepository.findById(id).isPresent()) {
-//            userRepository.deleteById(id);
-//        } else {
-//            throw new UserNotFoundException("User with " + id + " ID not found!");
-//        }
-//    }
 }

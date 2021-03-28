@@ -1,8 +1,8 @@
 package pl.library.adapters.mysql.model.book;
 
 import lombok.*;
+import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.genre.Genre;
-import pl.library.adapters.mysql.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -27,5 +27,6 @@ public class Book {
     private Set<Genre> genres;
     private Integer count;
     private Integer available = 1;
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    private Set<Borrow> borrows;
 }

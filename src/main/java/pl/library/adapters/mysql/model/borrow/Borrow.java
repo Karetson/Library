@@ -21,7 +21,8 @@ public class Borrow {
     private Date expired;   // when status = true then set expired to (createdAt + 30 days)
     @Builder.Default
     private BorrowStatus status = BorrowStatus.NOT_APPROVED; // only moderator/admin can set status
-
-    private User userId;
-    private Book bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Book book;
 }

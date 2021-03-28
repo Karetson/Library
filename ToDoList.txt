@@ -24,13 +24,13 @@ others:
 - Http headers
 - testy
 - DTO
+- fix relations
 
 :::NOWE_ENCJE:::
 wypozyczenie:
 - pola (Long id, User userid, Book bookid, LocalDateTime createdAt, Date(?) expired, Boolean status)
-- POST(@reqparam: userid, bookid) [utworzenie wypozyczenia za pomoca userid, bookid, expired=createdAt+30, status=true(default | active), zmienic amoount-1] - wypozyczenie ksiazki
+- POST(@reqparam: userid, bookid) [utworzenie wypozyczenia za pomoca userid, bookid, zmienic amoount-1] - wypozyczenie ksiazki
 - GET(@reqparam: userid) [znalezc userid, wyswietlic wszystkie wypozyczenia tego userid jesli status=true] - aktywne wypozyczenia
-- GET(@reqparam userid) [znalezc userid, wyswietl wszystkie wypozyczenia tego userid jesli status=false] - historia wypozyczen
 - PUT(@reqparam: wypozyczenieid) [znalezc wypozyczenieid, zmienic status=false(ended), zmienic amount+1] - oddanie ksiazki
 
 genre:

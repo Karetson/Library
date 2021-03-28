@@ -2,6 +2,7 @@ package pl.library.adapters.mysql.model.user;
 
 import lombok.*;
 import pl.library.adapters.mysql.model.book.Book;
+import pl.library.adapters.mysql.model.borrow.Borrow;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -33,5 +34,7 @@ public class User {
     private UserRole role = UserRole.USER;
     @ManyToMany
     private Set<Book> favoriteBooks;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Borrow> borrows;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

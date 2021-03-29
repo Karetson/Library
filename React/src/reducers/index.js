@@ -26,54 +26,52 @@ import {
   GET_GENRE_SUCCESS,
   // GET_GENRE_FAILURE
   SEND_ADD_GENRELIST,
-  SEND_REMOVE_GENRELIST
-} from '../actions';
- 
- //initial store
- const initialStore={
-   books:[],
-   bookDetails:[],
-   searchbooks:[],
-   genreList:[
-      {
-          "id": 1,
-          "genre": "Horror"
-      },
-      {
-          "id": 2,
-          "genre": "Comedy"
-      },
-      {
-          "id": 3,
-          "genre": "Dokumentalny"
-      },
-      {
-          "id": 4,
-          "genre": "Mlodzieżowy"
-      },
-      {
-          "id": 5,
-          "genre": "Autobiofrafia"
-      },
-      {
-          "id": 6,
-          "genre": "co badz"
-      }
-    ],
-   genreRemoved:[],
-   genreNews:[],
-   totalbooks:0,
-   user:{
-     userToken:'',
-     isLogin: false,
-     id:0
-   },
-   loading:true,
-   applicationError:null,
-   searchFormValue:'',
+  SEND_REMOVE_GENRELIST,
+} from "../actions";
 
-   showErrors:[]
- }
+//initial store
+const initialStore = {
+  books: [],
+  bookDetails: [],
+  searchbooks: [],
+  genreList: [
+    {
+      id: 1,
+      genre: "Horror",
+    },
+    {
+      id: 2,
+      genre: "Comedy",
+    },
+    {
+      id: 3,
+      genre: "Dokumentalny",
+    },
+    {
+      id: 4,
+      genre: "Mlodzieżowy",
+    },
+    {
+      id: 5,
+      genre: "Autobiofrafia",
+    },
+    {
+      id: 6,
+      genre: "co badz",
+    },
+  ],
+  genreRemoved: [],
+  genreNews: [],
+  totalbooks: 0,
+  user: {
+    userToken: null,
+    isLogin: false,
+  },
+  loading: true,
+  applicationError: null,
+  searchFormValue: "",
+  showErrors: [],
+};
 
 //  const newStore={
 //   test:[]
@@ -82,171 +80,168 @@ import {
 // export const newreducer=(state=newStore,action)=>{
 //   return state;
 // }
- 
- //reducer(old-state,action) return update or old state
- export const reducer=(state=initialStore,action)=>{
-   if(action.type===ADD_GENRE){
-     console.log(action.payload);
-     return {
-       ...state,
-       genreNews:[
-         ...state.genreNews,
-         action.payload.genre
-       ]
-     }
-   }
-   if(action.type===REMOVE_GENRE){
-     return {
-       ...state,
-       genreList: [
-         ...state.genreList.filter(item=>item.id!==action.payload.item.id)
-       ],
-       genreRemoved: [
-         ...state.genreRemoved,
-         action.payload.item
-       ]
-     }
-   }
-   if(action.type===REMOVE_GENRE2){
-     return {
-       ...state,
-       genreRemoved: [
-         ...state.genreRemoved.filter(item=>item.id!==action.payload.item.id)
-       ],
-       genreList: [
-         ...state.genreList,
-         action.payload.item
-       ]
-     }
-   }
-   if(action.type===REMOVE_GENRE3){
-     return {
-       ...state,
-       genreNews: [
-         ...state.genreNews.filter(item=>item!==action.payload.item)
-       ]
-     }
-   }
-   if(action.type===SEND_REMOVE_GENRELIST){
-     return {
-       ...state,
-       genreRemoved:[]
-     }
-   }
-   if(action.type===SEND_ADD_GENRELIST){
-     return {
-       ...state,
-       genreNews:[]
-     }
-   }
-   if(action.type===MIN_THREE_CHAR){
-     return {
-       ...state,
-       searchbooks: []
-     }
-   }
-  if(action.type===BOOK_DETAILS_SUCCESS){
+
+//reducer(old-state,action) return update or old state
+export const reducer = (state = initialStore, action) => {
+  if (action.type === ADD_GENRE) {
+    console.log(action.payload);
     return {
       ...state,
-      bookDetails: action.payload.data
-    }
+      genreNews: [...state.genreNews, action.payload.genre],
+    };
   }
-  if(action.type===BOOK_DETAILS_FAILURE){
+  if (action.type === REMOVE_GENRE) {
     return {
       ...state,
-      bookDetails: action.err.response.data
-    }
+      genreList: [
+        ...state.genreList.filter((item) => item.id !== action.payload.item.id),
+      ],
+      genreRemoved: [...state.genreRemoved, action.payload.item],
+    };
   }
-  if(action.type===BOOK_DETAILS_FAILURE){
+  if (action.type === REMOVE_GENRE2) {
+    return {
+      ...state,
+      genreRemoved: [
+        ...state.genreRemoved.filter(
+          (item) => item.id !== action.payload.item.id
+        ),
+      ],
+      genreList: [...state.genreList, action.payload.item],
+    };
+  }
+  if (action.type === REMOVE_GENRE3) {
+    return {
+      ...state,
+      genreNews: [
+        ...state.genreNews.filter((item) => item !== action.payload.item),
+      ],
+    };
+  }
+  if (action.type === SEND_REMOVE_GENRELIST) {
+    return {
+      ...state,
+      genreRemoved: [],
+    };
+  }
+  if (action.type === SEND_ADD_GENRELIST) {
+    return {
+      ...state,
+      genreNews: [],
+    };
+  }
+  if (action.type === MIN_THREE_CHAR) {
+    return {
+      ...state,
+      searchbooks: [],
+    };
+  }
+  if (action.type === BOOK_DETAILS_SUCCESS) {
+    return {
+      ...state,
+      bookDetails: action.payload.data,
+    };
+  }
+  if (action.type === BOOK_DETAILS_FAILURE) {
+    return {
+      ...state,
+      bookDetails: action.err.response.data,
+    };
+  }
+  if (action.type === BOOK_DETAILS_FAILURE) {
     return {
       ...state,
       // bookDetails: action.payload.data
-    }
+    };
   }
-  if(action.type===SEARCH_BOOK_FAILURE){
+  if (action.type === SEARCH_BOOK_FAILURE) {
     return {
       ...state,
-      searchbooks: []
-    }
+      searchbooks: [],
+    };
   }
-  if(action.type===SEARCH_BOOK_SUCCESS){
+  if (action.type === SEARCH_BOOK_SUCCESS) {
     return {
       ...state,
-      searchbooks: action.payload.data
-    }
+      searchbooks: action.payload.data,
+    };
   }
-  if(action.type===FETCH_BOOKS_SUCCESS){
+  if (action.type === FETCH_BOOKS_SUCCESS) {
     // console.log(action.payload.data);
     return {
       ...state,
       books: action.payload.data,
-      totalbooks: action.payload.data.length
-    }
+      totalbooks: action.payload.data.length,
+    };
   }
-  if(action.type===GET_GENRE_SUCCESS){
+  if (action.type === GET_GENRE_SUCCESS) {
     // console.log(action.payload.data);
     return {
       ...state,
-      genreList: action.payload.data
-    }
+      genreList: action.payload.data,
+    };
   }
-  if(action.type===AUTH_SUCCESS){
-    // console.log(action.payload.data.token);
-    localStorage.setItem('loginToken', action.payload.data.token)
-    return {
-      ...state,
-      user:{
-        userToken: action.payload.data.token,
-        isLogin: true
-      }
-    }
-  }
-  if(action.type===LOG_OUT){
-    localStorage.removeItem('loginToken');
-    return {
-      ...state,
-      user:{
-        userToken:'',
-        isLogin: false
-      }
-    }
-  }
-  if(action.type===GET_CURRENT_USER_SUCCESS){
-    return {
-      ...state,
-      user:{
-        isLogin: true
-      }
-    }
-  }
-  if(action.type===REGISTER_SUCCESS){
-    localStorage.setItem('loginToken', action.payload.data.token)
+  if (action.type === AUTH_SUCCESS) {
+    localStorage.setItem("loginToken", action.payload.data.id);
     return {
       ...state,
       user: {
-        id: action.payload.data.id,
-        userToken: action.payload.data.token,
-        isLogin: true
-      }
-    }
+        userinfo: action.payload.data,
+        userToken: action.payload.data.id,
+        isLogin: true,
+      },
+    };
   }
-  if(action.type===REGISTER_FAILURE){
+  if (action.type === LOG_OUT) {
+    localStorage.removeItem("loginToken");
     return {
       ...state,
-      applicationError: 'action.payload.err'
-    }
+      user: {
+        userinfo: null,
+        userToken: null,
+        isLogin: false,
+      },
+    };
   }
-  if(action.type===AUTH_FAILURE){
+  if (action.type === GET_CURRENT_USER_SUCCESS) {
     return {
       ...state,
-      applicationError: 'action.payload.err'
-    }
+      user: {
+        userinfo: action.payload.data,
+        userToken: action.payload.data.id,
+        isLogin: true,
+      },
+    };
   }
-  if(action.type===CLEAR_ERROR){
+  if (action.type === REGISTER_SUCCESS) {
+    localStorage.setItem("loginToken", action.payload.data.token);
     return {
       ...state,
-      showErrors:[]
-    }
+      user: {
+        userinfo: action.payload.data,
+        userToken: action.payload.data.id,
+        isLogin: true,
+      },
+    };
+  }
+  if (action.type === REGISTER_FAILURE) {
+    return {
+      ...state,
+      showErrors: action.err.response.data.details,
+    };
+  }
+  if (action.type === AUTH_FAILURE) {
+    return {
+      ...state,
+      applicationError: "action.payload.err",
+    };
+  }
+  if (action.type === CLEAR_ERROR) {
+    return {
+      ...state,
+      showErrors: [],
+      applicationError: null,
+    };
   }
   //  if(action.type===GET_TOTALS){
   //    return {
@@ -254,21 +249,20 @@ import {
   //      totalbooks:state.books.length
   //    }
   //  }
-   if(action.type===REMOVE_BOOK){
-     return {
-       ...state,
-       books:state.books.filter(item=>item.id!==action.payload.id),
-       totalbooks: state.books.length-1
-     }
-   }
+  if (action.type === REMOVE_BOOK) {
+    return {
+      ...state,
+      books: state.books.filter((item) => item.id !== action.payload.id),
+      totalbooks: state.books.length - 1,
+    };
+  }
   //  if(action.type===SEARCH_FORM_VALUE){
-    //  console.log(action.payload.searchFormValue);
-     // return{
-     //   ...state,
-     //   books:state.books.title.include(action.payload.searchFormValue)
-     // }
+  //  console.log(action.payload.searchFormValue);
+  // return{
+  //   ...state,
+  //   books:state.books.title.include(action.payload.searchFormValue)
+  // }
   //  }
-   
-   return state;
 
-   }
+  return state;
+};

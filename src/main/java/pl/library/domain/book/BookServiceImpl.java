@@ -64,15 +64,12 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book addAvailable(Long id, Integer amount) {
+    public Book addAvailable(Long id, Integer available) {
         Book book = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
 
-        if (amount > 0) {
-            book.setTitle(book.getTitle());
-            book.setAuthor(book.getAuthor());
-            book.setAvailable(book.getAvailable() + amount);
-            book.setGenres(book.getGenres());
+        if (available > 0) {
+            book.setAvailable(book.getAvailable() + available);
             return bookRepository.save(book);
         } else {
             throw new ArithmeticException("Amount must be greater than 0!");

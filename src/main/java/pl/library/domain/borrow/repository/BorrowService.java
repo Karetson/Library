@@ -9,5 +9,5 @@ import java.util.List;
 public interface BorrowService {
     Borrow addition(Borrow borrow) throws UserNotFoundException;
     List<Borrow> getAllBorrowsByStatus(BorrowStatus status);
-    Borrow changeBorrowStatus(Long id);
+    Borrow changeBorrowStatus(Long id, BorrowStatus status);
 }

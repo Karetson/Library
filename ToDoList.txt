@@ -25,6 +25,9 @@ others:
 - testy
 - DTO
 - fix relations
+- poprawic wszedzie formatowanie daty
+- komentarze z opisem przy zlozonych serwisach
+- logowanie czynnosci uzytkownikow
 
 :::NOWE_ENCJE:::
 wypozyczenie:

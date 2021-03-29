@@ -27,6 +27,6 @@ public class Book {
     private Set<Genre> genres;
     private Integer count;
     private Integer available = 1;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(mappedBy = "book")
     private Set<Borrow> borrows;
 }

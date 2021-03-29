@@ -5,7 +5,7 @@ import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity(name = "borrows")
 @Getter
@@ -17,12 +17,12 @@ public class Borrow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date createdAt; // when status = true then set createdAt to current date
-    private Date expired;   // when status = true then set expired to (createdAt + 30 days)
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime expired = createdAt.plusDays(30);
     @Builder.Default
     private BorrowStatus status = BorrowStatus.NOT_APPROVED; // only moderator/admin can set status
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Book book;
 }

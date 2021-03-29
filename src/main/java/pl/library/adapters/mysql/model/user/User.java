@@ -34,7 +34,7 @@ public class User {
     private UserRole role = UserRole.USER;
     @ManyToMany
     private Set<Book> favoriteBooks;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<Borrow> borrows;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

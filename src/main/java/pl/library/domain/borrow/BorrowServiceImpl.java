@@ -6,6 +6,7 @@ import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.borrow.BorrowStatus;
 import pl.library.domain.book.repository.BookRepository;
+import pl.library.domain.borrow.exception.BorrowException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
 import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.borrow.repository.BorrowService;
@@ -24,7 +25,19 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     @Transactional
     public Borrow addition(Borrow borrow) {
-        return borrowRepository.save(borrow);
+        Long userId = borrow.getUser().getId();
+        Long bookId = borrow.getBook().getId();
+
+        if (userRepository.findById(userId).isPresent() && bookRepository.findById(bookId).isPresent()) {
+            Book book = bookRepository.findById(bookId).orElseThrow();
+
+            book.setAvailable(book.getAvailable() - 1);
+            bookRepository.save(book);
+
+            return borrowRepository.save(borrow);
+        } else {
+            throw new BorrowException("User id: " + userId + " or book id: " + bookId + " doesn't exists!");
+        }
     }
 
     @Override
@@ -38,10 +51,18 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     @Transactional
-    public Borrow changeBorrowStatus(Long id) {
+    public Borrow changeBorrowStatus(Long id, BorrowStatus status) {
         Borrow borrow = borrowRepository.findById(id).orElseThrow(()
                 -> new BorrowNotFoundException("Borrow with " + id + " ID not found!"));
-        borrow.setStatus(borrow.getStatus());
+
+        borrow.setStatus(status);
+
+        if (status.equals(BorrowStatus.DEVOTED)) {
+            Book book = bookRepository.findById(borrow.getBook().getId()).orElseThrow();
+
+            book.setAvailable(book.getAvailable() + 1);
+            bookRepository.save(book);
+        }
 
         return borrowRepository.save(borrow);
     }

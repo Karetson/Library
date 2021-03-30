@@ -1,12 +1,7 @@
 book:
-- count: ile dostepnych ksiazek
 - opis
 
 user:
-- potwierdzenie maila (optional)
-- registry: bcrypt
-- login: token, bcrypt
-- logout
 - ban
 
 exceptiony:
@@ -30,12 +25,6 @@ others:
 - logowanie czynnosci uzytkownikow
 
 :::NOWE_ENCJE:::
-wypozyczenie:
-- pola (Long id, User userid, Book bookid, LocalDateTime createdAt, Date(?) expired, Boolean status)
-- POST(@reqparam: userid, bookid) [utworzenie wypozyczenia za pomoca userid, bookid, zmienic amoount-1] - wypozyczenie ksiazki
-- GET(@reqparam: userid) [znalezc userid, wyswietlic wszystkie wypozyczenia tego userid jesli status=true] - aktywne wypozyczenia
-- PUT(@reqparam: wypozyczenieid) [znalezc wypozyczenieid, zmienic status=false(ended), zmienic amount+1] - oddanie ksiazki
-
 genre:
 - MULTI DODAWANIE: lista obiektow(String genre)
 - MULTI USUWANIE: lista obiektow(Long id)

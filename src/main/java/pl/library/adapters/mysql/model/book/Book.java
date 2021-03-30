@@ -5,7 +5,7 @@ import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.genre.Genre;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Getter
@@ -17,11 +17,11 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Title must not be empty")
+    @NotBlank(message = "Title must not be empty")
     private String title;
-    @NotEmpty(message = "Author must not be empty")
+    @NotBlank(message = "Author must not be empty")
     private String author;
-    @NotEmpty(message = "Publisher must not be empty")
+    @NotBlank(message = "Publisher must not be empty")
     private String publisher;
     @ManyToMany
     private Set<Genre> genres;

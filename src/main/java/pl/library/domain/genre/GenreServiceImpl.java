@@ -1,6 +1,7 @@
 package pl.library.domain.genre;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.genre.exception.GenreExistsException;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
+    @Autowired
     private final GenreRepository genreRepository;
 
     @Override

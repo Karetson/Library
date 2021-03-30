@@ -1,6 +1,7 @@
 package pl.library.domain.borrow;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.borrow.Borrow;
@@ -18,8 +19,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BorrowServiceImpl implements BorrowService {
+    @Autowired
     private final BorrowRepository borrowRepository;
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final BookRepository bookRepository;
 
     @Override

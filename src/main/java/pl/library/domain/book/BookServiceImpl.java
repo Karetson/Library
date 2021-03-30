@@ -28,11 +28,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getNBooksByRandom(Integer number) {
-        if (number > 0 && number <= bookRepository.findAll().size()) {
+    public List<Book> getNBooksByRandom(Byte number) {
+        if (number > 0) {
             return bookRepository.searchNBooksByRandom(number);
         } else {
-            throw new ArithmeticException("There are not enough books or number is not greater than 0.");
+            throw new ArithmeticException("Number must be greater than 0.");
         }
     }
 
@@ -57,41 +57,33 @@ public class BookServiceImpl implements BookService {
         if (bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
             throw new BookExistsException("Book with title: '" + book.getTitle() + "' and author: '" + book.getAuthor() + "' already exists!");
         }
-        if (book.getAvailable() > 0) {
+        if (book.getCount() > 0) {
+            book.setAvailable(book.getCount());
             return bookRepository.save(book);
         } else {
-            throw new ArithmeticException("Amount must be greater than 0!");
+            throw new ArithmeticException("Number of books must be greater than 0!");
         }
     }
 
     @Transactional
     @Override
-    public Book addAvailable(Long id, Integer available) {
-        Book book = bookRepository.findById(id).orElseThrow(()
+    public Book updateBook(Long id, Book book) {
+        Book bookDetails = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
+        Integer diff = book.getCount() - bookDetails.getCount();
 
-        if (available > 0) {
-            book.setAvailable(book.getAvailable() + available);
-            return bookRepository.save(book);
+        if ((bookDetails.getAvailable() + diff) >= 0) {
+                bookDetails.setTitle(book.getTitle());
+                bookDetails.setAuthor(book.getAuthor());
+                bookDetails.setPublisher(book.getPublisher());
+                bookDetails.setGenres(book.getGenres());
+                bookDetails.setDescription(book.getDescription());
+                bookDetails.setCount(book.getCount());
+                bookDetails.setAvailable(bookDetails.getAvailable() + diff);
+
+            return bookRepository.save(bookDetails);
         } else {
-            throw new ArithmeticException("Amount must be greater than 0!");
-        }
-    }
-
-    @Transactional
-    @Override
-    public Book subtractAvailable(Long id, Integer amount) {
-        Book book = bookRepository.findById(id).orElseThrow(()
-                -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
-
-        if (amount > 0 && amount <= book.getAvailable()) {
-            book.setTitle(book.getTitle());
-            book.setAuthor(book.getAuthor());
-            book.setAvailable(book.getAvailable() - amount);
-            book.setGenres(book.getGenres());
-            return bookRepository.save(book);
-        } else {
-            throw new ArithmeticException("Amount must be greater than 0 and less than or equal " + book.getAvailable() + "!");
+            throw new ArithmeticException("Count must be greater than : " + (bookDetails.getCount() - bookDetails.getAvailable() - 1));
         }
     }
 

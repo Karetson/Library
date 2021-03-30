@@ -6,11 +6,10 @@ import java.util.List;
 
 public interface BookService {
     List<Book> getAllByPhrase(String phrase);
-    List<Book> getNBooksByRandom(Integer number);
+    List<Book> getNBooksByRandom(Byte number);
     Book getByIdAndTitle(Long id, String title);
-    //    List<Book> getAllByGenres(String genre);
+//    List<Book> getAllByGenres(String genre);
     Book addition(Book book);
-    Book addAvailable(Long id, Integer amount);
-    Book subtractAvailable(Long id, Integer amount);
+    Book updateBook(Long id, Book book);
     void bookDeletion(Long id);
 }

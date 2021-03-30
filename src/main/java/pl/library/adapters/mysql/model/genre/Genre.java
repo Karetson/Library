@@ -15,7 +15,7 @@ public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50)
+    @Size(max = 25)
     @Column(unique = true)
     private String genre;
 }

@@ -23,7 +23,7 @@ public class BookController {
 
     @GetMapping("/search/random")
     @ResponseStatus(HttpStatus.OK)
-    public List<Book> getNBooksByRandom(@RequestParam Integer number) {
+    public List<Book> getNBooksByRandom(@RequestParam Byte number) {
         return bookService.getNBooksByRandom(number);
     }
 
@@ -45,18 +45,11 @@ public class BookController {
         return bookService.addition(book);
     }
 
-    @PutMapping("/edit/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Book addBookAvailable(@RequestParam Long id,
-                              @RequestParam Integer available) {
-        return bookService.addAvailable(id, available);
-    }
-
-    @PutMapping("/edit/subtract")
+    @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
     public Book subtractBookAvailable(@RequestParam Long id,
-                                   @RequestParam Integer available) {
-        return bookService.subtractAvailable(id, available);
+                                   @Valid @RequestBody Book book) {
+        return bookService.updateBook(id, book);
     }
 
     @DeleteMapping("/delete")

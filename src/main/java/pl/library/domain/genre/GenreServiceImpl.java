@@ -28,7 +28,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<Genre> getAll() {
-        return genreRepository.findAllGenres().orElseThrow(()
+        return genreRepository.getAll().orElseThrow(()
                 -> new GenreNotFoundException("There are no genres"));
     }
 

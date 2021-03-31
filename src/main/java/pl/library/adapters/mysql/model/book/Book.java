@@ -20,7 +20,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Titlse must not be empty")
+    @NotBlank(message = "Title must not be empty")
     @Size(max = 50)
     private String title;
     @NotBlank(message = "Author must not be empty")

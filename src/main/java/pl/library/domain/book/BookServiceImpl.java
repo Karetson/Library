@@ -1,7 +1,6 @@
 package pl.library.domain.book;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.domain.book.exception.BookExistsException;
@@ -15,7 +14,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    @Autowired
     private final BookRepository bookRepository;
 
     @Override

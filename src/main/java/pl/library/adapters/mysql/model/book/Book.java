@@ -35,7 +35,6 @@ public class Book {
     private Integer available;
     @OneToMany(mappedBy = "book")
     private Set<Borrow> borrows;
-    @NotBlank
     @Column(length = 2000)
     @Lob
     private String description;

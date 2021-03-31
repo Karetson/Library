@@ -1,7 +1,6 @@
 package pl.library.domain.borrow;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.borrow.Borrow;
@@ -19,11 +18,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BorrowServiceImpl implements BorrowService {
-    @Autowired
     private final BorrowRepository borrowRepository;
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final BookRepository bookRepository;
 
     @Override
@@ -31,16 +27,17 @@ public class BorrowServiceImpl implements BorrowService {
     public Borrow addition(Borrow borrow) {
         Long userId = borrow.getUser().getId();
         Long bookId = borrow.getBook().getId();
+        Book book = bookRepository.findById(bookId).orElseThrow();
 
-        if (userRepository.findById(userId).isPresent() && bookRepository.findById(bookId).isPresent()) {
-            Book book = bookRepository.findById(bookId).orElseThrow();
-
+        if (!(userRepository.findById(userId).isPresent() && bookRepository.findById(bookId).isPresent())) {
+            throw new BorrowException("User id: " + userId + " or book id: " + bookId + " doesn't exists!");
+        } else if (book.getAvailable() > 0) {
             book.setAvailable(book.getAvailable() - 1);
             bookRepository.save(book);
 
             return borrowRepository.save(borrow);
         } else {
-            throw new BorrowException("User id: " + userId + " or book id: " + bookId + " doesn't exists!");
+            throw new ArithmeticException("This book cannot be borrowed");
         }
     }
 
@@ -58,14 +55,14 @@ public class BorrowServiceImpl implements BorrowService {
     public Borrow changeBorrowStatus(Long id, BorrowStatus status) {
         Borrow borrow = borrowRepository.findById(id).orElseThrow(()
                 -> new BorrowNotFoundException("Borrow with " + id + " ID not found!"));
-
-        borrow.setStatus(status);
+        Book book = bookRepository.findById(borrow.getBook().getId()).orElseThrow();
 
         if (status.equals(BorrowStatus.DEVOTED)) {
-            Book book = bookRepository.findById(borrow.getBook().getId()).orElseThrow();
-
+            borrow.setStatus(status);
             book.setAvailable(book.getAvailable() + 1);
             bookRepository.save(book);
+        } else if (status.equals(BorrowStatus.APPROVED)) {
+            borrow.setStatus(status);
         }
 
         return borrowRepository.save(borrow);

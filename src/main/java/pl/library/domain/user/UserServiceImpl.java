@@ -1,7 +1,6 @@
 package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
@@ -20,9 +19,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final BookRepository bookRepository;
 
      @Override
@@ -36,16 +33,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(()
                 -> new UserNotFoundException("User with email: '" + email + "' not found!"));
     }
-
-
-//    @Override
-//    public List<User> getByFirstNameOrLastName(String firstname, String lastName) throws UserNotFoundException {
-//        if (userRepository.findByFirstNameOrLastName(firstname, lastName).size() > 0) {
-//            return userRepository.findByFirstNameOrLastName(firstname, lastName);
-//        } else {
-//            throw new UserNotFoundException("User with that first or last name not found!");
-//        }
-//    }
 
     @Override
     public List<User> getByRole(UserRole role) throws UserNotFoundException {

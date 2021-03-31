@@ -20,9 +20,9 @@ public class Borrow {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime expired = createdAt.plusDays(30);
     @Builder.Default
-    private BorrowStatus status = BorrowStatus.NOT_APPROVED; // only moderator/admin can set status
-    @ManyToOne
+    private BorrowStatus status = BorrowStatus.NOT_APPROVED;
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
 }

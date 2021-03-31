@@ -1,3 +1,6 @@
+book:
+- przerobic getAllByPhrase
+
 exceptiony:
 - zbieranie wiekszego zakresu wyjatkow
 - sprawdzic czy w kazdym serwisie sa exceptions

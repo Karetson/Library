@@ -10,7 +10,6 @@ import java.util.List;
 public interface UserService {
     User getById(Long id) throws UserNotFoundException;
     User getByEmail(String email) throws UserNotFoundException;
-//    List<User> getByFirstNameOrLastName(String firstName, String lastName) throws UserNotFoundException;
     List<User> getByRole(UserRole role) throws UserNotFoundException;
     User login(String email, String password) throws UserNotFoundException;
     User registry(User user) throws UserExistsException;

@@ -13,15 +13,6 @@ import java.util.List;
 
 @RestControllerAdvice
 public class BookControllerAdvice {
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public final ErrorResponse handleAllExceptions(Exception exception) {
-        List<String> details = new ArrayList<>();
-        details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Server error", details);
-        return error;
-    }
-
     @ExceptionHandler(BookNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public final ErrorResponse handleBookNotFoundException(BookNotFoundException exception) {

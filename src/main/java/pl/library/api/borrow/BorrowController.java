@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.borrow.BorrowStatus;
 import pl.library.domain.borrow.BorrowServiceImpl;
+import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,7 +19,7 @@ public class BorrowController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Borrow addBorrow(@Valid @RequestBody Borrow borrow) {
+    public Borrow addBorrow(@Valid @RequestBody Borrow borrow) throws UserNotFoundException {
         return borrowService.addition(borrow);
     }
 

@@ -18,17 +18,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllByPhrase(String phrase) {
-        if (bookRepository.searchAllByTitleOrAuthorLike(phrase).size() > 0) {
-            return bookRepository.searchAllByTitleOrAuthorLike(phrase);
-        } else {
-            throw new BookNotFoundException("Book with phrase: '" + phrase + "' doesn't exists!");
-        }
+        return bookRepository.findAllByTitleOrAuthorLike(phrase).orElseThrow(()
+                -> new BookNotFoundException("Book with phrase: '" + phrase + "' doesn't exists"));
     }
 
     @Override
-    public List<Book> getNBooksByRandom(Byte number) {
+    public List<Book> getNumberRandomBooks(Byte number) {
         if (number > 0) {
-            return bookRepository.searchNBooksByRandom(number);
+            return bookRepository.findRandomByNumber(number);
         } else {
             throw new ArithmeticException("Number must be greater than 0.");
         }

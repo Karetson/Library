@@ -36,10 +36,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getByRole(UserRole role) throws UserNotFoundException {
-        if (userRepository.findByRole(role).size() > 0) {
-            return userRepository.findByRole(role);
-        } else
-            throw new UserNotFoundException("User with role: '" + role + "' not found!");
+         return userRepository.findByRole(role).orElseThrow(()
+                 -> new UserNotFoundException("User with role: '" + role + "' not found!"));
     }
 
     @Override

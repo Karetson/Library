@@ -24,7 +24,7 @@ public class BookController {
     @GetMapping("/search/random")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getNBooksByRandom(@RequestParam Byte number) {
-        return bookService.getNBooksByRandom(number);
+        return bookService.getNumberRandomBooks(number);
     }
 
     @GetMapping("/{id}/{title}")

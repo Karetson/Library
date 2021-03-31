@@ -7,6 +7,7 @@ import pl.library.adapters.mysql.model.genre.Genre;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,7 +35,7 @@ public class Book {
     private Integer count = 1;
     private Integer available;
     @OneToMany(mappedBy = "book")
-    private Set<Borrow> borrows;
+    private List<Borrow> borrows;
     @Column(length = 2000)
     @Lob
     private String description;

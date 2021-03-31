@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.borrow.BorrowStatus;
+import pl.library.adapters.mysql.model.user.User;
+import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
-import pl.library.domain.borrow.exception.BorrowException;
+import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
 import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.borrow.repository.BorrowService;
+import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
@@ -24,13 +27,16 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     @Transactional
-    public Borrow addition(Borrow borrow) {
+    public Borrow addition(Borrow borrow) throws UserNotFoundException {
         Long userId = borrow.getUser().getId();
         Long bookId = borrow.getBook().getId();
-        Book book = bookRepository.findById(bookId).orElseThrow();
+        Book book = bookRepository.findById(bookId).orElseThrow(()
+                -> new BookNotFoundException("There is no book with id: " + bookId));
+        userRepository.findById(userId).orElseThrow(()
+                -> new UserNotFoundException("There is no user with id: " + userId));
 
-        if (!(userRepository.findById(userId).isPresent() && bookRepository.findById(bookId).isPresent())) {
-            throw new BorrowException("User id: " + userId + " or book id: " + bookId + " doesn't exists!");
+        if (borrowRepository.existsByUserAndBook(borrow.getUser(), borrow.getBook())) {
+            throw new BorrowExistsException("Borrow with user id: " + userId + " and book id: " + bookId + " already exists!");
         } else if (book.getAvailable() > 0) {
             book.setAvailable(book.getAvailable() - 1);
             bookRepository.save(book);
@@ -43,11 +49,8 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     public List<Borrow> getAllBorrowsByStatus(BorrowStatus status) {
-        if (borrowRepository.findAllByStatus(status).size() > 0) {
-            return borrowRepository.findAllByStatus(status);
-        } else {
-            throw new BorrowNotFoundException("There are no borrows with status: " + status);
-        }
+        return borrowRepository.findAllByStatus(status).orElseThrow(()
+                -> new BorrowNotFoundException("Borrow with status: '" + status + "' not found!"));
     }
 
     @Override
@@ -55,7 +58,9 @@ public class BorrowServiceImpl implements BorrowService {
     public Borrow changeBorrowStatus(Long id, BorrowStatus status) {
         Borrow borrow = borrowRepository.findById(id).orElseThrow(()
                 -> new BorrowNotFoundException("Borrow with " + id + " ID not found!"));
-        Book book = bookRepository.findById(borrow.getBook().getId()).orElseThrow();
+        Long bookId = borrow.getBook().getId();
+        Book book = bookRepository.findById(bookId).orElseThrow(()
+                -> new BookNotFoundException("Boook with " + bookId + " ID not found!"));
 
         if (status.equals(BorrowStatus.DEVOTED)) {
             borrow.setStatus(status);

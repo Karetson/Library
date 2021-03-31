@@ -13,23 +13,23 @@ import java.util.List;
 @RequestMapping("api/bookGenre")
 @RequiredArgsConstructor
 public class GenreController {
-    private final GenreServiceImpl bookGenreService;
+    private final GenreServiceImpl genreService;
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Genre addGenre(@Valid @RequestBody Genre genre) {
-        return bookGenreService.addition(genre);
+        return genreService.addition(genre);
     }
 
     @GetMapping("/search/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Genre> getAllGenres() {
-        return bookGenreService.getAll();
+        return genreService.getAll();
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGenre(@RequestParam Long id) {
-        bookGenreService.delete(id);
+        genreService.delete(id);
     }
 }

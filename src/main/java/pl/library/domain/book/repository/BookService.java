@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BookService {
     List<Book> getAllByPhrase(String phrase);
-    List<Book> getNBooksByRandom(Byte number);
+    List<Book> getNumberRandomBooks(Byte number);
     Book getByIdAndTitle(Long id, String title);
 //    List<Book> getAllByGenres(String genre);
     Book addition(Book book);

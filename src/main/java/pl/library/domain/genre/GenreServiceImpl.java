@@ -28,20 +28,17 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public List<Genre> getAll() {
-        if (genreRepository.findAll().size() > 0) {
-            return genreRepository.findAll();
-        } else {
-            throw new GenreNotFoundException("There are no genres.");
-        }
+        return genreRepository.findAllGenres().orElseThrow(()
+                -> new GenreNotFoundException("There are no genres"));
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        if (!genreRepository.findById(id).isPresent()) {
-            throw new GenreNotFoundException("Genre with id: '" + id + "' not found!");
-        } else {
+        if (genreRepository.findById(id).isPresent()) {
             genreRepository.deleteById(id);
+        } else {
+            throw new GenreNotFoundException("Genre with id: '" + id + "' not found!");
         }
     }
 }

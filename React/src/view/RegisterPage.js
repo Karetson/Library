@@ -6,6 +6,8 @@ import {Formik} from "formik";
 import {Link} from "react-router-dom";
 import {useEffect} from "react";
 import PropTypes from "prop-types";
+import {Input} from "../components/atoms/Input/Input";
+import Button from "../components/atoms/Button/Button";
 
 const RegisterWrapper = styled.div`
   /* margin-right: 500px;
@@ -20,7 +22,6 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
 
   return (
     <RegisterWrapper>
-      {/* {console.log(isLogin)} */}
       <Formik
         initialValues={{
           name: "",
@@ -67,8 +68,7 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
                 <div className="field">
                   <label className="label">Name</label>
                   <div className="control">
-                    <input
-                      className="input"
+                    <Input
                       type="text"
                       name="name"
                       placeholder="e.g. Patrick"
@@ -81,8 +81,7 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
                 <div className="field">
                   <label className="label">Last name</label>
                   <div className="control">
-                    <input
-                      className="input"
+                    <Input
                       type="text"
                       name="lastname"
                       placeholder="e.g. Orlowski"
@@ -95,8 +94,7 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
                 <div className="field">
                   <label className="label">Email</label>
                   <div className="control">
-                    <input
-                      className="input"
+                    <Input
                       type="email"
                       name="useremail"
                       placeholder="e.g. alex@example.com"
@@ -109,8 +107,7 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
                 <div className="field">
                   <label className="label">Password</label>
                   <div className="control">
-                    <input
-                      className="input"
+                    <Input
                       type="password"
                       name="userpassword"
                       placeholder="********"
@@ -123,8 +120,7 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
                 <div className="field">
                   <label className="label">Repeat password</label>
                   <div className="control">
-                    <input
-                      className="input"
+                    <Input
                       type="password"
                       name="repeatuserpassword"
                       placeholder="********"
@@ -134,10 +130,9 @@ const RegisterPage = ({register, isLogin, showErrors, clean}) => {
                     />
                   </div>
                 </div>
-
-                <button className="button is-primary" type="submit">
-                  Sign in
-                </button>
+                <Button type="submit" value="submit">
+                  Create account
+                </Button>
               </form>
               {showErrors && (
                 <div className="notification is-danger is-light">

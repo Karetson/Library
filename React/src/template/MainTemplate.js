@@ -30,7 +30,7 @@ const MainTemplate = () => {
         <ImageWrapper>
           <Image src={main_img} />
           <ImageTextContainer>
-            <HeaderOne>Welcome to the lending library!</HeaderOne>
+            <HeaderOne>Welcome to the library!</HeaderOne>
             <SpanText>
               Reading books is the most beautiful fun humanity has ever imagined
             </SpanText>
@@ -45,7 +45,6 @@ const MainTemplate = () => {
             <Route path={routers.login} exact component={LoginPage} />
             <Route path={routers.register} exact component={RegisterPage} />
             <Route path={routers.favorite} exact component={FavoritePage} />
-            <Route path={routers.addBook} exact component={AddBook} />
             <Route path={routers.addBook} exact component={AddBook} />
             <Route path={routers.addGenre} exact component={AddGenre} />
             <Route path={routers.book} exact component={BookDetailsPage} />

@@ -3,19 +3,14 @@ import {
   // SEARCH_FORM_VALUE,
   // FETCH_BOOKS_REQUEST,
   FETCH_BOOKS_SUCCESS,
-  // FETCH_BOOKS_FAILURE,
   AUTH_SUCCESS,
   LOG_OUT,
   // GET_CURRENT_USER_REQUEST,
   GET_CURRENT_USER_SUCCESS,
-  // GET_CURRENT_USER_FAILURE,
   REGISTER_SUCCESS,
-  REGISTER_FAILURE,
-  AUTH_FAILURE,
   CLEAR_ERROR,
   SEARCH_BOOK_SUCCESS,
   SEARCH_BOOK_FAILURE,
-  BOOK_DETAILS_FAILURE,
   BOOK_DETAILS_SUCCESS,
   MIN_THREE_CHAR,
   REMOVE_GENRE,
@@ -27,6 +22,8 @@ import {
   // GET_GENRE_FAILURE
   SEND_ADD_GENRELIST,
   SEND_REMOVE_GENRELIST,
+  FAILURE_MESSAGE,
+  ADD_FAVORITE,
 } from "../actions";
 
 //initial store
@@ -62,8 +59,31 @@ const initialStore = {
 
 //reducer(old-state,action) return update or old state
 export const reducer = (state = initialStore, action) => {
-  if (action.type === ADD_GENRE) {
+  if (action.type === ADD_FAVORITE) {
     console.log(action.payload);
+    return {
+      ...state,
+      user: {
+        userToken: action.payload.data.id,
+        isLogin: true,
+        userinfo: action.payload.data,
+      },
+    };
+  }
+  if (action.type === FAILURE_MESSAGE) {
+    console.log(action.err.response.data);
+    if (action.err.response === undefined) {
+      alert("no backend connect");
+      return {...state};
+    }
+    return {
+      ...state,
+      showErrors: action.err.response.data.details,
+    };
+  }
+
+  if (action.type === ADD_GENRE) {
+    // console.log(action.payload);
     return {
       ...state,
       genreNews: [...state.genreNews, action.payload.genre],
@@ -121,18 +141,6 @@ export const reducer = (state = initialStore, action) => {
       bookDetails: action.payload.data,
     };
   }
-  if (action.type === BOOK_DETAILS_FAILURE) {
-    return {
-      ...state,
-      bookDetails: action.err.response.data,
-    };
-  }
-  if (action.type === BOOK_DETAILS_FAILURE) {
-    return {
-      ...state,
-      // bookDetails: action.payload.data
-    };
-  }
   if (action.type === SEARCH_BOOK_FAILURE) {
     return {
       ...state,
@@ -154,7 +162,7 @@ export const reducer = (state = initialStore, action) => {
     };
   }
   if (action.type === GET_GENRE_SUCCESS) {
-    console.log(action.payload.data);
+    // console.log(action.payload.data);
     return {
       ...state,
       genreList: action.payload.data,
@@ -203,18 +211,7 @@ export const reducer = (state = initialStore, action) => {
       },
     };
   }
-  if (action.type === REGISTER_FAILURE) {
-    return {
-      ...state,
-      showErrors: action.err.response.data.details,
-    };
-  }
-  if (action.type === AUTH_FAILURE) {
-    return {
-      ...state,
-      showErrors: action.err.response.data.details,
-    };
-  }
+
   if (action.type === CLEAR_ERROR) {
     return {
       ...state,

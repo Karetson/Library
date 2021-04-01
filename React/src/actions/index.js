@@ -48,6 +48,8 @@ export const ADD_GENRE = "ADD_GENRE";
 export const REMOVE_FAVORITE = "REMOVE_FAVORITE";
 export const ADD_FAVORITE = "ADD_FAVORITE";
 
+export const FAILURE_MESSAGE = "FAILURE_MESSAGE";
+
 const API = "http://localhost:8080/api";
 
 export const removeFavorite = (user_id, book_id) => async (dispatch) => {
@@ -59,17 +61,19 @@ export const removeFavorite = (user_id, book_id) => async (dispatch) => {
   });
 };
 
-export const addFavorite = (user_id, book_id) => async (dispatch) => {
-  dispatch({
-    type: ADD_FAVORITE,
-  });
-  return axios.put(
-    API + `/user/favorite/add?user_id=${user_id}&book_id=${book_id}`
-  );
+export const addFavorite = (user_id, props) => async (dispatch) => {
+  const {id} = props;
+  return axios
+    .put(API + `/user/favorite/add?user_id=${user_id}&book_id=${id}`)
+    .then((payload) => {
+      dispatch({
+        type: ADD_FAVORITE,
+        payload,
+      });
+    });
 };
 
 export const addGenre = (genre) => {
-  console.log(genre);
   return {
     type: ADD_GENRE,
     payload: {
@@ -106,22 +110,28 @@ export const removeGenre3 = (item) => {
   };
 };
 
-export const sendRemoveListGenre = (removeList) => async (dispatch) => {
-  console.log(removeList);
+export const sendRemoveListGenre = (idList) => async (dispatch) => {
+  const ids = idList.map((item) => item.id);
   dispatch({
     type: SEND_REMOVE_GENRELIST,
   });
-  return axios.delete(API + "/bookGenre/delete", {data: {removeList}});
+  return axios.delete(API + "/bookGenre/delete", {data: {ids}});
 };
 
-export const sendNewsListGenre = (addList) => async (dispatch) => {
-  console.log(addList);
+export const sendNewsListGenre = (genres) => async (dispatch) => {
   dispatch({
     type: SEND_ADD_GENRELIST,
   });
-  return axios.post(API + "/bookGenre/add", {
-    addList,
-  });
+  return axios
+    .post(API + "/bookGenre/add", {
+      genres,
+    })
+    .then((payload) => {
+      console.log(payload);
+    })
+    .catch((err) => {
+      console.log(err.response);
+    });
 };
 
 export const fetchGenres = () => async (dispatch) => {
@@ -137,9 +147,8 @@ export const fetchGenres = () => async (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err.response);
       dispatch({
-        type: GET_GENRE_FAILURE,
+        type: FAILURE_MESSAGE,
         err,
       });
     });
@@ -150,19 +159,18 @@ export const fetchBooks = () => async (dispatch) => {
     type: FETCH_BOOKS_REQUEST,
   });
   return axios
-    .get(API + "/book/search/random", {params: {number: 10}})
+    .get(API + "/book/search/random", {params: {number: 1}})
     .then((payload) => {
-      console.log(payload);
+      // console.log(payload);
       dispatch({
         type: FETCH_BOOKS_SUCCESS,
         payload,
       });
     })
     .catch((err) => {
-      console.log(err.response.data.message);
-      console.log(err.response.data.details);
       dispatch({
-        type: FETCH_BOOKS_FAILURE,
+        type: FAILURE_MESSAGE,
+        err,
       });
     });
 };
@@ -221,9 +229,8 @@ export const getUserLoginAction = (token) => async (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err.response);
       dispatch({
-        type: GET_CURRENT_USER_FAILURE,
+        type: FAILURE_MESSAGE,
         err,
       });
     });
@@ -244,19 +251,23 @@ export const authUser = (email, password) => async (dispatch) => {
     })
     .catch((err) => {
       dispatch({
-        type: AUTH_FAILURE,
+        type: FAILURE_MESSAGE,
         err,
       });
     });
 };
 
-export const addBook = (title, author, publisher, genres, amount) => async (
-  dispatch
-) => {
+export const addBook = (
+  title,
+  author,
+  publisher,
+  genres,
+  amount,
+  description
+) => async (dispatch) => {
   dispatch({
     type: ADD_BOOK_REQUEST,
   });
-  console.log(genres);
   return axios
     .post(API + "/book/add", {
       title,
@@ -264,20 +275,17 @@ export const addBook = (title, author, publisher, genres, amount) => async (
       publisher,
       genres,
       amount,
+      description,
     })
     .then((payload) => {
-      console.log(payload);
       dispatch({
         type: ADD_BOOK_SUCCESS,
         payload,
       });
     })
     .catch((err) => {
-      console.log(err.response);
-      console.log(err.response.data.message);
-      console.log(err.response.data.details);
       dispatch({
-        type: ADD_BOOK_FAILURE,
+        type: FAILURE_MESSAGE,
         err,
       });
     });
@@ -297,16 +305,15 @@ export const registerUser = (firstName, lastName, email, password) => async (
       password,
     })
     .then((payload) => {
-      console.log(payload);
+      // console.log(payload);
       dispatch({
         type: REGISTER_SUCCESS,
         payload,
       });
     })
     .catch((err) => {
-      console.log(err.response.data.details);
       dispatch({
-        type: REGISTER_FAILURE,
+        type: FAILURE_MESSAGE,
         err,
       });
     });
@@ -332,7 +339,7 @@ export const bookRequest = (id, title) => async (dispatch) => {
     })
     .catch((err) => {
       dispatch({
-        type: BOOK_DETAILS_FAILURE,
+        type: FAILURE_MESSAGE,
         err,
       });
     });
@@ -346,7 +353,7 @@ export const searchBook = (phrase) => async (dispatch) => {
     return axios
       .get(API + "/book/search", {params: {phrase}})
       .then((payload) => {
-        console.log(payload);
+        // console.log(payload);
         dispatch({
           type: SEARCH_BOOK_SUCCESS,
           payload,

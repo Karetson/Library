@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.book.Book;
+import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.BookServiceImpl;
 
 import javax.validation.Valid;
@@ -33,11 +34,11 @@ public class BookController {
         return bookService.getByIdAndTitle(id, title);
     }
 
-//    @GetMapping("/search/genre")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Book> getAllBooksByGenres(@RequestParam String genre) {
-//        return bookService.getAllByGenres(genre);
-//    }
+    @GetMapping("/search/genre")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Book> getAllBooksByGenres(@RequestParam Genre genre) {
+        return bookService.getAllByGenres(genre);
+    }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)

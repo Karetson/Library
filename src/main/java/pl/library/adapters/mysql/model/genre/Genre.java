@@ -17,5 +17,5 @@ public class Genre {
 
     @Size(max = 25)
     @Column(unique = true)
-    private String genre;
+    private String name;
 }

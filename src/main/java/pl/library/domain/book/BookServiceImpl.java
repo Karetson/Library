@@ -3,6 +3,7 @@ package pl.library.domain.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
+import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookService;
@@ -37,14 +38,11 @@ public class BookServiceImpl implements BookService {
                 -> new BookNotFoundException("Book with id: '" + id + "' and title: '" + title + "' doesn't exists!"));
     }
 
-//    @Override
-//    public List<Book> getAllByGenres(String genre) {
-//        if (bookRepository.findAllByGenres(genre).size() > 0) {
-//            return bookRepository.findAllByGenres(genre);
-//        } else {
-//            throw new BookNotFoundException("Book with type: '" + genre + "' doesn't exists!");
-//        }
-//    }
+    @Override
+    public List<Book> getAllByGenres(Genre genre) {
+        return bookRepository.findAllByGenres(genre).orElseThrow(()
+                -> new BookNotFoundException("Book with type: '" + genre + "' doesn't exists!"));
+    }
 
     @Transactional
     @Override

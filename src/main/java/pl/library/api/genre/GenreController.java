@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.genre.Genre;
+import pl.library.api.genre.dto.GenresRequest;
 import pl.library.domain.genre.GenreServiceImpl;
 
 import javax.validation.Valid;
@@ -17,8 +18,8 @@ public class GenreController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Genre addGenre(@Valid @RequestBody Genre genre) {
-        return genreService.addition(genre);
+    public List<Genre> multiAddGenres(@Valid @RequestBody GenresRequest genres) {
+        return genreService.multiAdd(genres);
     }
 
     @GetMapping("/search/all")
@@ -29,7 +30,7 @@ public class GenreController {
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteGenre(@RequestParam Long id) {
-        genreService.delete(id);
+    public void multiDeleteGenres(@RequestBody GenresRequest ids) {
+        genreService.multiDelete(ids);
     }
 }

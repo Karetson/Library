@@ -22,7 +22,7 @@ INSERT INTO books (title, author, publisher, count, available) VALUES
     ('Tytul1', 'Autor1', 'Wydawnictwo1', 6, 4);
 
 -- initializing genres
-INSERT INTO genres (genre) VALUES
+INSERT INTO genres (name) VALUES
     ('Comedy'), ('Fantasy'), ('Adventure'), ('Biographical'), ('Criminal'), ('Natural'), ('Historical'), ('Detective');
 
 -- initializing genres for books

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.library.adapters.mysql.model.book.Book;
+import pl.library.adapters.mysql.model.genre.Genre;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "SELECT * FROM books ORDER BY RAND() LIMIT :number", nativeQuery = true)
     List<Book> findRandomByNumber(@Param("number") Byte number);
     Optional<Book> findByIdAndTitle(Long id, String title);
-//    List<Book> findAllByGenres(String genre);
+    Optional<List<Book>> findAllByGenres(Genre genre);
     Boolean existsByTitleAndAuthor(String title, String author);
 }

@@ -19,9 +19,7 @@ const FavoritePage = ({favoriteBooks}) => {
       <Heading>Favorite Books</Heading>
       <FavoritePageWrapper>
         {favoriteBooks.map((item) => (
-          <>
-            <BookList key={item.id} {...item} isLogin={true} favorite />
-          </>
+          <BookList key={item.id} {...item} isLogin={true} favorite />
         ))}
         {favoriteBooks.length === 0 && <>You dont like any books yet!</>}
       </FavoritePageWrapper>
@@ -31,9 +29,10 @@ const FavoritePage = ({favoriteBooks}) => {
 
 FavoritePage.propTypes = {
   favoriteBooks: PropTypes.array,
+  getUserLogin: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = ({user}) => {
+const mapStatetoProps = ({user}) => {
   const {favoriteBooks} = user.userinfo;
   return {
     favoriteBooks,
@@ -51,4 +50,4 @@ const mapDispatchToProps = ({user}) => {
 //     }
 // }
 
-export default connect(mapDispatchToProps)(FavoritePage);
+export default connect(mapStatetoProps, null)(FavoritePage);

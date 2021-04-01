@@ -15,11 +15,16 @@ import {
   VerticalText,
   BookImage,
   FavoriteHearthAdd,
+  AvailableBook,
 } from "./BookList.elements";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {removeFavorite, addFavorite} from "../../../actions";
+import {
+  removeFavorite,
+  addFavorite,
+  getUserLoginAction,
+} from "../../../actions";
 
 const BookList = (props) => {
   const {
@@ -33,9 +38,12 @@ const BookList = (props) => {
     add,
     remove,
     id_user,
+    available,
+    getUserLogin,
+    item,
   } = props;
-
   // useEffect jesli zalogowany to od nowa pobierz listę
+  console.log(props);
 
   return (
     <FavoriteItem>
@@ -60,16 +68,24 @@ const BookList = (props) => {
               <FavoriteHearthBroken
                 onClick={() => {
                   remove(id_user, id);
+                  getUserLogin(localStorage.getItem("loginToken"));
                 }}
               />
             </>
           ) : (
             <>
-              <FavoriteHearthAdd
-                onClick={() => {
-                  add(id_user, id);
-                }}
-              />
+              {console.log(id)}
+              {console.log(item)}
+
+              {/* {id !== item.id && ( */}
+              <>
+                <FavoriteHearthAdd
+                  onClick={() => {
+                    add(id_user, props);
+                  }}
+                />
+              </>
+              {/* )} */}
             </>
           )}
         </BookTitle>
@@ -77,7 +93,7 @@ const BookList = (props) => {
           <BookAuthor>{author}</BookAuthor>
           <BookGenres>
             {genres.map((item) => (
-              <Genres key={item.id}>{item.genre}</Genres>
+              <Genres key={item.id}>{item.name}</Genres>
             ))}
           </BookGenres>
           <BookInfo>
@@ -90,13 +106,19 @@ const BookList = (props) => {
                 <br />
               </>
             )}
-            {!borrowed && <>status: available/unavailable</>}
+            {!borrowed && (
+              <AvailableBook available={available >= 1 ? true : false}>
+                {available >= 1 ? "available" : "unavailable"}
+              </AvailableBook>
+            )}
           </Available>
         </Link>
       </BookContent>
-      <BookOrderButton isLogin={isLogin}>
-        <VerticalText>Borrow a book</VerticalText>
-      </BookOrderButton>
+      {available >= 1 && (
+        <BookOrderButton isLogin={isLogin}>
+          <VerticalText>Borrow a book</VerticalText>
+        </BookOrderButton>
+      )}
     </FavoriteItem>
   );
 };
@@ -106,12 +128,20 @@ BookList.propTypes = {
   id_user: PropTypes.number,
   title: PropTypes.string,
   author: PropTypes.string,
-  isLogin: PropTypes.bool.isRequired,
+  isLogin: PropTypes.bool,
   favorite: PropTypes.bool,
-  borrowed: PropTypes.node,
+  borrowed: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+    PropTypes.node,
+    PropTypes.any,
+  ]),
   remove: PropTypes.func.isRequired,
   add: PropTypes.func.isRequired,
   genres: PropTypes.array,
+  available: PropTypes.number,
+  getUserLogin: PropTypes.func.isRequired,
+  item: PropTypes.node,
 };
 
 const mapStateToProps = ({user}) => {
@@ -125,7 +155,8 @@ const mapStateToProps = ({user}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     remove: (user_id, book_id) => dispatch(removeFavorite(user_id, book_id)),
-    add: (user_id, book_id) => dispatch(addFavorite(user_id, book_id)),
+    add: (user_id, props) => dispatch(addFavorite(user_id, props)),
+    getUserLogin: (token) => dispatch(getUserLoginAction(token)),
   };
 };
 

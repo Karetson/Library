@@ -20,9 +20,3 @@ others:
 - logowanie czynnosci uzytkownikow
 - paginacja
 - sortowanie
-- serializacja?
-
-:::NOWE_ENCJE:::
-genre:
-- MULTI DODAWANIE: lista obiektow(String genre)
-- MULTI USUWANIE: lista obiektow(Long id)

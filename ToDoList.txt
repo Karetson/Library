@@ -1,6 +1,8 @@
-exceptiony:
-- zbieranie wiekszego zakresu wyjatkow
-- sprawdzic czy w kazdym serwisie sa exceptions
+book:
+- zrobic ze ksiazka musi posiadac conajmnidej 1 gatunek
+
+user:
+- zrobic ze mozna dodac tylko raz dana ksiazke do ulubionych
 
 security:
 - token
@@ -20,3 +22,16 @@ others:
 - logowanie czynnosci uzytkownikow
 - paginacja
 - sortowanie
+
+:::DTO:::
+User:
+-
+
+Book:
+-
+
+Borrow:
+-
+
+Genre:
+-

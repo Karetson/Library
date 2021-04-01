@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/book")
 public class BookController {
     private final BookServiceImpl bookService;
-
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getAllBooksByPhrase(@RequestParam String phrase)  {

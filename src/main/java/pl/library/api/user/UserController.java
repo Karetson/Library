@@ -62,7 +62,7 @@ public class UserController {
         return userService.registry(user);
     }
 
-    @PutMapping("/sign-in/profile/{id}")
+    @PutMapping("/sign-in/profile")
     @ResponseStatus(HttpStatus.CREATED)
     public User editUser(@RequestParam Long id,
                            @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {

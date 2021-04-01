@@ -25,7 +25,7 @@ public class GeneralControllerAdvice {
     public final ErrorResponse handleValidationException(MethodArgumentNotValidException exception) {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Wrong number", details);
+        ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", details);
         return error;
     }
 }

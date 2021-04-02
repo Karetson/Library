@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.adapters.mysql.model.user.UserRole;
+import pl.library.api.user.dto.AddUserRequest;
+import pl.library.api.user.dto.AddUserResponse;
 import pl.library.domain.user.UserServiceImpl;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
@@ -56,10 +58,12 @@ public class UserController {
         return userService.login(email, password);
     }
 
+    //dto
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@Valid @RequestBody User user) throws UserExistsException {
-        return userService.registry(user);
+    public AddUserResponse addUser(@Valid @RequestBody AddUserRequest addUserRequest) throws UserExistsException {
+         User addedUser = userService.register(addUserRequest.toUser());
+         return new AddUserResponse(addedUser.getId());
     }
 
     @PutMapping("/sign-in/profile")

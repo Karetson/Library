@@ -12,7 +12,7 @@ public interface UserService {
     User getByEmail(String email) throws UserNotFoundException;
     List<User> getByRole(UserRole role) throws UserNotFoundException;
     User login(String email, String password) throws UserNotFoundException;
-    User registry(User user) throws UserExistsException;
+    User register(User user) throws UserExistsException;
     User editProfile(Long id, User user) throws UserNotFoundException, UserExistsException;
     User addFavorite(Long user_id, Long book_id) throws UserNotFoundException;
     void subtractFavorite(Long user_id, Long book_id) throws UserNotFoundException;

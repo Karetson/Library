@@ -35,3 +35,16 @@ Borrow:
 
 Genre:
 -
+
+auto import poprawic
+
+pytania:
+- obsluga exception dla @NotBlank
+- jak mniej wiecej zrobic security
+- edycja maila w profilu(gdy edytuje wyskakuje ze juz taki jest nawet gdy nie wpisze nic)
+- create-drop czy data.sql
+- pakietowanie
+- relacje user->favorite i book->genre (czy dobrze zrobione)
+- czy expired w borrows jest dobrze
+- fetchType w relacjach?
+-

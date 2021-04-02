@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.borrow.BorrowStatus;
+import pl.library.api.borrow.dto.AddBorrowResponse;
 import pl.library.domain.borrow.BorrowServiceImpl;
 import pl.library.domain.user.exception.UserNotFoundException;
 
@@ -17,10 +18,12 @@ import java.util.List;
 public class BorrowController {
     private final BorrowServiceImpl borrowService;
 
+    // dto
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Borrow addBorrow(@Valid @RequestBody Borrow borrow) throws UserNotFoundException {
-        return borrowService.addition(borrow);
+    public AddBorrowResponse addBorrow(@Valid @RequestBody Borrow borrow) throws UserNotFoundException {
+        Borrow addedBorrow = borrowService.addition(borrow);
+        return new AddBorrowResponse(addedBorrow.getId());
     }
 
     @GetMapping("/search")
@@ -29,9 +32,9 @@ public class BorrowController {
         return borrowService.getAllBorrowsByStatus(status);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Borrow changeBorrowStatus(@RequestParam Long id, @RequestParam BorrowStatus status) {
+    public Borrow changeBorrowStatus(@PathVariable Long id, @RequestParam BorrowStatus status) {
         return borrowService.changeBorrowStatus(id, status);
     }
 }

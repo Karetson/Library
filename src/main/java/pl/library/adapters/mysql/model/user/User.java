@@ -36,9 +36,9 @@ public class User {
     private String password;
     @Builder.Default
     private UserRole role = UserRole.USER;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Book> favoriteBooks;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Borrow> borrows;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

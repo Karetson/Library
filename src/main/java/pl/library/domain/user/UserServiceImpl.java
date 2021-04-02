@@ -48,13 +48,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User registry(User user) throws UserExistsException {
+    public User register(User user) throws UserExistsException {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserExistsException("User with '" + user.getEmail() + "' email already exists!");
         } else
             return userRepository.save(user);
     }
 
+    // set juz zapisuje sam
     @Override
     @Transactional
     public User editProfile(Long id, User userDetails) throws UserNotFoundException, UserExistsException {

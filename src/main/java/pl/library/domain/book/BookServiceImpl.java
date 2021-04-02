@@ -46,7 +46,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book addition(Book book) {
+    public Book addBook(Book book) {
         if (bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
             throw new BookExistsException("Book with title: '" + book.getTitle() + "' and author: '" + book.getAuthor() + "' already exists!");
         }

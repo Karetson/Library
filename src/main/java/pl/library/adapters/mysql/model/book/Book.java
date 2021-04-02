@@ -29,7 +29,7 @@ public class Book {
     @NotBlank(message = "Publisher must not be empty")
     @Size(max = 80)
     private String publisher;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Genre> genres;
     @Builder.Default
     private Integer count = 1;

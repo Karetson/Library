@@ -2,11 +2,20 @@ package pl.library.api.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.adapters.mysql.model.user.UserRole;
-import pl.library.api.user.dto.AddUserRequest;
-import pl.library.api.user.dto.AddUserResponse;
+import pl.library.api.user.dto.CreateUserRequest;
+import pl.library.api.user.dto.CreateUserResponse;
 import pl.library.domain.user.UserServiceImpl;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
@@ -22,7 +31,7 @@ public class UserController {
 
      @GetMapping("/search")
      @ResponseStatus(HttpStatus.OK)
-     public User getSingleUserById(@RequestParam Long id) throws UserNotFoundException {
+     public User getSingleUserById(@PathVariable Long id) throws UserNotFoundException {
         return userService.getById(id);
      }
 
@@ -47,7 +56,7 @@ public class UserController {
 
     @GetMapping("/role/{role}")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsersByRole(@PathVariable UserRole role) throws UserNotFoundException {
+    public List<User> getAllUsersByRole(@RequestParam UserRole role) throws UserNotFoundException {
         return userService.getByRole(role);
     }
 
@@ -58,38 +67,37 @@ public class UserController {
         return userService.login(email, password);
     }
 
-    //dto
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
-    public AddUserResponse addUser(@Valid @RequestBody AddUserRequest addUserRequest) throws UserExistsException {
-         User addedUser = userService.register(addUserRequest.toUser());
-         return new AddUserResponse(addedUser.getId());
+    public CreateUserResponse addUser(@Valid @RequestBody CreateUserRequest createUserRequest) throws UserExistsException {
+         User addedUser = userService.register(createUserRequest.toUser());
+         return new CreateUserResponse(addedUser.getId());
     }
 
     @PutMapping("/sign-in/profile")
     @ResponseStatus(HttpStatus.CREATED)
-    public User editUser(@RequestParam Long id,
-                           @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {
+    public User editUser(@PathVariable Long id,
+                         @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {
         return userService.editProfile(id, user);
     }
 
     @PutMapping("/favorite/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addFavorite(@RequestParam Long user_id,
-                            @RequestParam Long book_id) throws UserNotFoundException {
+    public User addFavorite(@PathVariable Long user_id,
+                            @PathVariable Long book_id) throws UserNotFoundException {
         return userService.addFavorite(user_id, book_id);
     }
 
     @DeleteMapping("/favorite/subtract")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void subtractFavorite(@RequestParam Long user_id,
-                                 @RequestParam Long book_id) throws UserNotFoundException {
+    public void subtractFavorite(@PathVariable Long user_id,
+                                 @PathVariable Long book_id) throws UserNotFoundException {
         userService.subtractFavorite(user_id, book_id);
     }
 
 //    @DeleteMapping("/delete")
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteUser(@RequestParam Long id) throws UserNotFoundException {
+//    public void deleteUser(@PathVariable Long id) throws UserNotFoundException {
 //        userService.delete(id);
 //    }
 }

@@ -14,56 +14,64 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.genre.Genre;
+import pl.library.api.book.dto.BookRequest;
+import pl.library.api.book.dto.CreateBookResponse;
+import pl.library.api.book.dto.GetBookResponse;
 import pl.library.domain.book.BookServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/book")
 public class BookController {
     private final BookServiceImpl bookService;
+
     @GetMapping("/search")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooksByPhrase(@RequestParam String phrase)  {
-        return bookService.getAllByPhrase(phrase);
+    public List<GetBookResponse> getAllBooksByPhrase(@RequestParam String phrase) {
+        List<Book> gainedBooks = bookService.getAllByPhrase(phrase);
+        return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
     @GetMapping("/search/random")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getNBooksByRandom(@RequestParam Byte number) {
-        return bookService.getNumberRandomBooks(number);
+    public List<GetBookResponse> getNBooksByRandom(@RequestParam Byte number) {
+        List<Book> gainedBooks = bookService.getNumberRandomBooks(number);
+        return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}/{title}")
-    @ResponseStatus(HttpStatus.OK)
-    public Book getBookByIdAndTitle(@PathVariable Long id, @PathVariable String title) {
-        return bookService.getByIdAndTitle(id, title);
+    @GetMapping("/{id}")
+    public GetBookResponse getBookByIdAndTitle(@PathVariable Long id,
+                                               @RequestParam String title) {
+        Book gainedBook = bookService.getByIdAndTitle(id, title);
+        return new GetBookResponse(gainedBook);
     }
 
     @GetMapping("/search/genre")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAllBooksByGenres(@RequestParam Genre genre) {
-        return bookService.getAllByGenres(genre);
+    public List<GetBookResponse> getAllBooksByGenres(@RequestBody Genre genre) {
+        List<Book> gainedBooks = bookService.getAllByGenres(genre);
+        return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book addSingleOrManyBooks(@Valid @RequestBody Book book) {
-        return bookService.addBook(book);
+    public CreateBookResponse addSingleOrManyBooks(@Valid @RequestBody BookRequest bookRequest) {
+        Book gainedBook = bookService.addBook(bookRequest.toBook());
+        return new CreateBookResponse(gainedBook.getId());
     }
 
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public Book subtractBookAvailable(@RequestParam Long id,
-                                   @Valid @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    public CreateBookResponse subtractBookAvailable(@PathVariable Long id,
+                                                    @Valid @RequestBody BookRequest bookRequest) {
+        Book updatedBook = bookService.updateBook(id, bookRequest.toBook());
+        return new CreateBookResponse(updatedBook.getId());
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBook(@RequestParam Long id) {
+    public void deleteBook(@PathVariable Long id) {
         bookService.bookDeletion(id);
     }
 }

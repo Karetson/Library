@@ -2,10 +2,19 @@ package pl.library.api.borrow;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.borrow.BorrowStatus;
-import pl.library.api.borrow.dto.AddBorrowResponse;
+import pl.library.api.borrow.dto.CreateBorrowRequest;
+import pl.library.api.borrow.dto.CreateBorrowResponse;
 import pl.library.domain.borrow.BorrowServiceImpl;
 import pl.library.domain.user.exception.UserNotFoundException;
 
@@ -18,12 +27,11 @@ import java.util.List;
 public class BorrowController {
     private final BorrowServiceImpl borrowService;
 
-    // dto
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public AddBorrowResponse addBorrow(@Valid @RequestBody Borrow borrow) throws UserNotFoundException {
-        Borrow addedBorrow = borrowService.addition(borrow);
-        return new AddBorrowResponse(addedBorrow.getId());
+    public CreateBorrowResponse addBorrow(@Valid @RequestBody CreateBorrowRequest createBorrowRequest) throws UserNotFoundException {
+        Borrow addedBorrow = borrowService.addition(createBorrowRequest.toBorrow());
+        return new CreateBorrowResponse(addedBorrow.getId());
     }
 
     @GetMapping("/search")

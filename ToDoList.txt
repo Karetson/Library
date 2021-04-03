@@ -47,4 +47,3 @@ pytania:
 - relacje user->favorite i book->genre (czy dobrze zrobione)
 - czy expired w borrows jest dobrze
 - fetchType w relacjach?
--

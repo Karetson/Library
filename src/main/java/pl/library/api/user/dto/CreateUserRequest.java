@@ -4,7 +4,7 @@ import lombok.Value;
 import pl.library.adapters.mysql.model.user.User;
 
 @Value
-public class AddUserRequest {
+public class CreateUserRequest {
      String firstName;
      String lastName;
      String email;

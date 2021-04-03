@@ -19,7 +19,7 @@ INSERT INTO books (title, author, publisher, count, available) VALUES
     -- ('Tytul123', 'Autor122', 'Wydawnictwosdfvasd', 2, 2),
     -- ('Tytul16', 'Autor121', 'Wydawnictrqwe', 11, 2),
     -- ('Tytul1432', 'Autor122', 'Nie', 7, 2),
-    -- ('Tytul1', 'Autor1', 'Wydawnictwo1', 6, 4)
+    -- ('Tytul1', 'Autor1', 'Wydawnictwo1', 6, 4);
 ('Harry Potter and the Half-Blood Prince (Harry Potter #6) ','J.K. Rowling/Mary GrandPr   ','Scholastic Inc. ',100,100),
 ('Harry Potter and the Order of the Phoenix (Harry Potter #5) ','J.K. Rowling/Mary GrandPr   ','Scholastic Inc. ',100,89),
 ('Harry Potter and the Chamber of Secrets (Harry Potter #2) ','J.K. Rowling ','Scholastic ',100,79),

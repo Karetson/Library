@@ -1019,9 +1019,7 @@ INSERT INTO books (title, author, publisher, count, available) VALUES
 ('Temptations ','Otis Williams / Patricia Romanowski ','Cooper Square Press ',100,24),
 ('The Thorn Birds ','Colleen McCullough ','Avon Books ',100,24),
 ('Caesar (Masters of Rome #5) ','Colleen McCullough ','Avon ',100,24),
-('Caesar-s Women (Masters of Rome #4) ','Colleen McCullough ','Avon ',100,24),
-
-
+('Caesar-s Women (Masters of Rome #4) ','Colleen McCullough ','Avon ',100,24);
 
 -- initializing genres
 INSERT INTO genres (name) VALUES

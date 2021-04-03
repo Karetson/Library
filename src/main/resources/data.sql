@@ -1018,7 +1018,8 @@ INSERT INTO books (title, author, publisher, count, available) VALUES
 ('The Senator and the Socialite: The True Story of America-s First Black Dynasty ','Lawrence Otis Graham ','Harper ',100,24),
 ('Temptations ','Otis Williams/Patricia Romanowski ','Cooper Square Press ',100,24),
 ('The Thorn Birds ','Colleen McCullough ','Avon Books ',100,24),
-('Caesar (Masters of Rome #5) ','Colleen McCullough ','Avon ',100,24);
+('Caesar (Masters of Rome #5) ','Colleen McCullough ','Avon ',100,24),
+('Caesar-s Women (Masters of Rome #4) ','Colleen McCullough ','Avon ',100,24);
 
 -- initializing genres
 INSERT INTO genres (name) VALUES

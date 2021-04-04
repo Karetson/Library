@@ -13,91 +13,89 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.user.User;
-import pl.library.adapters.mysql.model.user.UserRole;
-import pl.library.api.user.dto.CreateUserRequest;
-import pl.library.api.user.dto.CreateUserResponse;
+import pl.library.api.user.dto.*;
 import pl.library.domain.user.UserServiceImpl;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
-    private final UserServiceImpl userService;
-
-     @GetMapping("/search")
-     @ResponseStatus(HttpStatus.OK)
-     public User getSingleUserById(@PathVariable Long id) throws UserNotFoundException {
-        return userService.getById(id);
-     }
-
-    @GetMapping("search/email")
-    @ResponseStatus(HttpStatus.OK)
-    public User getSingleUserByEmail(@RequestParam String email) throws UserNotFoundException {
-        return userService.getByEmail(email);
-    }
-
-//     @GetMapping("/search/all")
-//     @ResponseStatus(HttpStatus.OK)
-//     public List<User> getAllUsers() throws UserNotFoundException {
-//     return userService.getAll();
-//     }
-//
-//     @GetMapping("/search")
-//     @ResponseStatus(HttpStatus.OK)
-//     public List<User> getAllUsersByFirstNameOrLastName(@RequestParam String firstName,
-//                                                        @RequestParam String lastName) throws UserNotFoundException {
-//        return userService.getByFirstNameOrLastName(firstName, lastName);
-//     }
-
-    @GetMapping("/role/{role}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsersByRole(@RequestParam UserRole role) throws UserNotFoundException {
-        return userService.getByRole(role);
-    }
-
-    @GetMapping("/sign-in")
-    @ResponseStatus(HttpStatus.OK)
-    public User getUserByEmailAndPassword(@RequestParam String email,
-                                          @RequestParam String password) throws UserNotFoundException {
-        return userService.login(email, password);
-    }
-
+    // user registration
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse addUser(@Valid @RequestBody CreateUserRequest createUserRequest) throws UserExistsException {
-         User addedUser = userService.register(createUserRequest.toUser());
-         return new CreateUserResponse(addedUser.getId());
+        User addedUser = userService.register(createUserRequest.toUser());
+
+        return new CreateUserResponse(addedUser.getId());
     }
 
-    @PutMapping("/sign-in/profile")
+    private final UserServiceImpl userService;
+
+    // searching for a user by id
+    @GetMapping("/search/{id}")
+    public ProfileUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
+        User gainedUser = userService.getById(id);
+
+        return new ProfileUserResponse(gainedUser.getFirstName(),
+                gainedUser.getLastName(),
+                gainedUser.getEmail(),
+                gainedUser.getCreatedAt());
+    }
+
+    // user login
+    @GetMapping("/sign-in")
+    public LoginUserResponse getUserByEmailAndPassword(@RequestParam String email,
+                                                       @RequestParam String password) throws UserNotFoundException {
+        User loggedUser = userService.login(email, password);
+
+        return new LoginUserResponse(loggedUser.getId(),
+                loggedUser.getFirstName(),
+                loggedUser.getFavoriteBooks(),
+                loggedUser.getBorrows());
+    }
+
+    // searching for a user by email
+    @GetMapping("search")
+    public GetUserResponse getUserByEmail(@RequestParam String email) throws UserNotFoundException {
+        User gainedUser = userService.getByEmail(email);
+
+        return new GetUserResponse(gainedUser.getFirstName(),
+                gainedUser.getLastName(),
+                gainedUser.getEmail(),
+                gainedUser.getFavoriteBooks(),
+                gainedUser.getBorrows(),
+                gainedUser.getCreatedAt());
+    }
+
+    // editing a user's profile
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public User editUser(@PathVariable Long id,
-                         @Valid @RequestBody User user) throws UserNotFoundException, UserExistsException {
-        return userService.editProfile(id, user);
+    public CreateUserResponse editUser(@PathVariable Long id,
+                                       @Valid @RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UserExistsException {
+        User updatedUser = userService.editProfile(id, updateUserRequest.toUser());
+
+        return new CreateUserResponse(updatedUser.getId());
     }
 
-    @PutMapping("/favorite/add")
+    // adding a user's favorite book
+    @PutMapping("/favorite/add/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addFavorite(@PathVariable Long user_id,
-                            @PathVariable Long book_id) throws UserNotFoundException {
-        return userService.addFavorite(user_id, book_id);
+    public CreateUserResponse addFavorite(@PathVariable Long user_id,
+                                          @PathVariable Long book_id) throws UserNotFoundException {
+        User updatedUser = userService.addFavorite(user_id, book_id);
+
+        return new CreateUserResponse(updatedUser.getId());
     }
 
-    @DeleteMapping("/favorite/subtract")
+    // deleting user favorite book
+    @DeleteMapping("/favorite/subtract/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void subtractFavorite(@PathVariable Long user_id,
                                  @PathVariable Long book_id) throws UserNotFoundException {
         userService.subtractFavorite(user_id, book_id);
     }
-
-//    @DeleteMapping("/delete")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteUser(@PathVariable Long id) throws UserNotFoundException {
-//        userService.delete(id);
-//    }
 }

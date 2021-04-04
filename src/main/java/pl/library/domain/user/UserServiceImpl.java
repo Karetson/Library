@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
-import pl.library.adapters.mysql.model.user.UserRole;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.user.exception.UserExistsException;
@@ -13,7 +12,6 @@ import pl.library.domain.user.repository.UserRepository;
 import pl.library.domain.user.repository.UserService;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -35,15 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getByRole(UserRole role) throws UserNotFoundException {
-         return userRepository.findByRole(role).orElseThrow(()
-                 -> new UserNotFoundException("User with role: '" + role + "' not found!"));
-    }
-
-    @Override
     public User login (String email, String password) throws UserNotFoundException {
         return userRepository.findByEmailAndPassword(email, password).orElseThrow(()
-                -> new UserNotFoundException("User with that email or password doesn't exists!"));
+                -> new UserNotFoundException("User with that email and password doesn't exists!"));
     }
 
     @Override
@@ -64,11 +56,11 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        user.setEmail(userDetails.getEmail());
         user.setPassword(userDetails.getPassword());
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new UserExistsException("User with '" + user.getEmail() + "' email already exists!");
+        if (userRepository.existsByEmail(userDetails.getEmail())) {
+            throw new UserExistsException("User with '" + userDetails.getEmail() + "' email already exists!");
         } else {
+            user.setEmail(userDetails.getEmail());
             return userRepository.save(user);
         }
     }

@@ -15,11 +15,13 @@ import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.borrow.BorrowStatus;
 import pl.library.api.borrow.dto.CreateBorrowRequest;
 import pl.library.api.borrow.dto.CreateBorrowResponse;
+import pl.library.api.borrow.dto.GetBorrowResponse;
 import pl.library.domain.borrow.BorrowServiceImpl;
 import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,13 +38,15 @@ public class BorrowController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<Borrow> getAllBorrowsByStatus(@RequestParam BorrowStatus status) {
-        return borrowService.getAllBorrowsByStatus(status);
+    public List<GetBorrowResponse> getAllBorrowsByStatus(@RequestParam BorrowStatus status) {
+        List<Borrow> gainedBorrows = borrowService.getAllBorrowsByStatus(status);
+        return gainedBorrows.stream().map(GetBorrowResponse::new).collect(Collectors.toList());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Borrow changeBorrowStatus(@PathVariable Long id, @RequestParam BorrowStatus status) {
-        return borrowService.changeBorrowStatus(id, status);
+    public CreateBorrowResponse changeBorrowStatus(@PathVariable Long id, @RequestParam BorrowStatus status) {
+        Borrow updatedBorrow = borrowService.changeBorrowStatus(id, status);
+        return new CreateBorrowResponse(updatedBorrow.getId());
     }
 }

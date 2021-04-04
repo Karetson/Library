@@ -40,7 +40,7 @@ public class GenreController {
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void multiDeleteGenres(@RequestBody GenreRequest ids) {
+    public void deleteManyGenres(@RequestBody GenreRequest ids) {
         genreService.multiDelete(ids);
     }
 }

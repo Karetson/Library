@@ -10,7 +10,8 @@ import java.util.List;
 public class ErrorResponse {
     private String message;
     private List<String> details;
-// errorCode
+//    private Integer errorCode;
+
     public ErrorResponse(String message, List<String> details) {
         this.message = message;
         this.details = details;

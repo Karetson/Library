@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.user.User;
-import pl.library.api.user.dto.*;
+import pl.library.api.user.dto.CreateUserRequest;
+import pl.library.api.user.dto.CreateUserResponse;
+import pl.library.api.user.dto.GetUserResponse;
+import pl.library.api.user.dto.LoginUserResponse;
+import pl.library.api.user.dto.ProfileUserResponse;
+import pl.library.api.user.dto.UpdateUserRequest;
 import pl.library.domain.user.UserServiceImpl;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
@@ -24,6 +29,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final UserServiceImpl userService;
+
     // user registration
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,8 +39,6 @@ public class UserController {
 
         return new CreateUserResponse(addedUser.getId());
     }
-
-    private final UserServiceImpl userService;
 
     // searching for a user by id
     @GetMapping("/search/{id}")

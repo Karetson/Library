@@ -2,13 +2,22 @@ package pl.library.api.genre;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.genre.Genre;
-import pl.library.api.genre.dto.GenresRequest;
+import pl.library.api.genre.dto.GenreRequest;
+import pl.library.api.genre.dto.CreateGenreResponse;
+import pl.library.api.genre.dto.GetGenreResponse;
 import pl.library.domain.genre.GenreServiceImpl;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/bookGenre")
@@ -18,19 +27,20 @@ public class GenreController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<Genre> multiAddGenres(@Valid @RequestBody GenresRequest genres) {
-        return genreService.multiAdd(genres);
+    public List<CreateGenreResponse> addManyGenres(@Valid @RequestBody GenreRequest genres) {
+        List<Genre> addedGenres = genreService.multiAdd(genres);
+        return addedGenres.stream().map(CreateGenreResponse::new).collect(Collectors.toList());
     }
 
     @GetMapping("/search/all")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Genre> getAllGenres() {
-        return genreService.getAll();
+    public List<GetGenreResponse> getAllGenres() {
+        List<Genre> gainedGenres = genreService.getAll();
+        return gainedGenres.stream().map(GetGenreResponse::new).collect(Collectors.toList());
     }
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void multiDeleteGenres(@RequestBody GenresRequest ids) {
+    public void multiDeleteGenres(@RequestBody GenreRequest ids) {
         genreService.multiDelete(ids);
     }
 }

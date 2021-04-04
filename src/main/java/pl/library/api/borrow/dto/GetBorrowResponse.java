@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class GetBorrowResponse {
     LocalDateTime createdAt;
     LocalDateTime expired;
+    LocalDateTime edited;
     BorrowStatus status;
     User user;
     Book book;
@@ -19,6 +20,7 @@ public class GetBorrowResponse {
     public GetBorrowResponse(Borrow borrow) {
         this.createdAt = borrow.getCreatedAt();
         this.expired = borrow.getExpired();
+        this.edited = borrow.getEdited();
         this.status = borrow.getStatus();
         this.user = borrow.getUser();
         this.book = borrow.getBook();

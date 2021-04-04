@@ -15,6 +15,7 @@ import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +40,8 @@ public class BorrowServiceImpl implements BorrowService {
         } else if (book.getAvailable() > 0) {
             book.setAvailable(book.getAvailable() - 1);
             bookRepository.save(book);
+            borrow.setCreatedAt(LocalDateTime.now());
+            borrow.setExpired(borrow.getCreatedAt().plusDays(30));
 
             return borrowRepository.save(borrow);
         } else {
@@ -62,10 +65,12 @@ public class BorrowServiceImpl implements BorrowService {
                 -> new BookNotFoundException("Boook with " + bookId + " ID not found!"));
 
         if (status.equals(BorrowStatus.DEVOTED)) {
+            borrow.setEdited(LocalDateTime.now());
             borrow.setStatus(status);
             book.setAvailable(book.getAvailable() + 1);
             bookRepository.save(book);
         } else if (status.equals(BorrowStatus.APPROVED)) {
+            borrow.setEdited(LocalDateTime.now());
             borrow.setStatus(status);
         }
 

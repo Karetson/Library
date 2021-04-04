@@ -46,8 +46,6 @@ public class Book {
     @Builder.Default
     private Integer count = 1;
     private Integer available;
-    @OneToMany(mappedBy = "book")
-    private List<Borrow> borrows;
     @Column(length = 2000)
     @Lob
     private String description;

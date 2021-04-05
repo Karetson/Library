@@ -16,7 +16,7 @@ public class GeneralControllerAdvice {
     public final ErrorResponse handleArithmeticException(ArithmeticException exception) {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Wrong number", details);
+        ErrorResponse error = new ErrorResponse("The number entered is incorrect", details, 2);
         return error;
     }
 
@@ -25,7 +25,7 @@ public class GeneralControllerAdvice {
     public final ErrorResponse handleValidationException(MethodArgumentNotValidException exception) {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", details);
+        ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", 1);
         return error;
     }
 }

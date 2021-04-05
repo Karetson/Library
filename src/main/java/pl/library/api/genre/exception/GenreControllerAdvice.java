@@ -18,7 +18,7 @@ public class GenreControllerAdvice {
     public final ErrorResponse handleGenreNotFoundException(GenreNotFoundException exception) {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Record not found", details);
+        ErrorResponse error = new ErrorResponse("Record not found", details, 3);
         return error;
     }
 
@@ -27,7 +27,7 @@ public class GenreControllerAdvice {
     public final ErrorResponse handleGenreExistsException(GenreExistsException exception) {
         List<String> details = new ArrayList<>();
         details.add(exception.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("Record already exists", details);
+        ErrorResponse error = new ErrorResponse("Record already exists", details, 4);
         return error;
     }
 }

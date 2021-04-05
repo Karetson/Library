@@ -66,6 +66,13 @@ public class BookController {
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
+    // searching for all books by status
+    @GetMapping("/search/{status}")
+    public List<GetBookResponse> getAllBooksByStatus(@PathVariable Boolean status) {
+        List<Book> gainedBooks = bookService.getAllBooksByStatus(status);
+        return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
+    }
+
     // updating book
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)

@@ -10,6 +10,7 @@ public interface BookService {
     List<Book> getRandomBooksByNumber(Byte number);
     Book getBookByIdAndTitle(Long id, String title);
     List<Book> getAllBooksByGenres(Genre genre);
+    List<Book> getAllBooksByStatus(Boolean status);
     Book addBook(Book book);
     Book updateBook(Long id, Book book);
     void deleteBook(Long id);

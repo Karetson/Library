@@ -13,16 +13,16 @@ public class UserControllerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public final ErrorResponse handleUserNotFoundException(UserNotFoundException exception) {
-        String details = exception.getLocalizedMessage();
-        ErrorResponse error = new ErrorResponse("Record not found", details, 3);
+        String message = exception.getLocalizedMessage();
+        ErrorResponse error = new ErrorResponse(message, 3);
         return error;
     }
 
     @ExceptionHandler(UserExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public final ErrorResponse handleUserExistsException(UserExistsException exception) {
-        String details = exception.getLocalizedMessage();
-        ErrorResponse error = new ErrorResponse("Record already exists", details, 4);
+        String message = exception.getLocalizedMessage();
+        ErrorResponse error = new ErrorResponse(message, 4);
         return error;
     }
 }

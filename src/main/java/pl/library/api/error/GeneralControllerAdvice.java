@@ -13,16 +13,16 @@ public class GeneralControllerAdvice {
     @ExceptionHandler(ArithmeticException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public final ErrorResponse handleArithmeticException(ArithmeticException exception) {
-        String details = exception.getLocalizedMessage();
-        ErrorResponse error = new ErrorResponse("The number entered is incorrect", details, 2);
+        String message = exception.getLocalizedMessage();
+        ErrorResponse error = new ErrorResponse(message, 2);
         return error;
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class,
-            NullPointerException.class,
-            ConstraintViolationException.class})
+            ConstraintViolationException.class,
+            NullPointerException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public final ErrorResponse handleValidationException() {
+    public final ErrorResponse handleValidationException(MethodArgumentNotValidException exception) {
         ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", 1);
         return error;
     }

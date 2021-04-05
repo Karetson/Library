@@ -39,6 +39,9 @@ public class BorrowServiceImpl implements BorrowService {
             throw new BorrowExistsException("Borrow with user id: " + userId + " and book id: " + bookId + " already exists!");
         } else if (book.getAvailable() > 0) {
             book.setAvailable(book.getAvailable() - 1);
+            if (book.getAvailable().equals(0)) {
+                book.setStatus(false);
+            }
             bookRepository.save(book);
             borrow.setCreatedAt(LocalDateTime.now());
             borrow.setExpired(borrow.getCreatedAt().plusDays(30));
@@ -65,9 +68,12 @@ public class BorrowServiceImpl implements BorrowService {
                 -> new BookNotFoundException("Boook with " + bookId + " ID not found!"));
 
         if (status.equals(BorrowStatus.DEVOTED)) {
-            borrow.setEdited(LocalDateTime.now());
             borrow.setStatus(status);
+            borrow.setEdited(LocalDateTime.now());
             book.setAvailable(book.getAvailable() + 1);
+            if (book.getAvailable() > 0) {
+                book.setStatus(true);
+            }
             bookRepository.save(book);
         } else if (status.equals(BorrowStatus.APPROVED)) {
             borrow.setEdited(LocalDateTime.now());

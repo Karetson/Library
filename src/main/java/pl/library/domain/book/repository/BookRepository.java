@@ -16,5 +16,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findRandomByNumber(@Param("number") Byte number);
     Optional<Book> findByIdAndTitle(Long id, String title);
     Optional<List<Book>> findAllByGenres(Genre genre); // bez optional, zwrocic pusta liste, sprawdzic jaki standard zwracania czy zwrocic pusta liste (404) czy ok (200)
+    Optional<List<Book>> findALlByStatus(Boolean status);
     Boolean existsByTitleAndAuthor(String title, String author);
 }

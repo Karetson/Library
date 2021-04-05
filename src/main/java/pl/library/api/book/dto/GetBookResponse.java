@@ -14,6 +14,7 @@ public class GetBookResponse {
     String publisher;
     Set<Genre> genres;
     int available;
+    Boolean status;
     String description;
 
     public GetBookResponse(Book book) {
@@ -23,6 +24,7 @@ public class GetBookResponse {
         this.publisher = book.getPublisher();
         this.genres = book.getGenres();
         this.available = book.getAvailable();
+        this.status = book.getStatus();
         this.description = book.getDescription();
     }
 }

@@ -44,6 +44,12 @@ public class BookServiceImpl implements BookService {
                 -> new BookNotFoundException("Book with type: '" + genre + "' doesn't exists!"));
     }
 
+    @Override
+    public List<Book> getAllBooksByStatus(Boolean status) {
+        return bookRepository.findALlByStatus(status).orElseThrow(()
+                -> new BookNotFoundException("There are no books"));
+    }
+
     @Transactional
     @Override
     public Book addBook(Book book) {
@@ -55,6 +61,7 @@ public class BookServiceImpl implements BookService {
             throw new NullPointerException();
         } else if (book.getCount() > 0) {
             book.setAvailable(book.getCount());
+            book.setStatus(true);
             return bookRepository.save(book);
         } else {
             throw new ArithmeticException("Number of books must be greater than 0!");
@@ -76,6 +83,11 @@ public class BookServiceImpl implements BookService {
             bookDetails.setDescription(book.getDescription());
             bookDetails.setCount(book.getCount());
             bookDetails.setAvailable(bookDetails.getAvailable() + diff);
+            if (bookDetails.getAvailable() > 0) {
+                bookDetails.setStatus(true);
+            } else {
+                bookDetails.setStatus(false);
+            }
 
             return bookRepository.save(bookDetails);
         } else {

@@ -46,6 +46,7 @@ public class Book {
     @Builder.Default
     private Integer count = 1;
     private Integer available;
+    private Boolean status;
     @Column(length = 2000)
     @Lob
     private String description;

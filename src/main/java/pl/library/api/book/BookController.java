@@ -40,14 +40,14 @@ public class BookController {
     // searching for all books by phrase
     @GetMapping("/search")
     public List<GetBookResponse> getAllBooksByPhrase(@RequestParam String phrase) {
-        List<Book> gainedBooks = bookService.getAllByPhrase(phrase);
+        List<Book> gainedBooks = bookService.getAllBooksByPhrase(phrase);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
     // searching for random books with set number earlier
     @GetMapping("/search/random")
     public List<GetBookResponse> getNBooksByRandom(@RequestParam Byte number) {
-        List<Book> gainedBooks = bookService.getNumberRandomBooks(number);
+        List<Book> gainedBooks = bookService.getRandomBooksByNumber(number);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
@@ -55,30 +55,30 @@ public class BookController {
     @GetMapping("/{id}")
     public GetBookResponse getBookByIdAndTitle(@PathVariable Long id,
                                                @RequestParam String title) {
-        Book gainedBook = bookService.getByIdAndTitle(id, title);
+        Book gainedBook = bookService.getBookByIdAndTitle(id, title);
         return new GetBookResponse(gainedBook);
     }
 
     // searching for all books by genre
     @GetMapping("/search/genre")
     public List<GetBookResponse> getAllBooksByGenre(@Valid @RequestBody Genre genre) {
-        List<Book> gainedBooks = bookService.getAllByGenres(genre);
+        List<Book> gainedBooks = bookService.getAllBooksByGenres(genre);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
-    // reducing the availability of the book
-    @PutMapping("/update")
+    // updating book
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateBookResponse reduceBookAvailability(@PathVariable Long id,
-                                                     @Valid @RequestBody BookRequest bookRequest) {
+    public CreateBookResponse updateBook(@PathVariable Long id,
+                                         @Valid @RequestBody BookRequest bookRequest) {
         Book updatedBook = bookService.updateBook(id, bookRequest.toBook());
         return new CreateBookResponse(updatedBook.getId());
     }
 
     // removing the book
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable Long id) {
-        bookService.bookDeletion(id);
+        bookService.deleteBook(id);
     }
 }

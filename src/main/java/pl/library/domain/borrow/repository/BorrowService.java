@@ -7,7 +7,7 @@ import pl.library.domain.user.exception.UserNotFoundException;
 import java.util.List;
 
 public interface BorrowService {
-    Borrow addition(Borrow borrow) throws UserNotFoundException;
+    Borrow addBorrow(Borrow borrow) throws UserNotFoundException;
     List<Borrow> getAllBorrowsByStatus(BorrowStatus status);
     Borrow changeBorrowStatus(Long id, BorrowStatus status);
 }

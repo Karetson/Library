@@ -27,7 +27,7 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     @Transactional
-    public Borrow addition(Borrow borrow) throws UserNotFoundException {
+    public Borrow addBorrow(Borrow borrow) throws UserNotFoundException {
         Long userId = borrow.getUser().getId();
         Long bookId = borrow.getBook().getId();
         Book book = bookRepository.findById(bookId).orElseThrow(()

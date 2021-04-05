@@ -29,14 +29,14 @@ public class GenreController {
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public List<CreateGenreResponse> addManyGenres(@Valid @RequestBody GenreRequest genres) {
-        List<Genre> addedGenres = genreService.multiAdd(genres);
+        List<Genre> addedGenres = genreService.addManyGenres(genres);
         return addedGenres.stream().map(CreateGenreResponse::new).collect(Collectors.toList());
     }
 
     // search for all genres
     @GetMapping("/search/all")
     public List<GetGenreResponse> getAllGenres() {
-        List<Genre> gainedGenres = genreService.getAll();
+        List<Genre> gainedGenres = genreService.getAllGenres();
         return gainedGenres.stream().map(GetGenreResponse::new).collect(Collectors.toList());
     }
 
@@ -44,6 +44,6 @@ public class GenreController {
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteManyGenres(@RequestBody GenreRequest ids) {
-        genreService.multiDelete(ids);
+        genreService.deleteManyGenres(ids);
     }
 }

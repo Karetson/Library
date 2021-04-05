@@ -35,7 +35,7 @@ public class UserController {
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse addUser(@Valid @RequestBody CreateUserRequest createUserRequest) throws UserExistsException {
-        User addedUser = userService.register(createUserRequest.toUser());
+        User addedUser = userService.registerUser(createUserRequest.toUser());
 
         return new CreateUserResponse(addedUser.getId());
     }
@@ -43,7 +43,7 @@ public class UserController {
     // searching for a user by id
     @GetMapping("/search/{id}")
     public ProfileUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
-        User gainedUser = userService.getById(id);
+        User gainedUser = userService.getUserById(id);
 
         return new ProfileUserResponse(gainedUser.getFirstName(),
                 gainedUser.getLastName(),
@@ -55,7 +55,7 @@ public class UserController {
     @GetMapping("/sign-in")
     public LoginUserResponse getUserByEmailAndPassword(@RequestParam String email,
                                                        @RequestParam String password) throws UserNotFoundException {
-        User loggedUser = userService.login(email, password);
+        User loggedUser = userService.loginUser(email, password);
 
         return new LoginUserResponse(loggedUser.getId(),
                 loggedUser.getFirstName(),
@@ -66,7 +66,7 @@ public class UserController {
     // searching for a user by email
     @GetMapping("search")
     public GetUserResponse getUserByEmail(@RequestParam String email) throws UserNotFoundException {
-        User gainedUser = userService.getByEmail(email);
+        User gainedUser = userService.getUserByEmail(email);
 
         return new GetUserResponse(gainedUser.getFirstName(),
                 gainedUser.getLastName(),
@@ -81,7 +81,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse updateUser(@PathVariable Long id,
                                          @Valid @RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UserExistsException {
-        User updatedUser = userService.editProfile(id, updateUserRequest.toUser());
+        User updatedUser = userService.updateUserProfile(id, updateUserRequest.toUser());
 
         return new CreateUserResponse(updatedUser.getId());
     }
@@ -89,9 +89,9 @@ public class UserController {
     // adding a user's favorite book
     @PutMapping("/favorite/add/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse addFavoriteBook(@PathVariable Long user_id,
+    public CreateUserResponse addFavoriteBookToUser(@PathVariable Long user_id,
                                               @PathVariable Long book_id) throws UserNotFoundException {
-        User updatedUser = userService.addFavorite(user_id, book_id);
+        User updatedUser = userService.addFavoriteBookToUser(user_id, book_id);
 
         return new CreateUserResponse(updatedUser.getId());
     }
@@ -99,8 +99,8 @@ public class UserController {
     // deleting user favorite book
     @DeleteMapping("/favorite/subtract/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void subtractFavorite(@PathVariable Long user_id,
+    public void subtractFavoriteBookFromUser(@PathVariable Long user_id,
                                  @PathVariable Long book_id) throws UserNotFoundException {
-        userService.subtractFavorite(user_id, book_id);
+        userService.subtractFavoriteBookFromUser(user_id, book_id);
     }
 }

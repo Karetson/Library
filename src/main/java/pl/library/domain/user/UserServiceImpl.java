@@ -20,37 +20,36 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
 
-     @Override
-     public User getById(Long id) throws UserNotFoundException {
+    @Override
+    public User getUserById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(()
                 -> new UserNotFoundException("User with '" + id + "' ID not found!"));
-     }
+    }
 
     @Override
-    public User getByEmail(String email) throws UserNotFoundException {
+    public User getUserByEmail(String email) throws UserNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(()
                 -> new UserNotFoundException("User with email: '" + email + "' not found!"));
     }
 
     @Override
-    public User login (String email, String password) throws UserNotFoundException {
+    public User loginUser(String email, String password) throws UserNotFoundException {
         return userRepository.findByEmailAndPassword(email, password).orElseThrow(()
                 -> new UserNotFoundException("User with that email and password doesn't exists!"));
     }
 
     @Override
     @Transactional
-    public User register(User user) throws UserExistsException {
+    public User registerUser(User user) throws UserExistsException {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserExistsException("User with '" + user.getEmail() + "' email already exists!");
         } else
             return userRepository.save(user);
     }
 
-    // set juz zapisuje sam
     @Override
     @Transactional
-    public User editProfile(Long id, User userDetails) throws UserNotFoundException, UserExistsException {
+    public User updateUserProfile(Long id, User userDetails) throws UserNotFoundException, UserExistsException {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new UserNotFoundException("User with " + id + " ID not found!"));
 
@@ -67,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User addFavorite(Long user_id, Long book_id) throws UserNotFoundException {
+    public User addFavoriteBookToUser(Long user_id, Long book_id) throws UserNotFoundException {
         User user = userRepository.findById(user_id).orElseThrow(()
                 -> new UserNotFoundException("User with " + user_id + " ID not found!"));
         Book book = bookRepository.findById(book_id).orElseThrow(()
@@ -82,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void subtractFavorite(Long user_id, Long book_id) throws UserNotFoundException {
+    public void subtractFavoriteBookFromUser(Long user_id, Long book_id) throws UserNotFoundException {
         User user = userRepository.findById(user_id).orElseThrow(()
                 -> new UserNotFoundException("User with " + user_id + " ID not found!"));
         Book book = bookRepository.findById(book_id).orElseThrow(()

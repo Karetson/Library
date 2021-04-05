@@ -7,11 +7,11 @@ import pl.library.domain.user.exception.UserNotFoundException;
 import java.util.List;
 
 public interface UserService {
-    User getById(Long id) throws UserNotFoundException;
-    User getByEmail(String email) throws UserNotFoundException;
-    User login(String email, String password) throws UserNotFoundException;
-    User register(User user) throws UserExistsException;
-    User editProfile(Long id, User user) throws UserNotFoundException, UserExistsException;
-    User addFavorite(Long user_id, Long book_id) throws UserNotFoundException;
-    void subtractFavorite(Long user_id, Long book_id) throws UserNotFoundException;
+    User getUserById(Long id) throws UserNotFoundException;
+    User getUserByEmail(String email) throws UserNotFoundException;
+    User loginUser(String email, String password) throws UserNotFoundException;
+    User registerUser(User user) throws UserExistsException;
+    User updateUserProfile(Long id, User user) throws UserNotFoundException, UserExistsException;
+    User addFavoriteBookToUser(Long user_id, Long book_id) throws UserNotFoundException;
+    void subtractFavoriteBookFromUser(Long user_id, Long book_id) throws UserNotFoundException;
 }

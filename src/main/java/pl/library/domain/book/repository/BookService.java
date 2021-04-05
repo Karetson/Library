@@ -6,11 +6,11 @@ import pl.library.adapters.mysql.model.genre.Genre;
 import java.util.List;
 
 public interface BookService {
-    List<Book> getAllByPhrase(String phrase);
-    List<Book> getNumberRandomBooks(Byte number);
-    Book getByIdAndTitle(Long id, String title);
-    List<Book> getAllByGenres(Genre genre);
+    List<Book> getAllBooksByPhrase(String phrase);
+    List<Book> getRandomBooksByNumber(Byte number);
+    Book getBookByIdAndTitle(Long id, String title);
+    List<Book> getAllBooksByGenres(Genre genre);
     Book addBook(Book book);
     Book updateBook(Long id, Book book);
-    void bookDeletion(Long id);
+    void deleteBook(Long id);
 }

@@ -21,7 +21,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public List<Genre> multiAdd(GenreRequest genresRequest) {
+    public List<Genre> addManyGenres(GenreRequest genresRequest) {
         Set<Genre> genres = new HashSet<>();
 
         for (String e : genresRequest.getGenres()) {
@@ -38,14 +38,14 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<Genre> getAll() {
+    public List<Genre> getAllGenres() {
         return genreRepository.getAll().orElseThrow(()
                 -> new GenreNotFoundException("There are no genres"));
     }
 
     @Override
     @Transactional
-    public void multiDelete(GenreRequest ids) {
+    public void deleteManyGenres(GenreRequest ids) {
         Set<Genre> genres = new HashSet<>();
 
         for (Long e : ids.getIds()) {

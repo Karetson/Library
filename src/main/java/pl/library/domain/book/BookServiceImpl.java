@@ -6,8 +6,8 @@ import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
-import pl.library.domain.book.repository.BookService;
 import pl.library.domain.book.repository.BookRepository;
+import pl.library.domain.book.repository.BookService;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,13 +18,13 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     @Override
-    public List<Book> getAllByPhrase(String phrase) {
+    public List<Book> getAllBooksByPhrase(String phrase) {
         return bookRepository.findAllByTitleOrAuthorLike(phrase).orElseThrow(()
                 -> new BookNotFoundException("Book with phrase: '" + phrase + "' doesn't exists"));
     }
 
     @Override
-    public List<Book> getNumberRandomBooks(Byte number) {
+    public List<Book> getRandomBooksByNumber(Byte number) {
         if (number > 0) {
             return bookRepository.findRandomByNumber(number);
         } else {
@@ -33,13 +33,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getByIdAndTitle(Long id, String title) {
+    public Book getBookByIdAndTitle(Long id, String title) {
         return bookRepository.findByIdAndTitle(id, title).orElseThrow(()
                 -> new BookNotFoundException("Book with id: '" + id + "' and title: '" + title + "' doesn't exists!"));
     }
 
     @Override
-    public List<Book> getAllByGenres(Genre genre) {
+    public List<Book> getAllBooksByGenres(Genre genre) {
         return bookRepository.findAllByGenres(genre).orElseThrow(()
                 -> new BookNotFoundException("Book with type: '" + genre + "' doesn't exists!"));
     }
@@ -69,13 +69,13 @@ public class BookServiceImpl implements BookService {
         Integer diff = book.getCount() - bookDetails.getCount();
 
         if ((bookDetails.getAvailable() + diff) >= 0) {
-                bookDetails.setTitle(book.getTitle());
-                bookDetails.setAuthor(book.getAuthor());
-                bookDetails.setPublisher(book.getPublisher());
-                bookDetails.setGenres(book.getGenres());
-                bookDetails.setDescription(book.getDescription());
-                bookDetails.setCount(book.getCount());
-                bookDetails.setAvailable(bookDetails.getAvailable() + diff);
+            bookDetails.setTitle(book.getTitle());
+            bookDetails.setAuthor(book.getAuthor());
+            bookDetails.setPublisher(book.getPublisher());
+            bookDetails.setGenres(book.getGenres());
+            bookDetails.setDescription(book.getDescription());
+            bookDetails.setCount(book.getCount());
+            bookDetails.setAvailable(bookDetails.getAvailable() + diff);
 
             return bookRepository.save(bookDetails);
         } else {
@@ -85,7 +85,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void bookDeletion(Long id) {
+    public void deleteBook(Long id) {
         if (bookRepository.findById(id).isPresent()) {
             bookRepository.deleteById(id);
         } else {

@@ -33,7 +33,7 @@ public class BorrowController {
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateBorrowResponse addBorrow(@Valid @RequestBody CreateBorrowRequest createBorrowRequest) throws UserNotFoundException {
-        Borrow addedBorrow = borrowService.addition(createBorrowRequest.toBorrow());
+        Borrow addedBorrow = borrowService.addBorrow(createBorrowRequest.toBorrow());
         return new CreateBorrowResponse(addedBorrow.getId());
     }
 

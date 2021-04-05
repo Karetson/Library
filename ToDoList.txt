@@ -39,7 +39,6 @@ Genre:
 auto import poprawic
 
 pytania:
-- obsluga exception dla @NotBlank
 - jak mniej wiecej zrobic security
 - edycja maila w profilu(gdy edytuje wyskakuje ze juz taki jest nawet gdy nie wpisze nic)
 - create-drop czy data.sql

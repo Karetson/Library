@@ -8,16 +8,12 @@ import pl.library.api.error.ErrorResponse;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestControllerAdvice
 public class BookControllerAdvice {
     @ExceptionHandler(BookNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public final ErrorResponse handleBookNotFoundException(BookNotFoundException exception) {
-        List<String> details = new ArrayList<>();
-        details.add(exception.getLocalizedMessage());
+        String details = exception.getLocalizedMessage();
         ErrorResponse error = new ErrorResponse("Record not found", details, 3);
         return error;
     }
@@ -25,8 +21,7 @@ public class BookControllerAdvice {
     @ExceptionHandler(BookExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public final ErrorResponse handleBookExistsException(BookExistsException exception) {
-        List<String> details = new ArrayList<>();
-        details.add(exception.getLocalizedMessage());
+        String details = exception.getLocalizedMessage();
         ErrorResponse error = new ErrorResponse("Record already exists", details, 4);
         return error;
     }

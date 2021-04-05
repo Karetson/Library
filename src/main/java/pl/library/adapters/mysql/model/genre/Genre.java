@@ -1,9 +1,6 @@
 package pl.library.adapters.mysql.model.genre;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +14,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

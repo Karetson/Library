@@ -29,6 +29,13 @@ import java.util.stream.Collectors;
 public class BookController {
     private final BookServiceImpl bookService;
 
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateBookResponse addBook(@Valid @RequestBody BookRequest bookRequest) {
+        Book gainedBook = bookService.addBook(bookRequest.toBook());
+        return new CreateBookResponse(gainedBook.getId());
+    }
+
     @GetMapping("/search")
     public List<GetBookResponse> getAllBooksByPhrase(@RequestParam String phrase) {
         List<Book> gainedBooks = bookService.getAllByPhrase(phrase);
@@ -49,16 +56,9 @@ public class BookController {
     }
 
     @GetMapping("/search/genre")
-    public List<GetBookResponse> getAllBooksByGenres(@RequestBody Genre genre) {
+    public List<GetBookResponse> getAllBooksByGenres(@Valid @RequestBody Genre genre) {
         List<Book> gainedBooks = bookService.getAllByGenres(genre);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
-    }
-
-    @PostMapping("/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreateBookResponse addSingleOrManyBooks(@Valid @RequestBody BookRequest bookRequest) {
-        Book gainedBook = bookService.addBook(bookRequest.toBook());
-        return new CreateBookResponse(gainedBook.getId());
     }
 
     @PutMapping("/update")

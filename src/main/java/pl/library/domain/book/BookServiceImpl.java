@@ -50,7 +50,10 @@ public class BookServiceImpl implements BookService {
         if (bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
             throw new BookExistsException("Book with title: '" + book.getTitle() + "' and author: '" + book.getAuthor() + "' already exists!");
         }
-        if (book.getCount() > 0) {
+
+        if (book.getGenres().isEmpty()) {
+            throw new NullPointerException();
+        } else if (book.getCount() > 0) {
             book.setAvailable(book.getCount());
             return bookRepository.save(book);
         } else {

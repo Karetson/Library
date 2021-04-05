@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class BookController {
     private final BookServiceImpl bookService;
 
+    // creating a book
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateBookResponse addBook(@Valid @RequestBody BookRequest bookRequest) {
@@ -36,18 +37,21 @@ public class BookController {
         return new CreateBookResponse(gainedBook.getId());
     }
 
+    // searching for all books by phrase
     @GetMapping("/search")
     public List<GetBookResponse> getAllBooksByPhrase(@RequestParam String phrase) {
         List<Book> gainedBooks = bookService.getAllByPhrase(phrase);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
+    // searching for random books with set number earlier
     @GetMapping("/search/random")
     public List<GetBookResponse> getNBooksByRandom(@RequestParam Byte number) {
         List<Book> gainedBooks = bookService.getNumberRandomBooks(number);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
+    // searching for book by ID and title
     @GetMapping("/{id}")
     public GetBookResponse getBookByIdAndTitle(@PathVariable Long id,
                                                @RequestParam String title) {
@@ -55,20 +59,23 @@ public class BookController {
         return new GetBookResponse(gainedBook);
     }
 
+    // searching for all books by genre
     @GetMapping("/search/genre")
-    public List<GetBookResponse> getAllBooksByGenres(@Valid @RequestBody Genre genre) {
+    public List<GetBookResponse> getAllBooksByGenre(@Valid @RequestBody Genre genre) {
         List<Book> gainedBooks = bookService.getAllByGenres(genre);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
+    // reducing the availability of the book
     @PutMapping("/update")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateBookResponse subtractBookAvailable(@PathVariable Long id,
-                                                    @Valid @RequestBody BookRequest bookRequest) {
+    public CreateBookResponse reduceBookAvailability(@PathVariable Long id,
+                                                     @Valid @RequestBody BookRequest bookRequest) {
         Book updatedBook = bookService.updateBook(id, bookRequest.toBook());
         return new CreateBookResponse(updatedBook.getId());
     }
 
+    // removing the book
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable Long id) {

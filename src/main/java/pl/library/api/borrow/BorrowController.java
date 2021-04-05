@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class BorrowController {
     private final BorrowServiceImpl borrowService;
 
+    // creating a borrow
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateBorrowResponse addBorrow(@Valid @RequestBody CreateBorrowRequest createBorrowRequest) throws UserNotFoundException {
@@ -36,6 +37,7 @@ public class BorrowController {
         return new CreateBorrowResponse(addedBorrow.getId());
     }
 
+    // searching for all borrows by status
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
     public List<GetBorrowResponse> getAllBorrowsByStatus(@RequestParam BorrowStatus status) {
@@ -43,6 +45,7 @@ public class BorrowController {
         return gainedBorrows.stream().map(GetBorrowResponse::new).collect(Collectors.toList());
     }
 
+    // setting borrow status
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateBorrowResponse changeBorrowStatus(@PathVariable Long id, @RequestParam BorrowStatus status) {

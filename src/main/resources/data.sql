@@ -6,6 +6,17 @@ INSERT INTO users (created_at, email, first_name, last_name, password, role) VAL
     (null, 'email2@email.com', 'Enarid', 'Haunfan', 'zaq1@WSX', 0),
     (null, 'email3@email.com', 'Garemir', 'Thussth', 'zaq1@WSX', 0);
 
+-- initializing genres
+INSERT INTO genres (name) VALUES
+    ('Comedy'),
+    ('Fantasy'),
+    ('Adventure'),
+    ('Biographical'),
+    ('Criminal'),
+    ('Natural'),
+    ('Historical'),
+    ('Detective');
+
 -- initializing books
 INSERT INTO books (title, author, publisher, count, available) VALUES
     -- ('Tytul1', 'Autor1', 'Wydawnictwo1', 15, 14),
@@ -1020,10 +1031,6 @@ INSERT INTO books (title, author, publisher, count, available) VALUES
 ('The Thorn Birds ','Colleen McCullough ','Avon Books ',100,24),
 ('Caesar (Masters of Rome #5) ','Colleen McCullough ','Avon ',100,24),
 ('Caesar-s Women (Masters of Rome #4) ','Colleen McCullough ','Avon ',100,24);
-
--- initializing genres
-INSERT INTO genres (name) VALUES
-    ('Comedy'), ('Fantasy'), ('Adventure'), ('Biographical'), ('Criminal'), ('Natural'), ('Historical'), ('Detective');
 
 -- initializing genres for books
 INSERT INTO books_genres (books_id, genres_id) VALUES

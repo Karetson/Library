@@ -1,5 +1,6 @@
 book:
 - zrobic ze ksiazka musi posiadac conajmnidej 1 gatunek
+- wyszukiwanie ksiazek po avalable
 
 user:
 - zrobic ze mozna dodac tylko raz dana ksiazke do ulubionych

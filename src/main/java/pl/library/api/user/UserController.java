@@ -79,8 +79,8 @@ public class UserController {
     // editing a user's profile
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse editUser(@PathVariable Long id,
-                                       @Valid @RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UserExistsException {
+    public CreateUserResponse updateUser(@PathVariable Long id,
+                                         @Valid @RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UserExistsException {
         User updatedUser = userService.editProfile(id, updateUserRequest.toUser());
 
         return new CreateUserResponse(updatedUser.getId());
@@ -89,8 +89,8 @@ public class UserController {
     // adding a user's favorite book
     @PutMapping("/favorite/add/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse addFavorite(@PathVariable Long user_id,
-                                          @PathVariable Long book_id) throws UserNotFoundException {
+    public CreateUserResponse addFavoriteBook(@PathVariable Long user_id,
+                                              @PathVariable Long book_id) throws UserNotFoundException {
         User updatedUser = userService.addFavorite(user_id, book_id);
 
         return new CreateUserResponse(updatedUser.getId());

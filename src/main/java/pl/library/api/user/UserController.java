@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.user.User;
+import pl.library.api.user.dto.AddFavoriteResponse;
 import pl.library.api.user.dto.CreateUserRequest;
 import pl.library.api.user.dto.CreateUserResponse;
 import pl.library.api.user.dto.GetUserResponse;
@@ -48,7 +49,9 @@ public class UserController {
         return new ProfileUserResponse(gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
-                gainedUser.getCreatedAt());
+                gainedUser.getCreatedAt(),
+                gainedUser.getFavoriteBooks(),
+                gainedUser.getBorrows());
     }
 
     // user login
@@ -89,18 +92,19 @@ public class UserController {
     // adding a user's favorite book
     @PutMapping("/favorite/add/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse addFavoriteBookToUser(@PathVariable Long user_id,
-                                              @PathVariable Long book_id) throws UserNotFoundException {
+    public AddFavoriteResponse addFavoriteBookToUser(@PathVariable Long user_id,
+                                                     @PathVariable Long book_id) throws UserNotFoundException {
         User updatedUser = userService.addFavoriteBookToUser(user_id, book_id);
 
-        return new CreateUserResponse(updatedUser.getId());
+        return new AddFavoriteResponse(updatedUser.getId(),
+                updatedUser.getFavoriteBooks());
     }
 
     // deleting user favorite book
     @DeleteMapping("/favorite/subtract/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void subtractFavoriteBookFromUser(@PathVariable Long user_id,
-                                 @PathVariable Long book_id) throws UserNotFoundException {
+                                             @PathVariable Long book_id) throws UserNotFoundException {
         userService.subtractFavoriteBookFromUser(user_id, book_id);
     }
 }

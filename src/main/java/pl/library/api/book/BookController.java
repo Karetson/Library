@@ -52,9 +52,9 @@ public class BookController {
     }
 
     // searching for book by ID and title
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/{title}")
     public GetBookResponse getBookByIdAndTitle(@PathVariable Long id,
-                                               @RequestParam String title) {
+                                               @PathVariable String title) {
         Book gainedBook = bookService.getBookByIdAndTitle(id, title);
         return new GetBookResponse(gainedBook);
     }

@@ -46,7 +46,8 @@ public class UserController {
     public ProfileUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
         User gainedUser = userService.getUserById(id);
 
-        return new ProfileUserResponse(gainedUser.getFirstName(),
+        return new ProfileUserResponse(gainedUser.getId(),
+                gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
                 gainedUser.getCreatedAt(),

@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Value
 public class ProfileUserResponse {
+    long id;
     String firstName;
     String lastName;
     String email;

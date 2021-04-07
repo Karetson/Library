@@ -52,4 +52,3 @@ public class Book {
     @Lob
     private String description;
 }
-}

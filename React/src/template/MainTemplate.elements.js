@@ -27,6 +27,7 @@ export const GridContainer = styled.div`
 export const MainContent = styled.div`
   padding: 43px 40px;
   width: 100%;
+  /* max-width: 2560px; */
 `;
 
 export const ImageWrapper = styled.div`
@@ -51,7 +52,7 @@ export const ImageTextContainer = styled.div`
   align-items: flex-start;
   position: absolute;
   top: 155px;
-  left: 245px;
+  left: 145px;
 
   @media screen and (max-width: 480px) {
     /* max-width: 100px; */
@@ -93,4 +94,25 @@ export const StyledButton = styled.button`
   font-weight: 700;
   border-radius: 12px;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+`;
+
+export const SuccessMessage = styled.div`
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  /* width: 400px; */
+  z-index: 99999;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const SuccessMessageHeader = styled.div`
+  width: 100%;
+  border-radius: 20px;
+  /* padding: 10px 70px; */
 `;

@@ -13,7 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Email;
@@ -47,8 +46,8 @@ public class User {
     private String password;
     @Builder.Default
     private UserRole role = UserRole.USER;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @OrderBy
+    @OneToMany(fetch = FetchType.LAZY)
+    @OrderBy(value = "title")
     private Set<Book> favoriteBooks;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Borrow> borrows;

@@ -17,8 +17,6 @@ import pl.library.api.user.dto.AddFavoriteResponse;
 import pl.library.api.user.dto.CreateUserRequest;
 import pl.library.api.user.dto.CreateUserResponse;
 import pl.library.api.user.dto.GetUserResponse;
-import pl.library.api.user.dto.LoginUserResponse;
-import pl.library.api.user.dto.ProfileUserResponse;
 import pl.library.api.user.dto.UpdateUserRequest;
 import pl.library.domain.user.UserServiceImpl;
 import pl.library.domain.user.exception.UserExistsException;
@@ -43,28 +41,31 @@ public class UserController {
 
     // searching for a user by id
     @GetMapping("/search/{id}")
-    public ProfileUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
+    public GetUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
         User gainedUser = userService.getUserById(id);
 
-        return new ProfileUserResponse(gainedUser.getId(),
+        return new GetUserResponse(gainedUser.getId(),
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
-                gainedUser.getCreatedAt(),
                 gainedUser.getFavoriteBooks(),
-                gainedUser.getBorrows());
+                gainedUser.getBorrows(),
+                gainedUser.getCreatedAt());
     }
 
     // user login
     @GetMapping("/sign-in")
-    public LoginUserResponse getUserByEmailAndPassword(@RequestParam String email,
-                                                       @RequestParam String password) throws UserNotFoundException {
+    public GetUserResponse getUserByEmailAndPassword(@RequestParam String email,
+                                                     @RequestParam String password) throws UserNotFoundException {
         User loggedUser = userService.loginUser(email, password);
 
-        return new LoginUserResponse(loggedUser.getId(),
+        return new GetUserResponse(loggedUser.getId(),
                 loggedUser.getFirstName(),
+                loggedUser.getLastName(),
+                loggedUser.getEmail(),
                 loggedUser.getFavoriteBooks(),
-                loggedUser.getBorrows());
+                loggedUser.getBorrows(),
+                loggedUser.getCreatedAt());
     }
 
     // searching for a user by email
@@ -72,7 +73,8 @@ public class UserController {
     public GetUserResponse getUserByEmail(@RequestParam String email) throws UserNotFoundException {
         User gainedUser = userService.getUserByEmail(email);
 
-        return new GetUserResponse(gainedUser.getFirstName(),
+        return new GetUserResponse(gainedUser.getId(),
+                gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
                 gainedUser.getFavoriteBooks(),

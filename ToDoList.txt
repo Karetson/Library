@@ -14,12 +14,6 @@ others:
 - paginacja
 - sortowanie
 
-:::ENTITY:::
-favorite(id, user_id, book_id)
-- dodawanie: (user_id, book_id)[@OneToMany User.favoriteBooks, @ManyToOne favorite.userId, @ManyToOne favorite.bookId]
-- wyszukiwanie: (user_id)
-- usuwanie: (book_id)
-
 :::SORT::: (paginacja po 20 wynikow na strone)
 book:
 - searchByGenre: sort by title(ASC)

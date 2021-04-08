@@ -4,8 +4,6 @@ import pl.library.adapters.mysql.model.user.User;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
-import java.util.List;
-
 public interface UserService {
     User getUserById(Long id) throws UserNotFoundException;
     User getUserByEmail(String email) throws UserNotFoundException;

@@ -51,11 +51,25 @@ export const ADD_FAVORITE = "ADD_FAVORITE";
 export const FAILURE_MESSAGE = "FAILURE_MESSAGE";
 export const CLOSE_SUCCESS_MESSAGE = "CLOSE_SUCCESS_MESSAGE";
 
+export const REQUEST_START = "REQUEST_START";
+export const REQUEST_END = "REQUEST_END";
+
 const API = "http://localhost:8080/api";
 
 export const closeSuccessMessage = () => {
   return {
     type: CLOSE_SUCCESS_MESSAGE,
+  };
+};
+
+export const requestStart = () => {
+  return {
+    type: REQUEST_START,
+  };
+};
+export const requestEnd = () => {
+  return {
+    type: REQUEST_END,
   };
 };
 
@@ -198,12 +212,12 @@ export const fetchGenres = () => async (dispatch) => {
     });
 };
 
-export const fetchBooks = () => async (dispatch) => {
+export const fetchBooks = (number) => async (dispatch) => {
   dispatch({
     type: FETCH_BOOKS_REQUEST,
   });
   return axios
-    .get(API + "/book/search/random", {params: {number: 1}})
+    .get(API + "/book/search/random", {params: {number}})
     .then((payload) => {
       // console.log(payload);
       dispatch({

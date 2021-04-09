@@ -3,11 +3,7 @@ package pl.library.adapters.mysql.model.book;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import pl.library.adapters.mysql.model.genre.Genre;
 
 import javax.persistence.Column;
@@ -49,6 +45,4 @@ public class Book {
     @Column(length = 2000)
     @Lob
     private String description;
-
-    UserDetailsService
 }

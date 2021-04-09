@@ -2,10 +2,12 @@ package pl.library.adapters.mysql.model.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.library.adapters.mysql.model.borrow.Borrow;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import pl.library.adapters.mysql.model.genre.Genre;
 
 import javax.persistence.Column;
@@ -16,14 +18,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "books")
@@ -50,4 +49,6 @@ public class Book {
     @Column(length = 2000)
     @Lob
     private String description;
+
+    UserDetailsService
 }

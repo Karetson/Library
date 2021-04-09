@@ -2,7 +2,7 @@ package pl.library.api.user.dto;
 
 import lombok.Value;
 import pl.library.adapters.mysql.model.book.Book;
-import pl.library.adapters.mysql.model.borrow.Borrow;
+import pl.library.api.borrow.dto.GetBorrowResponse;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -14,6 +14,6 @@ public class GetUserResponse {
     String lastName;
     String email;
     Set<Book> favoriteBooks;
-    Set<Borrow> borrows;
+    Set<GetBorrowResponse> borrows;
     LocalDateTime createdAt;
 }

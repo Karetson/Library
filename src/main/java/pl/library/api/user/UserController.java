@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.user.User;
+import pl.library.api.borrow.dto.GetBorrowResponse;
 import pl.library.api.user.dto.AddFavoriteResponse;
 import pl.library.api.user.dto.CreateUserRequest;
 import pl.library.api.user.dto.CreateUserResponse;
@@ -23,6 +24,7 @@ import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class UserController {
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
                 gainedUser.getFavoriteBooks(),
-                gainedUser.getBorrows(),
+                gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 gainedUser.getCreatedAt());
     }
 
@@ -64,7 +66,7 @@ public class UserController {
                 loggedUser.getLastName(),
                 loggedUser.getEmail(),
                 loggedUser.getFavoriteBooks(),
-                loggedUser.getBorrows(),
+                loggedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 loggedUser.getCreatedAt());
     }
 
@@ -78,7 +80,7 @@ public class UserController {
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
                 gainedUser.getFavoriteBooks(),
-                gainedUser.getBorrows(),
+                gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 gainedUser.getCreatedAt());
     }
 

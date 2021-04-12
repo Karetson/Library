@@ -9,7 +9,6 @@ others:
 - logging
 - Http headers
 - testy
-- poprawic wszedzie formatowanie daty
 - logowanie czynnosci uzytkownikow
 - paginacja
 - sortowanie

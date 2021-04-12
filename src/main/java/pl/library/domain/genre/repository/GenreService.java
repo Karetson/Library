@@ -1,12 +1,13 @@
 package pl.library.domain.genre.repository;
 
 import pl.library.adapters.mysql.model.genre.Genre;
-import pl.library.api.genre.dto.GenreRequest;
+import pl.library.api.genre.dto.CreateGenreRequest;
+import pl.library.api.genre.dto.DeleteGenreRequest;
 
 import java.util.List;
 
 public interface GenreService {
-    List<Genre> addManyGenres(GenreRequest genres);
+    List<Genre> addManyGenres(CreateGenreRequest genres);
     List<Genre> getAllGenres();
-    void deleteManyGenres(GenreRequest ids);
+    void deleteManyGenres(DeleteGenreRequest ids);
 }

@@ -3,7 +3,8 @@ package pl.library.domain.genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.genre.Genre;
-import pl.library.api.genre.dto.GenreRequest;
+import pl.library.api.genre.dto.CreateGenreRequest;
+import pl.library.api.genre.dto.DeleteGenreRequest;
 import pl.library.domain.genre.exception.GenreExistsException;
 import pl.library.domain.genre.exception.GenreNotFoundException;
 import pl.library.domain.genre.repository.GenreRepository;
@@ -21,7 +22,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public List<Genre> addManyGenres(GenreRequest genresRequest) {
+    public List<Genre> addManyGenres(CreateGenreRequest genresRequest) {
         Set<Genre> genres = new HashSet<>();
 
         for (String e : genresRequest.getGenres()) {
@@ -45,7 +46,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public void deleteManyGenres(GenreRequest ids) {
+    public void deleteManyGenres(DeleteGenreRequest ids) {
         Set<Genre> genres = new HashSet<>();
 
         for (Long e : ids.getIds()) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.user.User;
+import pl.library.api.book.dto.GetBookResponse;
 import pl.library.api.borrow.dto.GetBorrowResponse;
 import pl.library.api.user.dto.AddFavoriteResponse;
 import pl.library.api.user.dto.CreateUserRequest;
@@ -50,7 +51,8 @@ public class UserController {
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
-                gainedUser.getFavoriteBooks(),
+                gainedUser.getRole(),
+                gainedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 gainedUser.getCreatedAt());
     }
@@ -65,7 +67,8 @@ public class UserController {
                 loggedUser.getFirstName(),
                 loggedUser.getLastName(),
                 loggedUser.getEmail(),
-                loggedUser.getFavoriteBooks(),
+                loggedUser.getRole(),
+                loggedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 loggedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 loggedUser.getCreatedAt());
     }
@@ -79,7 +82,8 @@ public class UserController {
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
-                gainedUser.getFavoriteBooks(),
+                gainedUser.getRole(),
+                gainedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 gainedUser.getCreatedAt());
     }
@@ -102,7 +106,7 @@ public class UserController {
         User updatedUser = userService.addFavoriteBookToUser(user_id, book_id);
 
         return new AddFavoriteResponse(updatedUser.getId(),
-                updatedUser.getFavoriteBooks());
+                updatedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()));
     }
 
     // deleting user favorite book

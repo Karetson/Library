@@ -1,10 +1,7 @@
 package pl.library.api.user.dto;
 
 import lombok.Value;
-import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
-
-import java.util.Set;
 
 @Value
 public class UpdateUserRequest {

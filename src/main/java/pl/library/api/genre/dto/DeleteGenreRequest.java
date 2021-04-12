@@ -5,7 +5,6 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class GenreRequest {
+public class DeleteGenreRequest {
     List<Long> ids;
-    List<String> genres;
 }

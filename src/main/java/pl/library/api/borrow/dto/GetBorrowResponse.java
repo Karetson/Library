@@ -9,19 +9,19 @@ import java.time.LocalDateTime;
 
 @Value
 public class GetBorrowResponse {
+    long id;
     LocalDateTime createdAt;
     LocalDateTime expired;
     LocalDateTime edited;
     BorrowStatus status;
-//    User user;
     GetBookResponse book;
 
     public GetBorrowResponse(Borrow borrow) {
+        this.id = borrow.getId();
         this.createdAt = borrow.getCreatedAt();
         this.expired = borrow.getExpired();
         this.edited = borrow.getEdited();
         this.status = borrow.getStatus();
-//        this.user = borrow.getUser();
         this.book = new GetBookResponse(borrow.getBook());
     }
 }

@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.api.genre.dto.CreateGenreResponse;
-import pl.library.api.genre.dto.GenreRequest;
+import pl.library.api.genre.dto.CreateGenreRequest;
 import pl.library.api.genre.dto.GetGenreResponse;
+import pl.library.api.genre.dto.DeleteGenreRequest;
 import pl.library.domain.genre.GenreServiceImpl;
 
 import javax.validation.Valid;
@@ -28,7 +29,7 @@ public class GenreController {
     // adding many book genres
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<CreateGenreResponse> addManyGenres(@Valid @RequestBody GenreRequest genres) {
+    public List<CreateGenreResponse> addManyGenres(@Valid @RequestBody CreateGenreRequest genres) {
         List<Genre> addedGenres = genreService.addManyGenres(genres);
         return addedGenres.stream().map(CreateGenreResponse::new).collect(Collectors.toList());
     }
@@ -43,7 +44,7 @@ public class GenreController {
     // removal of all genres
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteManyGenres(@RequestBody GenreRequest ids) {
+    public void deleteManyGenres(@Valid @RequestBody DeleteGenreRequest ids) {
         genreService.deleteManyGenres(ids);
     }
 }

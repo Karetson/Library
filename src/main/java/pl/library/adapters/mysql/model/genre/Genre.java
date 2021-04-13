@@ -1,6 +1,9 @@
 package pl.library.adapters.mysql.model.genre;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +13,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
 @Entity(name = "genres")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

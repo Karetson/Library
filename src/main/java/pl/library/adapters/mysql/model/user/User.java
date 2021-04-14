@@ -2,8 +2,10 @@ package pl.library.adapters.mysql.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.borrow.Borrow;
 
@@ -21,7 +23,8 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

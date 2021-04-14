@@ -6,12 +6,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,6 +30,7 @@ class BookServiceImplTest {
     BookServiceImpl systemUnderTest;
     Set<Genre> genres = new HashSet<>();
 
+    @Autowired
     @Mock
     BookRepository bookRepository;
 
@@ -48,6 +52,18 @@ class BookServiceImplTest {
         List<Book> allBooksByPhrase = systemUnderTest.getAllBooksByPhrase(phrase);
         // then
         assertThat(allBooksByPhrase).containsExactly(new Book());
+    }
+
+    @Test
+    void shouldNotReturnAllBooksBasedOnPhrase() {
+        // given
+        List<Book> books = new ArrayList<>();
+        when(bookRepository.findAll()).thenReturn(books);
+        String phrase = "Harry";
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.getAllBooksByPhrase(phrase)).isInstanceOf(BookNotFoundException.class);
     }
 
     @Test
@@ -83,6 +99,18 @@ class BookServiceImplTest {
     }
 
     @Test
+    void shouldNotReturnBookBasedOnGivenIdAndTitle() {
+        // given
+        Book book = new Book();
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+        String title = "Harry";
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.getBookByIdAndTitle(BOOK_ID, title)).isInstanceOf(BookNotFoundException.class);
+    }
+
+    @Test
     void shouldReturnListOfBooksBasedOnGenres() {
         // given
         when(bookRepository.findAllByGenres(any(Genre.class))).thenReturn(Optional.of(List.of(new Book())));
@@ -94,6 +122,18 @@ class BookServiceImplTest {
     }
 
     @Test
+    void shouldNotReturnListOfBooksBasedOnGenres() {
+        // given
+        List<Book> books = new ArrayList<>();
+        when(bookRepository.findAll()).thenReturn(books);
+        Genre genre = new Genre();
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.getAllBooksByGenres(genre)).isInstanceOf(BookNotFoundException.class);
+    }
+
+    @Test
     void shouldReturnListOfBooksBasedOnStatus() {
         // given
         when(bookRepository.findALlByStatus(any(Boolean.class))).thenReturn(Optional.of(List.of(new Book())));
@@ -102,6 +142,18 @@ class BookServiceImplTest {
         List<Book> allBooksByStatus = systemUnderTest.getAllBooksByStatus(status);
         // then
         assertThat(allBooksByStatus).containsExactly(new Book());
+    }
+
+    @Test
+    void shouldNotReturnListOfBooksBasedOnStatus() {
+        // given
+        List<Book> books = new ArrayList<>();
+        Boolean status = false;
+        when(bookRepository.findAll()).thenReturn(books);
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.getAllBooksByStatus(status)).isInstanceOf(BookNotFoundException.class);
     }
 
     @Test
@@ -141,7 +193,8 @@ class BookServiceImplTest {
         // when
 
         // then
-        assertThatThrownBy(() -> systemUnderTest.addBook(book)).isInstanceOf(BookExistsException.class);
+        assertThatThrownBy(() -> systemUnderTest.addBook(book)).isInstanceOf(
+                BookExistsException.class);
     }
 
     @Test
@@ -173,28 +226,64 @@ class BookServiceImplTest {
     }
 
     @Test
-    void shouldUpdateBook() {
+    void shouldUpdateBookWhenAvailableGT0() {
         // given
-        when(bookRepository.save(any(Book.class))).thenReturn(new Book(BOOK_ID,
+        Book book = new Book(BOOK_ID,
                 "title",
                 "author",
                 "publisher",
                 genres,
                 10,
                 10,
-                true,
-                "description of book"));
-        Book book = new Book();
-        bookRepository.save(book);
-        Book updatedBook = new Book();
-        updatedBook.setTitle("updated title");
-        updatedBook.setAuthor("updated author");
+                null,
+                "desc");
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
         // when
-        Book updating = systemUnderTest.updateBook(BOOK_ID, updatedBook);
+        Book updatedBook = systemUnderTest.updateBook(BOOK_ID, book);
+        bookRepository.save(updatedBook);
+        // then
+        assertThat(updatedBook).isEqualTo(book);
+    }
+
+    @Test
+    void shouldUpdateBookWhenAvailableEquals0() {
+        // given
+        Book book = new Book(BOOK_ID,
+                "title",
+                "author",
+                "publisher",
+                genres,
+                0,
+                0,
+                null,
+                "desc");
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+        when(bookRepository.save(any(Book.class))).thenReturn(book);
+        // when
+        Book updatedBook = systemUnderTest.updateBook(BOOK_ID, book);
+        bookRepository.save(updatedBook);
+        // then
+        assertThat(updatedBook).isEqualTo(book);
+    }
+
+    @Test
+    void shouldNotUpdateBookWhenAvailablePlusDifferentBetweenCountsLT0() {
+        // given
+        Book book = new Book(BOOK_ID,
+                "title",
+                "author",
+                "publisher",
+                genres,
+                0,
+                -5,
+                null,
+                "desc");
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+        // when
 
         // then
-        assertThat(updating).isInstanceOf(Book.class);
-        assertThat(book).isEqualTo(updatedBook);
+        assertThatThrownBy(() -> systemUnderTest.updateBook(BOOK_ID, book)).isInstanceOf(ArithmeticException.class);
     }
 
     @Test
@@ -210,8 +299,21 @@ class BookServiceImplTest {
     @Test
     void shouldDeleteBookBasedOnGivenId() {
         // given
+        Book book = new Book();
+        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+        // when
+        systemUnderTest.deleteBook(BOOK_ID);
+        // then
+        verify(bookRepository).deleteById(BOOK_ID);
+    }
+
+    @Test
+    void shouldNotDeleteBookBasedOnGivenId() {
+        // given
+        Book book = new Book();
         // when
 
         // then
+        assertThatThrownBy(() -> systemUnderTest.deleteBook(BOOK_ID)).isInstanceOf(BookNotFoundException.class);
     }
 }

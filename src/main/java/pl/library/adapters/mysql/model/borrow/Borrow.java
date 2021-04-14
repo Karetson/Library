@@ -2,8 +2,10 @@ package pl.library.adapters.mysql.model.borrow;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
 
@@ -17,7 +19,9 @@ import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity(name = "borrows")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

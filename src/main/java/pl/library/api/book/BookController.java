@@ -17,7 +17,7 @@ import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.api.book.dto.BookRequest;
 import pl.library.api.book.dto.CreateBookResponse;
 import pl.library.api.book.dto.GetBookResponse;
-import pl.library.domain.book.BookServiceImpl;
+import pl.library.domain.book.BookService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api/book")
 public class BookController {
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
     // creating a book
     @PostMapping("/add")

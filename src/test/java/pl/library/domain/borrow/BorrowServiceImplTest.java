@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 class BorrowServiceImplTest {
-    BorrowServiceImpl systemUnderTest;
+    BorrowService systemUnderTest;
     static final Long BORROW_ID = 1L;
 
     @Mock
@@ -40,7 +40,7 @@ class BorrowServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.systemUnderTest = new BorrowServiceImpl(borrowRepository, userRepository, bookRepository);
+        this.systemUnderTest = new BorrowService(borrowRepository, userRepository, bookRepository);
     }
 
     @Test

@@ -7,7 +7,6 @@ import pl.library.api.genre.dto.GenreRequest;
 import pl.library.domain.genre.exception.GenreExistsException;
 import pl.library.domain.genre.exception.GenreNotFoundException;
 import pl.library.domain.genre.repository.GenreRepository;
-import pl.library.domain.genre.repository.GenreService;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -16,10 +15,9 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class GenreServiceImpl implements GenreService {
+public class GenreService {
     private final GenreRepository genreRepository;
 
-    @Override
     @Transactional
     public List<Genre> addManyGenres(GenreRequest genresRequest) {
         Set<Genre> genres = new HashSet<>();
@@ -37,13 +35,11 @@ public class GenreServiceImpl implements GenreService {
         return genreRepository.saveAll(genres);
     }
 
-    @Override
     public List<Genre> getAllGenres() {
         return genreRepository.getAll().orElseThrow(()
                 -> new GenreNotFoundException("There are no genres"));
     }
 
-    @Override
     @Transactional
     public void deleteManyGenres(GenreRequest ids) {
         Set<Genre> genres = new HashSet<>();

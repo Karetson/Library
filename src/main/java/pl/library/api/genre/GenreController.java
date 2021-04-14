@@ -13,7 +13,7 @@ import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.api.genre.dto.CreateGenreResponse;
 import pl.library.api.genre.dto.GenreRequest;
 import pl.library.api.genre.dto.GetGenreResponse;
-import pl.library.domain.genre.GenreServiceImpl;
+import pl.library.domain.genre.GenreService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/bookGenre")
 @RequiredArgsConstructor
 public class GenreController {
-    private final GenreServiceImpl genreService;
+    private final GenreService genreService;
 
     // adding many book genres
     @PostMapping("/add")

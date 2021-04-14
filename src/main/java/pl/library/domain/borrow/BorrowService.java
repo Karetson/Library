@@ -10,7 +10,6 @@ import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
 import pl.library.domain.borrow.repository.BorrowRepository;
-import pl.library.domain.borrow.repository.BorrowService;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
@@ -20,12 +19,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BorrowServiceImpl implements BorrowService {
+public class BorrowService {
     private final BorrowRepository borrowRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
 
-    @Override
     @Transactional
     public Borrow addBorrow(Borrow borrow) throws UserNotFoundException {
         Long userId = borrow.getUser().getId();
@@ -52,13 +50,11 @@ public class BorrowServiceImpl implements BorrowService {
         }
     }
 
-    @Override
     public List<Borrow> getAllBorrowsByStatus(BorrowStatus status) {
         return borrowRepository.findAllByStatus(status).orElseThrow(()
                 -> new BorrowNotFoundException("Borrow with status: '" + status + "' not found!"));
     }
 
-    @Override
     @Transactional
     public Borrow changeBorrowStatus(Long id, BorrowStatus status) {
         Borrow borrow = borrowRepository.findById(id).orElseThrow(()

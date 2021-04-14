@@ -7,23 +7,20 @@ import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
-import pl.library.domain.book.repository.BookService;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService {
+public class BookService {
     private final BookRepository bookRepository;
 
-    @Override
     public List<Book> getAllBooksByPhrase(String phrase) {
         return bookRepository.findAllByTitleOrAuthorLike(phrase).orElseThrow(()
                 -> new BookNotFoundException("Book with phrase: '" + phrase + "' doesn't exists"));
     }
 
-    @Override
     public List<Book> getRandomBooksByNumber(Byte number) {
         if (number > 0) {
             return bookRepository.findRandomByNumber(number);
@@ -32,26 +29,22 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    @Override
     public Book getBookByIdAndTitle(Long id, String title) {
         return bookRepository.findByIdAndTitle(id, title).orElseThrow(()
                 -> new BookNotFoundException("Book with id: '" + id + "' and title: '" + title + "' doesn't exists!"));
     }
 
-    @Override
     public List<Book> getAllBooksByGenres(Genre genre) {
         return bookRepository.findAllByGenres(genre).orElseThrow(()
                 -> new BookNotFoundException("Book with type: '" + genre + "' doesn't exists!"));
     }
 
-    @Override
     public List<Book> getAllBooksByStatus(Boolean status) {
         return bookRepository.findALlByStatus(status).orElseThrow(()
                 -> new BookNotFoundException("There are no books"));
     }
 
     @Transactional
-    @Override
     public Book addBook(Book book) {
         if (bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
             throw new BookExistsException("Book with title: '" + book.getTitle() + "' and author: '" + book.getAuthor() + "' already exists!");
@@ -69,7 +62,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Transactional
-    @Override
     public Book updateBook(Long id, Book book) {
         Book bookDetails = bookRepository.findById(id).orElseThrow(()
                 -> new BookNotFoundException("Book with ID: " + id + " doesn't exists!"));
@@ -96,7 +88,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Transactional
-    @Override
     public void deleteBook(Long id) {
         if (bookRepository.findById(id).isPresent()) {
             bookRepository.deleteById(id);

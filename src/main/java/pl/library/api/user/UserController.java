@@ -20,7 +20,7 @@ import pl.library.api.user.dto.CreateUserRequest;
 import pl.library.api.user.dto.CreateUserResponse;
 import pl.library.api.user.dto.GetUserResponse;
 import pl.library.api.user.dto.UpdateUserRequest;
-import pl.library.domain.user.UserServiceImpl;
+import pl.library.domain.user.UserService;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     // user registration
     @PostMapping("/sign-up")

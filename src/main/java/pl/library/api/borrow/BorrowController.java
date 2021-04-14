@@ -16,7 +16,7 @@ import pl.library.adapters.mysql.model.borrow.BorrowStatus;
 import pl.library.api.borrow.dto.CreateBorrowRequest;
 import pl.library.api.borrow.dto.CreateBorrowResponse;
 import pl.library.api.borrow.dto.GetBorrowResponse;
-import pl.library.domain.borrow.BorrowServiceImpl;
+import pl.library.domain.borrow.BorrowService;
 import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api/borrow")
 public class BorrowController {
-    private final BorrowServiceImpl borrowService;
+    private final BorrowService borrowService;
 
     // creating a borrow
     @PostMapping("/add")

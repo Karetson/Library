@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 class BookServiceImplTest {
-    BookServiceImpl systemUnderTest;
+    BookService systemUnderTest;
     Set<Genre> genres = new HashSet<>();
 
     @Autowired
@@ -39,7 +39,7 @@ class BookServiceImplTest {
     @BeforeEach
     void beforeEachTestMethod() {
         MockitoAnnotations.initMocks(this);
-        this.systemUnderTest = new BookServiceImpl(bookRepository);
+        this.systemUnderTest = new BookService(bookRepository);
         genres.add(new Genre(1L, "Comedy"));
     }
 

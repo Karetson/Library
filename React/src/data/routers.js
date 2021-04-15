@@ -10,6 +10,11 @@ export const routers = {
   favorite: "/favorite",
   book: "/book/:id/:title",
   user: "/user",
+  userEdit: "/user/edit",
+
+  // admin routers
   addBook: "/admin/add",
   addGenre: "/admin/genre",
+  changeStatus: "/admin/status",
+  // userborrowed: "/admin/user/:user",
 };

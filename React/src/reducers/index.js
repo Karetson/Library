@@ -17,7 +17,6 @@ import {
   REMOVE_GENRE2,
   REMOVE_GENRE3,
   ADD_GENRE,
-  GET_GENRE_REQUEST,
   GET_GENRE_SUCCESS,
   // GET_GENRE_FAILURE
   SEND_ADD_GENRELIST,
@@ -28,6 +27,10 @@ import {
   CLOSE_SUCCESS_MESSAGE,
   REQUEST_START,
   REQUEST_END,
+  BOOK_BORROW_SUCCESS,
+  USER_EMAIL_SEARCH_SUCCESS,
+  USER_EMAIL_SEARCH_FAILURE,
+  REMOVE_FAVORITE,
 } from "../actions";
 
 //initial store
@@ -39,6 +42,9 @@ const initialStore = {
   genreRemoved: [],
   genreNews: [],
   totalbooks: 0,
+  searchUsers: [],
+  userBorrow: [],
+  userFavorites: [],
   user: {
     userinfo: {
       id: 0,
@@ -91,33 +97,33 @@ export const reducer = (state = initialStore, action) => {
     };
   }
 
-  if (action.type === GET_GENRE_REQUEST) {
+  if (action.type === ADD_FAVORITE) {
     return {
       ...state,
-      loader: true,
+      succesMessage: `${action.props.title} was liked!`,
+      userFavorites: [...state.userFavorites, action.props],
     };
   }
-
-  if (action.type === ADD_FAVORITE) {
-    // console.log(action.payload);
-    const lastLiked =
-      action.payload.data.favoriteBooks[
-        action.payload.data.favoriteBooks.length - 1
-      ];
+  if (action.type === REMOVE_FAVORITE) {
     return {
       ...state,
-      succesMessage: `${lastLiked.title} was liked!`,
-      user: {
-        userToken: action.payload.data.id,
-        isLogin: true,
-        userinfo: action.payload.data,
-      },
+      succesMessage: `${action.props.title} was disliked!`,
+      userFavorites: [
+        ...state.userFavorites.filter((item) => item.id !== action.props.id),
+      ],
+    };
+  }
+  if (action.type === BOOK_BORROW_SUCCESS) {
+    return {
+      ...state,
+      succesMessage: `${action.props.title} has been borrowed!`,
+      userBorrow: [...state.userBorrow, action.props],
     };
   }
   if (action.type === FAILURE_MESSAGE) {
     if (action.err.response === undefined) {
       alert("no backend connect");
-      return {...state};
+      return {...state, loader: true};
     }
     return {
       ...state,
@@ -198,6 +204,19 @@ export const reducer = (state = initialStore, action) => {
       searchbooks: action.payload.data,
     };
   }
+  if (action.type === USER_EMAIL_SEARCH_FAILURE) {
+    return {
+      ...state,
+      searchUsers: [],
+      showErrors: action.err.response.data.message,
+    };
+  }
+  if (action.type === USER_EMAIL_SEARCH_SUCCESS) {
+    return {
+      ...state,
+      searchUsers: action.payload.data,
+    };
+  }
   if (action.type === FETCH_BOOKS_SUCCESS) {
     // console.log(action.payload.data);
     return {
@@ -212,7 +231,6 @@ export const reducer = (state = initialStore, action) => {
       ...state,
       genreList: action.payload.data,
       succesMessage: "Genre list updated!",
-      loader: false,
     };
   }
   if (action.type === AUTH_SUCCESS) {
@@ -244,6 +262,7 @@ export const reducer = (state = initialStore, action) => {
     };
   }
   if (action.type === GET_CURRENT_USER_SUCCESS) {
+    const borrowedbooks = action.payload.data.borrows.map((item) => item.book);
     return {
       ...state,
       user: {
@@ -251,6 +270,8 @@ export const reducer = (state = initialStore, action) => {
         userToken: action.payload.data.id,
         isLogin: true,
       },
+      userBorrow: borrowedbooks,
+      userFavorites: action.payload.data.favoriteBooks,
     };
   }
   if (action.type === REGISTER_SUCCESS) {

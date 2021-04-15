@@ -1,10 +1,10 @@
 import React from "react";
 import {Route} from "react-router";
-import AccountPage from "../view/AccountPage";
-import BorrowedPage from "../view/BorrowedPage";
-import LoginPage from "../view/LoginPage";
-import RegisterPage from "../view/RegisterPage";
-import MainPage from "../view/MainPage";
+import AccountPage from "../view/user/AccountPage";
+import BorrowedPage from "../view/user/BorrowedPage";
+import LoginPage from "../view/user/LoginPage";
+import RegisterPage from "../view/user/RegisterPage";
+import MainPage from "../view/user/MainPage";
 import {
   GridContainer,
   MainContent,
@@ -17,18 +17,24 @@ import {
   StyledButton,
   SuccessMessage,
   SuccessMessageHeader,
+  AdminWrapper,
+  FaBookMedicalIcon,
+  GiCardExchangeIcon,
+  FaBookReaderIcon,
 } from "./MainTemplate.elements";
-import AddBook from "../view/AddBook";
+import AddBook from "../view/admin/AddBook";
 import main_img from "../assets/layout/main_img.jpg";
-import FavoritePage from "../view/FavoritePage";
+import FavoritePage from "../view/user/FavoritePage";
 import {routers} from "../data/routers";
-import BookDetailsPage from "../view/BookDetailsPage";
-import AddGenre from "../view/AddGenre";
+import BookDetailsPage from "../view/user/BookDetailsPage";
+import AddGenre from "../view/admin/AddGenre";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {closeSuccessMessage} from "../actions";
+import {closeSuccessMessage, getUserLoginAction} from "../actions";
 import {Link} from "react-router-dom";
-import SearchPage from "../view/SearchPage";
+import SearchPage from "../view/user/SearchPage";
+import BorrowedStatusPage from "../view/admin/BorrowedStatusPage";
+import EditUserPage from "../view/user/EditUserPage";
 
 class MainTemplate extends React.Component {
   componentDidUpdate() {
@@ -39,14 +45,20 @@ class MainTemplate extends React.Component {
       }
       const {close} = this.props;
       close();
+
       // notification.style.display = "flex";
+      //tutaj dodajać czyszczenie błedów! a następnie usunąć ze wszystkich stron!
     };
     if (this.props.succesMessage) {
       setTimeout(changeDisplayNotification, 3000);
     }
+
+    // this.props.getUserLogin(localStorage.getItem("loginToken"));
   }
 
   render() {
+    const isAdmin =
+      this.props.role === "MODERATOR" || this.props.role === "ADMIN";
     return (
       <>
         <MainTemplateWrapper>
@@ -72,6 +84,20 @@ class MainTemplate extends React.Component {
               )}
             </ImageTextContainer>
           </ImageWrapper>
+          {isAdmin && (
+            <AdminWrapper>
+              <Link to={routers.addBook}>
+                <FaBookMedicalIcon />
+              </Link>
+              <Link to={routers.changeStatus}>
+                <GiCardExchangeIcon />
+              </Link>
+              <Link to={routers.addGenre}>
+                <FaBookReaderIcon />
+              </Link>
+            </AdminWrapper>
+          )}
+
           <GridContainer>
             <MainContent>
               <Route path={routers.home} exact component={MainPage} />
@@ -85,6 +111,12 @@ class MainTemplate extends React.Component {
               <Route path={routers.book} exact component={BookDetailsPage} />
               <Route path={routers.user} exact component={AccountPage} />
               <Route path={routers.search} exact component={SearchPage} />
+              <Route path={routers.userEdit} exact component={EditUserPage} />
+              <Route
+                path={routers.changeStatus}
+                exact
+                component={BorrowedStatusPage}
+              />
             </MainContent>
           </GridContainer>
         </MainTemplateWrapper>
@@ -94,16 +126,20 @@ class MainTemplate extends React.Component {
 }
 
 MainTemplate.propTypes = {
-  succesMessage: PropTypes.bool.isRequired,
+  succesMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   close: PropTypes.func.isRequired,
+  getUserLogin: PropTypes.func.isRequired,
   isLogin: PropTypes.bool,
+  role: PropTypes.string,
 };
 
 const mapStateToProps = ({succesMessage, user}) => {
   const {isLogin} = user;
+  const {role} = user.userinfo;
   return {
     succesMessage,
     isLogin,
+    role,
   };
 };
 
@@ -111,6 +147,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     // add timeout?!
     close: () => dispatch(closeSuccessMessage()),
+    getUserLogin: (token) => dispatch(getUserLoginAction(token)),
   };
 };
 

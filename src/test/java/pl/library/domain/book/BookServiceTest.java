@@ -12,7 +12,6 @@ import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +45,10 @@ class BookServiceTest {
         // given
         when(bookRepository.findAllByTitleOrAuthorLike(any(String.class))).thenReturn(Optional.of(List.of(new Book())));
         String phrase = "Harry";
+
         // when
         List<Book> allBooksByPhrase = systemUnderTest.getAllBooksByPhrase(phrase);
+
         // then
         assertThat(allBooksByPhrase).containsExactly(new Book());
     }
@@ -55,9 +56,8 @@ class BookServiceTest {
     @Test
     void shouldNotReturnAllBooksBasedOnPhrase() {
         // given
-        List<Book> books = new ArrayList<>();
-        when(bookRepository.findAll()).thenReturn(books);
         String phrase = "Harry";
+
         // when
 
         // then
@@ -68,9 +68,11 @@ class BookServiceTest {
     void shouldReturnListOfBooksBasedOnGivenNumberGT0() {
         // given
         when(bookRepository.findRandomByNumber(any(Byte.class))).thenReturn(List.of(new Book()));
+
         Byte number = 5;
         // when
         List<Book> randomBooksByNumber = systemUnderTest.getRandomBooksByNumber(number);
+
         // then
         assertThat(randomBooksByNumber).containsExactly(new Book());
     }
@@ -79,6 +81,7 @@ class BookServiceTest {
     void shouldNotReturnListOfBooksBasedOnGivenNumberLTE0() {
         // given
         Byte number = -2;
+
         // when
 
         // then
@@ -90,8 +93,10 @@ class BookServiceTest {
         // given
         when(bookRepository.findByIdAndTitle(any(Long.class), any(String.class))).thenReturn(Optional.of(new Book()));
         String title = "Harry";
+
         // when
         Book bookByIdAndTitle = systemUnderTest.getBookByIdAndTitle(BOOK_ID, title);
+
         // then
         assertThat(bookByIdAndTitle).isInstanceOf(Book.class);
     }
@@ -99,9 +104,8 @@ class BookServiceTest {
     @Test
     void shouldNotReturnBookBasedOnGivenIdAndTitle() {
         // given
-        Book book = new Book();
-        when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
         String title = "Harry";
+
         // when
 
         // then
@@ -113,8 +117,10 @@ class BookServiceTest {
         // given
         when(bookRepository.findAllByGenres(any(Genre.class))).thenReturn(Optional.of(List.of(new Book())));
         Genre genre = new Genre();
+
         // when
         List<Book> allBooksByGenres = systemUnderTest.getAllBooksByGenres(genre);
+
         // then
         assertThat(allBooksByGenres).containsExactly(new Book());
     }
@@ -122,9 +128,8 @@ class BookServiceTest {
     @Test
     void shouldNotReturnListOfBooksBasedOnGenres() {
         // given
-        List<Book> books = new ArrayList<>();
-        when(bookRepository.findAll()).thenReturn(books);
         Genre genre = new Genre();
+
         // when
 
         // then
@@ -136,8 +141,10 @@ class BookServiceTest {
         // given
         when(bookRepository.findALlByStatus(any(Boolean.class))).thenReturn(Optional.of(List.of(new Book())));
         Boolean status = false;
+
         // when
         List<Book> allBooksByStatus = systemUnderTest.getAllBooksByStatus(status);
+
         // then
         assertThat(allBooksByStatus).containsExactly(new Book());
     }
@@ -145,9 +152,8 @@ class BookServiceTest {
     @Test
     void shouldNotReturnListOfBooksBasedOnStatus() {
         // given
-        List<Book> books = new ArrayList<>();
         Boolean status = false;
-        when(bookRepository.findAll()).thenReturn(books);
+
         // when
 
         // then
@@ -167,8 +173,10 @@ class BookServiceTest {
                 8,
                 true,
                 "desc");
+
         // when
         Book createdBook = systemUnderTest.addBook(book);
+
         // then
         assertThat(createdBook).isInstanceOf(Book.class);
     }
@@ -188,6 +196,7 @@ class BookServiceTest {
                 8,
                 true,
                 "desc");
+
         // when
 
         // then
@@ -199,6 +208,7 @@ class BookServiceTest {
     void shouldNotCreateBookWhenGenreIsEmpty() {
         // given
         Book book = new Book();
+
         // when
 
         // then
@@ -217,6 +227,7 @@ class BookServiceTest {
                 null,
                 true,
                 "desc");
+
         // when
 
         // then
@@ -237,9 +248,11 @@ class BookServiceTest {
                 "desc");
         when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
         when(bookRepository.save(any(Book.class))).thenReturn(book);
+
         // when
         Book updatedBook = systemUnderTest.updateBook(BOOK_ID, book);
         bookRepository.save(updatedBook);
+
         // then
         assertThat(updatedBook).isEqualTo(book);
     }
@@ -258,9 +271,11 @@ class BookServiceTest {
                 "desc");
         when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
         when(bookRepository.save(any(Book.class))).thenReturn(book);
+
         // when
         Book updatedBook = systemUnderTest.updateBook(BOOK_ID, book);
         bookRepository.save(updatedBook);
+
         // then
         assertThat(updatedBook).isEqualTo(book);
     }
@@ -278,6 +293,7 @@ class BookServiceTest {
                 null,
                 "desc");
         when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+
         // when
 
         // then
@@ -288,6 +304,7 @@ class BookServiceTest {
     void shouldNotUpdateBookWhenDoesNotExists() {
         // given
         Book book = new Book();
+
         // when
 
         // then
@@ -299,8 +316,10 @@ class BookServiceTest {
         // given
         Book book = new Book();
         when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.of(book));
+
         // when
         systemUnderTest.deleteBook(BOOK_ID);
+
         // then
         verify(bookRepository).deleteById(BOOK_ID);
     }
@@ -309,6 +328,7 @@ class BookServiceTest {
     void shouldNotDeleteBookBasedOnGivenId() {
         // given
         Book book = new Book();
+
         // when
 
         // then

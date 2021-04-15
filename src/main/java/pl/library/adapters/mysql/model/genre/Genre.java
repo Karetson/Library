@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 @Entity(name = "genres")
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

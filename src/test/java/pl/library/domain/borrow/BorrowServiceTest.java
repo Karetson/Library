@@ -19,7 +19,6 @@ import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -50,22 +49,23 @@ class BorrowServiceTest {
     }
 
     @Test
-    void shouldReturnListOfBorrowsBasedOnStatus() {
+    void shouldReturnAllBorrowsBasedOnStatus() {
         // given
         when(borrowRepository.findAllByStatus(any(BorrowStatus.class))).thenReturn(Optional.of(List.of(new Borrow())));
         BorrowStatus status = BorrowStatus.NOT_APPROVED;
+
         // when
         List<Borrow> allBorrowsByStatus = systemUnderTest.getAllBorrowsByStatus(status);
+
         // then
         assertThat(allBorrowsByStatus).containsExactly(new Borrow());
     }
 
     @Test
-    void shouldNotReturnListOfBorrowsBasedOnStatus() {
+    void shouldNotReturnAllBorrowsBasedOnStatus() {
         // given
-        List<Borrow> borrows = new ArrayList<>();
-        when(borrowRepository.findAll()).thenReturn(borrows);
         BorrowStatus status = BorrowStatus.NOT_APPROVED;
+
         // when
 
         // then

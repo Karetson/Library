@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.exception.BookExistsException;
@@ -26,18 +25,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-class BookServiceImplTest {
+class BookServiceTest {
     BookService systemUnderTest;
     Set<Genre> genres = new HashSet<>();
 
-    @Autowired
+    static final long BOOK_ID = 1L;
+
     @Mock
     BookRepository bookRepository;
 
-    static final long BOOK_ID = 1L;
-
     @BeforeEach
-    void beforeEachTestMethod() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
         this.systemUnderTest = new BookService(bookRepository);
         genres.add(new Genre(1L, "Comedy"));

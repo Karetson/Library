@@ -1,37 +1,30 @@
 package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
+import pl.library.adapters.mysql.model.role.Role;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
+import pl.library.domain.role.repository.RoleRepository;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        Optional<User> user = userRepository.findByEmail(email);
-
-        user.orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
-
-        return user.map(UserDetailsImpl::new).get();
-    }
+    private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User getUserById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(()
@@ -52,8 +45,12 @@ public class UserService implements UserDetailsService {
     public User registerUser(User user) throws UserExistsException {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserExistsException("User with '" + user.getEmail() + "' email already exists!");
-        } else
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            Role role = roleRepository.findByRole("USER");
+            user.setRoles(new HashSet<Role>(Collections.singletonList(role)));
             return userRepository.save(user);
+        }
     }
 
     @Transactional

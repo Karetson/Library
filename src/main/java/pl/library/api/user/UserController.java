@@ -51,7 +51,7 @@ public class UserController {
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
-                gainedUser.getRole(),
+                gainedUser.getRoles(),
                 gainedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 gainedUser.getCreatedAt());
@@ -67,7 +67,7 @@ public class UserController {
                 loggedUser.getFirstName(),
                 loggedUser.getLastName(),
                 loggedUser.getEmail(),
-                loggedUser.getRole(),
+                loggedUser.getRoles(),
                 loggedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 loggedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 loggedUser.getCreatedAt());
@@ -82,7 +82,7 @@ public class UserController {
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
-                gainedUser.getRole(),
+                gainedUser.getRoles(),
                 gainedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
                 gainedUser.getCreatedAt());

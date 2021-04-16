@@ -8,7 +8,6 @@ security:
 others:
 - logging
 - Http headers
-- testy
 - logowanie czynnosci uzytkownikow
 - paginacja
 - sortowanie

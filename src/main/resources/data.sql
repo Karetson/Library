@@ -1,10 +1,10 @@
 -- initializing users
-INSERT INTO users (created_at, email, first_name, last_name, password, role) VALUES
-    (null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "zaq1@WSX", 2),
-    (null, "email@email.com", "Anindd", "Allenaar", "zaq1@WSX", 2),
-    (null, "email1@email.com", "Itrfar", "Manalon", "zaq1@WSX", 1),
-    (null, "email2@email.com", "Enarid", "Haunfan", "zaq1@WSX", 0),
-    (null, "email3@email.com", "Garemir", "Thussth", "zaq1@WSX", 0);
+INSERT INTO users (created_at, email, first_name, last_name, password, roles) VALUES
+    (null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "zaq1@WSX", "ROLE_ADMIN"),
+    (null, "email@email.com", "Anindd", "Allenaar", "zaq1@WSX", "ROLE_ADMIN"),
+    (null, "email1@email.com", "Itrfar", "Manalon", "zaq1@WSX", "ROLE_MODERATOR"),
+    (null, "email2@email.com", "Enarid", "Haunfan", "zaq1@WSX", "ROLE_USER"),
+    (null, "email3@email.com", "Garemir", "Thussth", "zaq1@WSX", "ROLE_USER");
 
 -- initializing books
 INSERT INTO books (title, author, publisher, count, available, status,description) VALUES

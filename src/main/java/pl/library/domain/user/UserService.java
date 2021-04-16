@@ -1,6 +1,9 @@
 package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
 import pl.library.adapters.mysql.model.user.User;
@@ -11,13 +14,24 @@ import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Optional<User> user = userRepository.findByEmail(email);
+
+        user.orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
+
+        return user.map(UserDetailsImpl::new).get();
+    }
 
     public User getUserById(Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(()

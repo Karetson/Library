@@ -2,7 +2,6 @@ package pl.library.adapters.mysql.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,8 +44,7 @@ public class User {
             message = "The password must be at least 8 characters long. One uppercase letter, one lowercase letter, one number and a special character(@#$%^!&+=)")
     @Size(max = 20)
     private String password;
-    @Builder.Default
-    private UserRole role = UserRole.USER;
+    private String roles;
     @OneToMany(fetch = FetchType.LAZY)
     @OrderBy(value = "title")
     private Set<Book> favoriteBooks;

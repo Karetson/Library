@@ -16,7 +16,7 @@ public class GetUserResponse {
     String firstName;
     String lastName;
     String email;
-    UserRole role;
+    String role;
     Set<GetBookResponse> favoriteBooks;
     Set<GetBorrowResponse> borrows;
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm")

@@ -4,6 +4,10 @@ INSERT INTO roles VALUES
 (2,"MODERATOR"),
 (3, "ADMIN");
 
+INSERT INTO user_role VALUES
+(1, 3),
+(2, 1);
+
 -- initializing users
 INSERT INTO users (created_at, email, first_name, last_name, password) VALUES
     (null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "zaq1@WSX"),

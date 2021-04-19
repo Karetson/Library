@@ -62,8 +62,8 @@ public class UserService {
             throw new UserExistsException("User with '" + user.getEmail() + "' email already exists!");
         } else {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            Role role = roleRepository.findByRole("USER");
-            user.setRoles(new HashSet<Role>(Collections.singletonList(role)));
+            Role role = roleRepository.findByName("USER");
+            user.setRoles(new HashSet<>(Collections.singletonList(role)));
             return userRepository.save(user);
         }
     }

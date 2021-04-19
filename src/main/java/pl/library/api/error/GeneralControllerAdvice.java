@@ -18,12 +18,12 @@ public class GeneralControllerAdvice {
         return error;
     }
 
-//    @ExceptionHandler({MethodArgumentNotValidException.class,
-//            ConstraintViolationException.class,
-//            NullPointerException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public final ErrorResponse handleValidationException() {
-//        ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", 1);
-//        return error;
-//    }
+    @ExceptionHandler({MethodArgumentNotValidException.class,
+            ConstraintViolationException.class,
+            NullPointerException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ErrorResponse handleValidationException() {
+        ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", 1);
+        return error;
+    }
 }

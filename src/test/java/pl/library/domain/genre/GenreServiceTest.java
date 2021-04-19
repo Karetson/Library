@@ -50,7 +50,7 @@ class GenreServiceTest {
     }
 
     @Test
-    void shouldNotReturnAllGenresWhenGenresAreNotExists() {
+    void shouldNotReturnAllGenresWhenGenresAreNotFound() {
         // given
 
         // when
@@ -62,7 +62,7 @@ class GenreServiceTest {
     @Test
     void shouldAddManyGenres() {
         // given
-        Set<Genre> genres = new HashSet<>();
+        List<Genre> genres = new ArrayList<>();
         List<String> names = new ArrayList<>();
         names.add("Test");
         when(genreRepository.saveAll(genres)).thenReturn(List.of(new Genre()));
@@ -72,7 +72,7 @@ class GenreServiceTest {
         List<Genre> genreList = systemUnderTest.addManyGenres(genreRequest);
 
         // then
-        assertThat(genreList).containsExactly();
+        assertThat(genreList).isEqualTo(genres);
     }
 
     @Test

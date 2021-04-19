@@ -43,17 +43,14 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with email: '" + email + "' not found!"));
     }
 
-    public User getUserByUserName(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public User loginUser(String username, String password) {
+    public User loginUser(String email, String password) throws UserNotFoundException {
         authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
 
-        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(email);
         String token = jwtTokenUtil.generateToken(userDetails);
-        User loggedUser = userRepository.findByUsername(username);
+        User loggedUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
         loggedUser.setJwtToken(token);
 
         return loggedUser;

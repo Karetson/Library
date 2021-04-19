@@ -2,7 +2,6 @@ package pl.library.api.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +50,6 @@ public class UserController {
         User gainedUser = userService.getUserById(id);
 
         return new GetUserResponse(gainedUser.getId(),
-                gainedUser.getUsername(),
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
@@ -64,11 +62,10 @@ public class UserController {
     // user login
     @GetMapping("/sign-in")
     public LoginUserResponse getUserByEmailAndPassword(@Valid @RequestBody CreateUserRequest createUserRequest)
-            throws UserNotFoundException {
-        User loggedUser = userService.loginUser(createUserRequest.getUsername(), createUserRequest.getPassword());
+            throws Exception {
+        User loggedUser = userService.loginUser(createUserRequest.getEmail(), createUserRequest.getPassword());
 
         return new LoginUserResponse(loggedUser.getId(),
-                loggedUser.getUsername(),
                 loggedUser.getFirstName(),
                 loggedUser.getLastName(),
                 loggedUser.getEmail(),
@@ -85,7 +82,6 @@ public class UserController {
         User gainedUser = userService.getUserByEmail(email);
 
         return new GetUserResponse(gainedUser.getId(),
-                gainedUser.getUsername(),
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),

@@ -15,7 +15,6 @@ public class GetUserResponse {
     private static final long serialVersionUID = -8091879091924046844L;
 
     long id;
-    String userName;
     String firstName;
     String lastName;
     String email;

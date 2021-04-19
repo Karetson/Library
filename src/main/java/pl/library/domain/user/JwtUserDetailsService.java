@@ -1,11 +1,12 @@
 package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.user.User;
+import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ import java.util.ArrayList;
 public class JwtUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    @SneakyThrows
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserDetails loadUserByUsername(String email) {
 
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 new ArrayList<>());
     }
 }

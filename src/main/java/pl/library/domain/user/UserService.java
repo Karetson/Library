@@ -1,6 +1,9 @@
 package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.library.adapters.mysql.model.book.Book;
@@ -12,6 +15,7 @@ import pl.library.domain.role.repository.RoleRepository;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
+import pl.library.infrastructure.JwtTokenUtil;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -25,20 +29,34 @@ public class UserService {
     private final BookRepository bookRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtUserDetailsService jwtUserDetailsService;
 
     public User getUserById(Long id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(()
-                -> new UserNotFoundException("User with '" + id + "' ID not found!"));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with '" + id + "' ID not found!"));
     }
 
     public User getUserByEmail(String email) throws UserNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(()
-                -> new UserNotFoundException("User with email: '" + email + "' not found!"));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User with email: '" + email + "' not found!"));
     }
 
-    public User loginUser(String email, String password) throws UserNotFoundException {
-        return userRepository.findByEmailAndPassword(email, password).orElseThrow(()
-                -> new UserNotFoundException("User with that email and password doesn't exists!"));
+    public User getUserByUserName(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User loginUser(String username, String password) {
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+        UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
+        String token = jwtTokenUtil.generateToken(userDetails);
+        User loggedUser = userRepository.findByUsername(username);
+        loggedUser.setJwtToken(token);
+
+        return loggedUser;
     }
 
     @Transactional

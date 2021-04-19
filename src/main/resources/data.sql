@@ -4,17 +4,19 @@ INSERT INTO roles VALUES
 (2,"MODERATOR"),
 (3, "ADMIN");
 
+--initializing roles to users
 INSERT INTO user_role VALUES
 (1, 3),
-(2, 1);
+(2, 2),
+(3, 1);
 
 -- initializing users
-INSERT INTO users (created_at, email, first_name, last_name, password) VALUES
-    (null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "zaq1@WSX"),
-    (null, "email@email.com", "Anindd", "Allenaar", "zaq1@WSX"),
-    (null, "email1@email.com", "Itrfar", "Manalon", "zaq1@WSX"),
-    (null, "email2@email.com", "Enarid", "Haunfan", "zaq1@WSX"),
-    (null, "email3@email.com", "Garemir", "Thussth", "zaq1@WSX");
+INSERT INTO users (created_at, email, first_name, last_name, password, username) VALUES
+    (null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "$2a$10$4C30WdirpC1Fl2jWI6C/fuFYz5bWFvy62GHX0bu/LFI/lGToBPapu", "orzel"),     -- zaq1@WSX
+    (null, "email@email.com", "Anindd", "Allenaar", "$2a$10$qei43hXNBsr6oBm/5r5lM.HI1KJ7fZBxrormtZEJznrtiELAtGAV6", "omg"),                 -- haslo
+    (null, "email1@email.com", "Itrfar", "Manalon", "$2a$10$o0V2agGuKD56nWSqWnGpse8TDCnxnQBDFnuNkGWpPhY2BKpphS0Hi", "wtf"),                 -- password
+    (null, "email2@email.com", "Enarid", "Haunfan", "$2a$10$iG59m8lUG0H65kGJZpf62OsMI06bD6ev1ZSZHZOX4ATwQePm4ACyS", "hehe"),                -- haslo1
+    (null, "email3@email.com", "Garemir", "Thussth", "$2a$10$vY27E81t2DP3nKCVsfhQZep5WdgEyn4z2bfX3pz585jPTSay7c5ne", "why");                -- password1
 
 -- initializing books
 INSERT INTO books (title, author, publisher, count, available, status, description) VALUES

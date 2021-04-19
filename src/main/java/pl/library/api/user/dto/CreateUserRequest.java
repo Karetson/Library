@@ -5,15 +5,15 @@ import pl.library.adapters.mysql.model.user.User;
 
 @Value
 public class CreateUserRequest {
-     String firstName;
-     String lastName;
+     private static final long serialVersionUID = 5926468583005150707L;
+
+     String username;
      String email;
      String password;
 
      public User toUser() {
           return User.builder()
-                  .firstName(this.firstName)
-                  .lastName(this.lastName)
+                  .username(this.username)
                   .email(this.email)
                   .password(this.password)
                   .build();

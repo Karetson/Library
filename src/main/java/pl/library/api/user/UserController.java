@@ -2,6 +2,7 @@ package pl.library.api.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import pl.library.api.user.dto.AddFavoriteResponse;
 import pl.library.api.user.dto.CreateUserRequest;
 import pl.library.api.user.dto.CreateUserResponse;
 import pl.library.api.user.dto.GetUserResponse;
+import pl.library.api.user.dto.LoginUserResponse;
 import pl.library.api.user.dto.UpdateUserRequest;
 import pl.library.domain.user.UserService;
 import pl.library.domain.user.exception.UserExistsException;
@@ -36,7 +38,8 @@ public class UserController {
     // user registration
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateUserResponse addUser(@Valid @RequestBody CreateUserRequest createUserRequest) throws UserExistsException {
+    public CreateUserResponse addUser(@Valid @RequestBody CreateUserRequest createUserRequest)
+            throws UserExistsException {
         User addedUser = userService.registerUser(createUserRequest.toUser());
 
         return new CreateUserResponse(addedUser.getId());
@@ -48,6 +51,7 @@ public class UserController {
         User gainedUser = userService.getUserById(id);
 
         return new GetUserResponse(gainedUser.getId(),
+                gainedUser.getUsername(),
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
@@ -59,18 +63,20 @@ public class UserController {
 
     // user login
     @GetMapping("/sign-in")
-    public GetUserResponse getUserByEmailAndPassword(@RequestParam String email,
-                                                     @RequestParam String password) throws UserNotFoundException {
-        User loggedUser = userService.loginUser(email, password);
+    public LoginUserResponse getUserByEmailAndPassword(@Valid @RequestBody CreateUserRequest createUserRequest)
+            throws UserNotFoundException {
+        User loggedUser = userService.loginUser(createUserRequest.getUsername(), createUserRequest.getPassword());
 
-        return new GetUserResponse(loggedUser.getId(),
+        return new LoginUserResponse(loggedUser.getId(),
+                loggedUser.getUsername(),
                 loggedUser.getFirstName(),
                 loggedUser.getLastName(),
                 loggedUser.getEmail(),
                 loggedUser.getRoles(),
                 loggedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
                 loggedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
-                loggedUser.getCreatedAt());
+                loggedUser.getCreatedAt(),
+                loggedUser.getJwtToken());
     }
 
     // searching for a user by email
@@ -79,6 +85,7 @@ public class UserController {
         User gainedUser = userService.getUserByEmail(email);
 
         return new GetUserResponse(gainedUser.getId(),
+                gainedUser.getUsername(),
                 gainedUser.getFirstName(),
                 gainedUser.getLastName(),
                 gainedUser.getEmail(),
@@ -92,7 +99,8 @@ public class UserController {
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse updateUser(@PathVariable Long id,
-                                         @Valid @RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UserExistsException {
+                                         @Valid @RequestBody UpdateUserRequest updateUserRequest)
+            throws UserNotFoundException, UserExistsException {
         User updatedUser = userService.updateUserProfile(id, updateUserRequest.toUser());
 
         return new CreateUserResponse(updatedUser.getId());

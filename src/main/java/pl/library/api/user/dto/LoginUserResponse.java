@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Value
-public class GetUserResponse {
+public class LoginUserResponse {
     private static final long serialVersionUID = -8091879091924046844L;
 
     long id;
@@ -25,4 +25,5 @@ public class GetUserResponse {
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     LocalDateTime createdAt;
+    private final String jwtToken;
 }

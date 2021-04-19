@@ -1,5 +1,7 @@
 package pl.library.adapters.mysql.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +13,7 @@ import pl.library.adapters.mysql.model.borrow.Borrow;
 import pl.library.adapters.mysql.model.role.Role;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -39,9 +42,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
+    private String username;
     @Size(max = 25)
     private String firstName;
-    @NotBlank
     @Size(max = 25)
     private String lastName;
     @Email  // default max size 80
@@ -50,7 +53,7 @@ public class User {
             message = "The password must be at least 8 characters long. One uppercase letter, one lowercase letter, one number and a special character(@#$%^!&+=)")
     @Length(min = 8) // default bCrypt size 60
     private String password;
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -61,4 +64,5 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Borrow> borrows;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private String jwtToken;
 }

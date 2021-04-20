@@ -61,7 +61,7 @@ public class UserController {
     }
 
     // user login
-    @GetMapping("/sign-in")
+    @PostMapping("/sign-in")
     public LoginUserResponse getUserByEmailAndPassword(@Valid @RequestBody CreateUserRequest createUserRequest)
             throws Exception {
         User loggedUser = userService.loginUser(createUserRequest.getEmail(), createUserRequest.getPassword());
@@ -79,7 +79,6 @@ public class UserController {
 
     // searching for a user by email
     @GetMapping("search")
-    @PreAuthorize("hasRole('ADMIN')")
     public GetUserResponse getUserByEmail(@RequestParam String email) throws UserNotFoundException {
         User gainedUser = userService.getUserByEmail(email);
 

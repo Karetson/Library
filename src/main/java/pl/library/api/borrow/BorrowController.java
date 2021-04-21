@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/borrow")
+@RequestMapping("/api/borrow/auth")
 public class BorrowController {
     private final BorrowService borrowService;
 

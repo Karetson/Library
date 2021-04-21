@@ -8,9 +8,6 @@ import pl.library.api.error.ErrorResponse;
 import pl.library.domain.genre.exception.GenreExistsException;
 import pl.library.domain.genre.exception.GenreNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestControllerAdvice
 public class GenreControllerAdvice {
     @ExceptionHandler(GenreNotFoundException.class)

@@ -78,7 +78,7 @@ public class UserController {
     }
 
     // searching for a user by email
-    @GetMapping("search")
+    @GetMapping("/auth/search")
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public GetUserResponse getUserByEmail(@RequestParam String email) throws UserNotFoundException {
         User gainedUser = userService.getUserByEmail(email);
@@ -94,7 +94,7 @@ public class UserController {
     }
 
     // editing a user's profile
-    @PutMapping("/update/{id}")
+    @PutMapping("/auth/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateUserResponse updateUser(@PathVariable Long id,
                                          @Valid @RequestBody UpdateUserRequest updateUserRequest)
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     // adding a user's favorite book
-    @PutMapping("/favorite/add/{user_id}/{book_id}")
+    @PutMapping("/auth/favorite/add/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.CREATED)
     public AddFavoriteResponse addFavoriteBookToUser(@PathVariable Long user_id,
                                                      @PathVariable Long book_id) throws UserNotFoundException {
@@ -116,7 +116,7 @@ public class UserController {
     }
 
     // deleting user favorite book
-    @DeleteMapping("/favorite/subtract/{user_id}/{book_id}")
+    @DeleteMapping("/auth/favorite/subtract/{user_id}/{book_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void subtractFavoriteBookFromUser(@PathVariable Long user_id,
                                              @PathVariable Long book_id) throws UserNotFoundException {

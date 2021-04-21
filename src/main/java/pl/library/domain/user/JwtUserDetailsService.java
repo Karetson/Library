@@ -2,18 +2,14 @@ package pl.library.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import pl.library.adapters.mysql.model.role.Role;
 import pl.library.adapters.mysql.model.user.User;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 

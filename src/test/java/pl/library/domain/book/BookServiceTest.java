@@ -11,8 +11,8 @@ import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.domain.book.exception.BookExistsException;
 import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
+import pl.library.domain.genre.repository.GenreRepository;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,20 +25,10 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 class BookServiceTest {
-    BookService systemUnderTest;
-    Set<Genre> genres = new HashSet<>();
     static final long ID = 1L;
 
-    @Mock
-    BookRepository bookRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.initMocks(this);
-        this.systemUnderTest = new BookService(bookRepository);
-        genres.add(new Genre(1L, "Comedy"));
-    }
-
+    BookService systemUnderTest;
+    Set<Genre> genres = Set.of(new Genre(1L, "Comedy"));
     Book book = new Book(ID,
             "title",
             "author",
@@ -48,6 +38,18 @@ class BookServiceTest {
             8,
             true,
             "desc");
+
+    @Mock
+    BookRepository bookRepository;
+    @Mock
+    GenreRepository genreRepository;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        this.systemUnderTest = new BookService(bookRepository, genreRepository);
+    }
+
 
     @Test
     void shouldReturnAllBooksBasedOnPhrase() {
@@ -125,10 +127,11 @@ class BookServiceTest {
     void shouldReturnListOfBooksBasedOnGenres() {
         // given
         Genre genre = new Genre();
+        when(genreRepository.findById(any(Long.class))).thenReturn(Optional.of(genre));
         when(bookRepository.findAllByGenres(any(Genre.class))).thenReturn(Optional.of(List.of(new Book())));
 
         // when
-        List<Book> allBooksByGenres = systemUnderTest.getAllBooksByGenres(genre);
+        List<Book> allBooksByGenres = systemUnderTest.getAllBooksByGenres(ID);
 
         // then
         assertThat(allBooksByGenres).containsExactly(new Book());
@@ -138,11 +141,12 @@ class BookServiceTest {
     void shouldNotReturnListOfBooksBasedOnGenresWhenBookIsNotFound() {
         // given
         Genre genre = new Genre();
+        when(genreRepository.findById(any(Long.class))).thenReturn(Optional.of(genre));
 
         // when
 
         // then
-        assertThatThrownBy(() -> systemUnderTest.getAllBooksByGenres(genre)).isInstanceOf(BookNotFoundException.class);
+        assertThatThrownBy(() -> systemUnderTest.getAllBooksByGenres(ID)).isInstanceOf(BookNotFoundException.class);
     }
 
     @Test
@@ -285,9 +289,8 @@ class BookServiceTest {
         // given
         Book book = new Book();
 
-        // when
-
         // then
+
         assertThatThrownBy(() -> systemUnderTest.updateBook(ID, book)).isInstanceOf(BookNotFoundException.class);
     }
 

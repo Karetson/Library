@@ -226,5 +226,38 @@ class BorrowServiceTest {
         verify(borrowRepository).deleteById(ID);
     }
 
+    @Test
+    void shouldNotDeleteBorrowBasedOnIDWhenBorrowIsNotFound() {
+        // given
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
 
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.deleteBorrow(ID)).isInstanceOf(BorrowNotFoundException.class);
+    }
+
+    @Test
+    void shouldNotDeleteBorrowBasedOnIdWhenBookIsNotFound() {
+        // given
+        when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.deleteBorrow(ID)).isInstanceOf(BookNotFoundException.class);
+    }
+
+    @Test
+    void shouldNotDeleteBorrowBasedOnIdWhenBorrowStatusIsNotEqualToNotApproved() {
+        // given
+        borrow.setStatus(BorrowStatus.APPROVED);
+        when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.deleteBorrow(ID)).isInstanceOf(BorrowStatusException.class);
+    }
 }

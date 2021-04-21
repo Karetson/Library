@@ -2,7 +2,6 @@ package pl.library.infrastructure;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +9,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import pl.library.domain.user.JwtUserDetailsService;
-import pl.library.domain.user.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -41,11 +39,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }
-        }
-        else if (requestTokenHeader == null){
+        } else if (requestTokenHeader == null) {
             logger.info("Does not provide Authorization Header");
-        }
-        else if (!requestTokenHeader.startsWith("Bearer ")){
+        } else if (!requestTokenHeader.startsWith("Bearer ")) {
             logger.warn("JWT Token does not begin with Bearer");
         }
 

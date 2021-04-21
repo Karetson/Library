@@ -45,21 +45,6 @@ public class UserController {
         return new CreateUserResponse(addedUser.getId());
     }
 
-    // searching for a user by id
-    @GetMapping("/search/{id}")
-    public GetUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
-        User gainedUser = userService.getUserById(id);
-
-        return new GetUserResponse(gainedUser.getId(),
-                gainedUser.getFirstName(),
-                gainedUser.getLastName(),
-                gainedUser.getEmail(),
-                gainedUser.getRoles(),
-                gainedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
-                gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
-                gainedUser.getCreatedAt());
-    }
-
     // user login
     @PostMapping("/sign-in")
     public LoginUserResponse getUserByEmailAndPassword(@Valid @RequestBody CreateUserRequest createUserRequest)
@@ -77,8 +62,24 @@ public class UserController {
                 loggedUser.getJwtToken());
     }
 
+    // searching for a user by id
+    @GetMapping("/search/{id}")
+    public GetUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
+        User gainedUser = userService.getUserById(id);
+
+        return new GetUserResponse(gainedUser.getId(),
+                gainedUser.getFirstName(),
+                gainedUser.getLastName(),
+                gainedUser.getEmail(),
+                gainedUser.getRoles(),
+                gainedUser.getFavoriteBooks().stream().map(GetBookResponse::new).collect(Collectors.toSet()),
+                gainedUser.getBorrows().stream().map(GetBorrowResponse::new).collect(Collectors.toSet()),
+                gainedUser.getCreatedAt());
+    }
+
     // searching for a user by email
     @GetMapping("search")
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public GetUserResponse getUserByEmail(@RequestParam String email) throws UserNotFoundException {
         User gainedUser = userService.getUserByEmail(email);
 

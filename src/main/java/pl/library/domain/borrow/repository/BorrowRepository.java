@@ -10,6 +10,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BorrowRepository extends JpaRepository<Borrow, Long> {
-    Optional<List<Borrow>> findAllByStatus(BorrowStatus status);
     Boolean existsByUserAndBook(User user, Book book);
 }

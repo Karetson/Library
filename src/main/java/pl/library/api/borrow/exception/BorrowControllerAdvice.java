@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.library.api.error.ErrorResponse;
 import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
+import pl.library.domain.borrow.exception.BorrowStatusException;
 
 @RestControllerAdvice
 public class BorrowControllerAdvice {
@@ -23,6 +24,14 @@ public class BorrowControllerAdvice {
     public final ErrorResponse handleBorrowExistsException(BorrowExistsException exception) {
         String message = exception.getLocalizedMessage();
         ErrorResponse error = new ErrorResponse(message, 4);
+        return error;
+    }
+
+    @ExceptionHandler(BorrowStatusException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public final ErrorResponse handleBorrowStatusException(BorrowStatusException exception) {
+        String message = exception.getLocalizedMessage();
+        ErrorResponse error = new ErrorResponse(message, 5);
         return error;
     }
 }

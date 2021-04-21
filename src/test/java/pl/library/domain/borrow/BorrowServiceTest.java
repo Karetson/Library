@@ -16,18 +16,19 @@ import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
+import pl.library.domain.borrow.exception.BorrowStatusException;
 import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,6 +48,8 @@ class BorrowServiceTest {
 
     BorrowService systemUnderTest;
     Set<Role> roles = new HashSet<>();
+    Set<Genre> genres = new HashSet<>();
+    BorrowStatus status = BorrowStatus.NOT_APPROVED;
 
     static final Long ID = 1L;
     User user = new User(ID,
@@ -59,57 +62,30 @@ class BorrowServiceTest {
             null,
             null,
             null);
-
-    @Test
-    void shouldReturnAllBorrowsBasedOnStatus() {
-        // given
-        when(borrowRepository.findAllByStatus(any(BorrowStatus.class))).thenReturn(Optional.of(List.of(new Borrow())));
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        // when
-        List<Borrow> allBorrowsByStatus = systemUnderTest.getAllBorrowsByStatus(status);
-
-        // then
-        assertThat(allBorrowsByStatus).containsExactly(new Borrow());
-    }
-
-    @Test
-    void shouldNotReturnAllBorrowsBasedOnStatusWhenBorrowIsNotFound() {
-        // given
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        // when
-
-        // then
-        assertThatThrownBy(() -> systemUnderTest.getAllBorrowsByStatus(status)).isInstanceOf(BorrowNotFoundException.class);
-    }
+    Book book = new Book(ID,
+            "title",
+            "author",
+            "publisher",
+            genres,
+            5,
+            5,
+            true,
+            "desc");
+    Borrow borrow = new Borrow(ID,
+            user,
+            book,
+            null,
+            null,
+            null,
+            status);
 
     @Test
     void shouldCreateBorrow() throws UserNotFoundException {
         // given
-        Set<Genre> genres = new HashSet<>();
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        Book book = new Book(ID,
-                "title",
-                "author",
-                "publisher",
-                genres,
-                5,
-                5,
-                true,
-                "desc");
-        Borrow borrow = new Borrow(ID,
-                user,
-                book,
-                null,
-                null,
-                null,
-                status);
-
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
         when(borrowRepository.save(any(Borrow.class))).thenReturn(borrow);
+
         // when
         Borrow createdBorrow = systemUnderTest.addBorrow(borrow);
 
@@ -130,6 +106,7 @@ class BorrowServiceTest {
                 null,
                 null,
                 status);
+
         // when
 
         // then
@@ -139,27 +116,8 @@ class BorrowServiceTest {
     @Test
     void shouldNotCreateBorrowWhenUserIsNotFound() {
         // given
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-        Set<Genre> genres = new HashSet<>();
-        User user = new User();
-        Book book = new Book(ID,
-                "title",
-                "author",
-                "publisher",
-                genres,
-                5,
-                5,
-                true,
-                "desc");
-        Borrow borrow = new Borrow(ID,
-                user,
-                book,
-                null,
-                null,
-                null,
-                status);
-
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
+
         // when
 
         // then
@@ -169,29 +127,10 @@ class BorrowServiceTest {
     @Test
     void shouldNotCreateBorrowWhenBorrowAlreadyExists() {
         // given
-        Set<Genre> genres = new HashSet<>();
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        Book book = new Book(ID,
-                "title",
-                "author",
-                "publisher",
-                genres,
-                5,
-                5,
-                true,
-                "desc");
-        Borrow borrow = new Borrow(ID,
-                user,
-                book,
-                null,
-                null,
-                null,
-                status);
-
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
         when(borrowRepository.existsByUserAndBook(any(User.class), any(Book.class))).thenReturn(true);
+
         // when
 
         // then
@@ -201,28 +140,10 @@ class BorrowServiceTest {
     @Test
     void shouldNotCreateBorrowWhenBookAvailableLTE0() {
         // given
-        Set<Genre> genres = new HashSet<>();
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        Book book = new Book(ID,
-                "title",
-                "author",
-                "publisher",
-                genres,
-                5,
-                0,
-                true,
-                "desc");
-        Borrow borrow = new Borrow(ID,
-                user,
-                book,
-                null,
-                null,
-                null,
-                status);
-
+        book.setAvailable(0);
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+
         // when
 
         // then
@@ -232,26 +153,7 @@ class BorrowServiceTest {
     @Test
     void shouldChangeBorrowStatusWhenStatusChangedToApproved() {
         // given
-        Set<Genre> genres = new HashSet<>();
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        Book book = new Book(ID,
-                "title",
-                "author",
-                "publisher",
-                genres,
-                5,
-                0,
-                true,
-                "desc");
-        Borrow borrow = new Borrow(ID,
-                user,
-                book,
-                null,
-                null,
-                null,
-                status);
-
+        book.setAvailable(0);
         when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
         when(borrowRepository.save(any(Borrow.class))).thenReturn(borrow);
@@ -266,26 +168,7 @@ class BorrowServiceTest {
     @Test
     void shouldChangeBorrowStatusWhenStatusChangedToDevoted() {
         // given
-        Set<Genre> genres = new HashSet<>();
-        BorrowStatus status = BorrowStatus.NOT_APPROVED;
-
-        Book book = new Book(ID,
-                "title",
-                "author",
-                "publisher",
-                genres,
-                5,
-                0,
-                true,
-                "desc");
-        Borrow borrow = new Borrow(ID,
-                user,
-                book,
-                null,
-                null,
-                null,
-                status);
-
+        book.setAvailable(0);
         when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
         when(borrowRepository.save(any(Borrow.class))).thenReturn(borrow);
@@ -300,7 +183,6 @@ class BorrowServiceTest {
     @Test
     void shouldNotChangeBorrowStatusWhenBookIsNotFound() {
         // given
-        Set<Genre> genres = new HashSet<>();
         BorrowStatus status = BorrowStatus.NOT_APPROVED;
 
         Book book = new Book();
@@ -313,7 +195,7 @@ class BorrowServiceTest {
                 status);
 
         when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
-        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(new Book()));
 
         // when
 
@@ -330,4 +212,19 @@ class BorrowServiceTest {
         // then
         assertThatThrownBy(() -> systemUnderTest.changeBorrowStatus(ID, BorrowStatus.APPROVED)).isInstanceOf(BorrowNotFoundException.class);
     }
+
+    @Test
+    void shouldDeleteBorrowBasedOnId() throws BorrowStatusException {
+        // given
+        when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
+
+        // when
+        systemUnderTest.deleteBorrow(ID);
+
+        // then
+        verify(borrowRepository).deleteById(ID);
+    }
+
+
 }

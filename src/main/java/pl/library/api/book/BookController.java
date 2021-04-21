@@ -2,6 +2,7 @@ package pl.library.api.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class BookController {
     // creating a book
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public CreateBookResponse addBook(@Valid @RequestBody BookRequest bookRequest) {
         Book gainedBook = bookService.addBook(bookRequest.toBook());
         return new CreateBookResponse(gainedBook.getId());
@@ -76,6 +78,7 @@ public class BookController {
     // updating book
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public CreateBookResponse updateBook(@PathVariable Long id,
                                          @Valid @RequestBody BookRequest bookRequest) {
         Book updatedBook = bookService.updateBook(id, bookRequest.toBook());
@@ -85,6 +88,7 @@ public class BookController {
     // removing the book
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public void deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
     }

@@ -9,6 +9,7 @@ import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
+import pl.library.domain.borrow.exception.BorrowStatusException;
 import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
@@ -50,18 +51,13 @@ public class BorrowService {
         }
     }
 
-    public List<Borrow> getAllBorrowsByStatus(BorrowStatus status) {
-        return borrowRepository.findAllByStatus(status).orElseThrow(()
-                -> new BorrowNotFoundException("Borrow with status: '" + status + "' not found!"));
-    }
-
     @Transactional
     public Borrow changeBorrowStatus(Long id, BorrowStatus status) {
         Borrow borrow = borrowRepository.findById(id).orElseThrow(()
                 -> new BorrowNotFoundException("Borrow with " + id + " ID not found!"));
         Long bookId = borrow.getBook().getId();
         Book book = bookRepository.findById(bookId).orElseThrow(()
-                -> new BookNotFoundException("Boook with " + bookId + " ID not found!"));
+                -> new BookNotFoundException("Book with " + bookId + " ID not found!"));
 
         if (status.equals(BorrowStatus.DEVOTED)) {
             borrow.setStatus(status);
@@ -77,5 +73,22 @@ public class BorrowService {
         }
 
         return borrowRepository.save(borrow);
+    }
+
+    @Transactional
+    public void deleteBorrow(Long id) throws BorrowStatusException {
+        Borrow borrow = borrowRepository.findById(id).orElseThrow(()
+                -> new BorrowNotFoundException("Borrow with " + id + " ID not found!"));
+        Long bookId = borrow.getBook().getId();
+        Book book = bookRepository.findById(bookId).orElseThrow(()
+                -> new BookNotFoundException("Book with " + bookId + " ID not found!"));
+
+        if (borrow.getStatus().equals(BorrowStatus.NOT_APPROVED)) {
+            book.setAvailable(book.getAvailable() + 1);
+            borrowRepository.deleteById(id);
+        } else {
+            throw new BorrowStatusException("You can cancel only not approved borrows");
+        }
+
     }
 }

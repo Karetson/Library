@@ -12,11 +12,11 @@ INSERT INTO user_role VALUES
 
 -- initializing users
 INSERT INTO users (created_at, email, first_name, last_name, password) VALUES
-(null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "$2a$10$4C30WdirpC1Fl2jWI6C/fuFYz5bWFvy62GHX0bu/LFI/lGToBPapu"),     -- zaq1@WSX
-(null, "email@email.com", "Anindd", "Allenaar", "$2a$10$qei43hXNBsr6oBm/5r5lM.HI1KJ7fZBxrormtZEJznrtiELAtGAV6"),                 -- haslo
-(null, "email1@email.com", "Itrfar", "Manalon", "$2a$10$o0V2agGuKD56nWSqWnGpse8TDCnxnQBDFnuNkGWpPhY2BKpphS0Hi"),                 -- password
+(null, "orzeleagle122@gmail.com", "Patryk", "Orzelowski", "$2a$10$4C30WdirpC1Fl2jWI6C/fuFYz5bWFvy62GHX0bu/LFI/lGToBPapu"),      -- zaq1@WSX
+(null, "email@email.com", "Anindd", "Allenaar", "$2a$10$qei43hXNBsr6oBm/5r5lM.HI1KJ7fZBxrormtZEJznrtiELAtGAV6"),                -- haslo
+(null, "email1@email.com", "Itrfar", "Manalon", "$2a$10$o0V2agGuKD56nWSqWnGpse8TDCnxnQBDFnuNkGWpPhY2BKpphS0Hi"),                -- password
 (null, "email2@email.com", "Enarid", "Haunfan", "$2a$10$iG59m8lUG0H65kGJZpf62OsMI06bD6ev1ZSZHZOX4ATwQePm4ACyS"),                -- haslo1
-(null, "email3@email.com", "Garemir", "Thussth", "$2a$10$vY27E81t2DP3nKCVsfhQZep5WdgEyn4z2bfX3pz585jPTSay7c5ne");                -- password1
+(null, "email3@email.com", "Garemir", "Thussth", "$2a$10$vY27E81t2DP3nKCVsfhQZep5WdgEyn4z2bfX3pz585jPTSay7c5ne");               -- password1
 
 -- initializing books
 INSERT INTO books (title, author, publisher, count, available, status, description) VALUES

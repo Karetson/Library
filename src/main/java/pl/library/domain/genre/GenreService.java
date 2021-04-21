@@ -20,6 +20,16 @@ public class GenreService {
 
     @Transactional
     public List<Genre> addManyGenres(CreateGenreRequest genresRequest) {
+//        try {
+//            Set<Genre> genres = genresRequest.getGenres().stream()
+//                    .filter(s -> !genreRepository.existsByName(getAllGenres().toString()))
+//                    .map(genre -> new Genre(null, genre)).collect(Collectors.toSet());
+//
+//            return genreRepository.saveAll(genres);
+//        } catch (DataIntegrityViolationException exception) {
+//            throw new GenreExistsException("These genres already exists!");
+//        }
+
         Set<Genre> genres = new HashSet<>();
 
         for (String e : genresRequest.getGenres()) {

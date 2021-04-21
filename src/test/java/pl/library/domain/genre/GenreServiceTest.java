@@ -114,8 +114,8 @@ class GenreServiceTest {
         ids.add(ID);
         CreateGenreRequest genreRequest = new CreateGenreRequest(ids, null);
 
-        // when
 
+        // when
         // then
         assertThatThrownBy(() -> systemUnderTest.deleteManyGenres(genreRequest)).isInstanceOf(GenreNotFoundException.class);
     }

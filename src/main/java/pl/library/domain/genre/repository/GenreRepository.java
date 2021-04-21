@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     Boolean existsByName(String name);
+
     @Query(value = "SELECT * FROM genres", nativeQuery = true)
     Optional<List<Genre>> getAll();
 }

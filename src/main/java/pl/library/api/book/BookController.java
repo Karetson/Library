@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.book.Book;
-import pl.library.adapters.mysql.model.genre.Genre;
 import pl.library.api.book.dto.BookRequest;
 import pl.library.api.book.dto.CreateBookResponse;
 import pl.library.api.book.dto.GetBookResponse;
@@ -31,7 +30,7 @@ public class BookController {
     private final BookService bookService;
 
     // creating a book
-    @PostMapping("/add")
+    @PostMapping("/auth/add")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public CreateBookResponse addBook(@Valid @RequestBody BookRequest bookRequest) {
@@ -62,9 +61,9 @@ public class BookController {
     }
 
     // searching for all books by genre
-    @GetMapping("/search/genre")
-    public List<GetBookResponse> getAllBooksByGenre(@Valid @RequestBody Genre genre) {
-        List<Book> gainedBooks = bookService.getAllBooksByGenres(genre);
+    @GetMapping("/{id}")
+    public List<GetBookResponse> getAllBooksByGenre(@PathVariable Long id) {
+        List<Book> gainedBooks = bookService.getAllBooksByGenres(id);
         return gainedBooks.stream().map(GetBookResponse::new).collect(Collectors.toList());
     }
 
@@ -76,7 +75,7 @@ public class BookController {
     }
 
     // updating book
-    @PutMapping("/update/{id}")
+    @PutMapping("/auth/update/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public CreateBookResponse updateBook(@PathVariable Long id,
@@ -86,7 +85,7 @@ public class BookController {
     }
 
     // removing the book
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/auth/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     public void deleteBook(@PathVariable Long id) {

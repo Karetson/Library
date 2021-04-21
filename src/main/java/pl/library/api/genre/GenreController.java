@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.library.adapters.mysql.model.genre.Genre;
-import pl.library.api.genre.dto.CreateGenreResponse;
 import pl.library.api.genre.dto.CreateGenreRequest;
+import pl.library.api.genre.dto.CreateGenreResponse;
 import pl.library.api.genre.dto.GetGenreResponse;
 import pl.library.domain.genre.GenreService;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/bookGenre")
+@RequestMapping("api/bookGenre/auth")
 @RequiredArgsConstructor
 public class GenreController {
     private final GenreService genreService;

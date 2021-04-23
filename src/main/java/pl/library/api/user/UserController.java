@@ -63,7 +63,7 @@ public class UserController {
     }
 
     // searching for a user by id
-    @GetMapping("/search/{id}")
+    @GetMapping("/auth/search/{id}")
     public GetUserResponse getUserById(@PathVariable Long id) throws UserNotFoundException {
         User gainedUser = userService.getUserById(id);
 

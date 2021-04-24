@@ -16,12 +16,12 @@ const BorrowedStatusPage = ({
   borrows = [],
   showErrors,
   clean,
-  role,
+  rules,
 }) => {
   const [searchUser, setSearchUser] = useState("");
   useEffect(() => {
     return () => clean();
-  }, [borrows]);
+  }, []);
 
   const handleSearchUser = (e) => {
     setSearchUser(e.target.value);
@@ -34,14 +34,16 @@ const BorrowedStatusPage = ({
     setSearchUser("");
   };
 
-  const isAdmin = role === "MODERATOR" || role === "ADMIN";
+  const isAdmin =
+    rules?.toString() === "MODERATOR" || rules?.toString() === "ADMIN";
   if (!isAdmin) {
     return <Redirect to={routers.home} />;
   }
 
   return (
     <>
-      <Heading>Search user by email</Heading>
+      <Heading>Change borrow book status</Heading>
+      <h2>Search user by email</h2>
       <form onSubmit={handleSearch}>
         <Input onChange={handleSearchUser} value={searchUser} type="email" />
         {searchUser.length > 0 && <Button>Search</Button>}
@@ -65,13 +67,14 @@ BorrowedStatusPage.propTypes = {
   search: PropTypes.func.isRequired,
   showErrors: PropTypes.any,
   clean: PropTypes.func.isRequired,
-  role: PropTypes.string,
+  rules: PropTypes.array,
 };
 
 const mapStateToProps = ({searchUsers, showErrors, user}) => {
   const {borrows} = searchUsers;
   const {role} = user.userinfo;
-  return {searchUsers, borrows, showErrors, role};
+  const rules = role?.map((item) => item.name);
+  return {searchUsers, borrows, showErrors, rules};
 };
 
 const mapDispatchToProps = (dispatch) => {

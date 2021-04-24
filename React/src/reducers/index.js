@@ -45,11 +45,18 @@ const initialStore = {
   searchUsers: [],
   userBorrow: [],
   userFavorites: [],
+  registerSuccess: false,
   user: {
     userinfo: {
       id: 0,
       favoriteBooks: [],
       borrows: [],
+      role: [
+        {
+          id: 0,
+          name: "GUEST",
+        },
+      ],
     },
     userToken: null,
     isLogin: false,
@@ -133,7 +140,6 @@ export const reducer = (state = initialStore, action) => {
   }
 
   if (action.type === ADD_GENRE) {
-    // console.log(action.payload);
     return {
       ...state,
       genreNews: [...state.genreNews, action.payload.genre],
@@ -218,7 +224,6 @@ export const reducer = (state = initialStore, action) => {
     };
   }
   if (action.type === FETCH_BOOKS_SUCCESS) {
-    // console.log(action.payload.data);
     return {
       ...state,
       books: action.payload.data,
@@ -226,7 +231,6 @@ export const reducer = (state = initialStore, action) => {
     };
   }
   if (action.type === GET_GENRE_SUCCESS) {
-    // console.log(action.payload.data);
     return {
       ...state,
       genreList: action.payload.data,
@@ -234,22 +238,27 @@ export const reducer = (state = initialStore, action) => {
     };
   }
   if (action.type === AUTH_SUCCESS) {
-    localStorage.setItem("loginToken", action.payload.data.id);
+    localStorage.setItem("loginToken", action.payload.data.jwtToken);
+    localStorage.setItem("id", action.payload.data.id);
     return {
       ...state,
       succesMessage: `Welcome ${action.payload.data.firstName}!`,
       user: {
         userinfo: action.payload.data,
-        userToken: action.payload.data.id,
+        userToken: action.payload.data.jwtToken,
         isLogin: true,
       },
     };
   }
   if (action.type === LOG_OUT) {
     localStorage.removeItem("loginToken");
+    localStorage.removeItem("id");
     return {
       ...state,
       succesMessage: `You have been logged out!`,
+      searchUsers: [],
+      userBorrow: [],
+      userFavorites: [],
       user: {
         userinfo: {
           id: 0,
@@ -275,15 +284,15 @@ export const reducer = (state = initialStore, action) => {
     };
   }
   if (action.type === REGISTER_SUCCESS) {
-    localStorage.setItem("loginToken", action.payload.data.token);
     return {
       ...state,
       succesMessage: `Account created on email  ${action.payload.data.email}!`,
-      user: {
-        userinfo: action.payload.data,
-        userToken: action.payload.data.id,
-        isLogin: true,
-      },
+      registerSuccess: true,
+      // user: {
+      //   userinfo: action.payload.data,
+      //   userToken: action.payload.data.id,
+      //   isLogin: true,
+      // },
     };
   }
 

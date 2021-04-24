@@ -31,10 +31,17 @@ const GenresDiv = styled.div`
 const InputBook = styled(Input)`
   width: 400px;
   margin: 10px;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `;
 const TextareaBook = styled(Textarea)`
   width: 600px;
   margin: 10px;
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 const BookAdd = ({
@@ -44,7 +51,7 @@ const BookAdd = ({
   removeasadd,
   showErrors,
   clean,
-  role,
+  rules,
 }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -88,7 +95,8 @@ const BookAdd = ({
     fetch();
   };
 
-  const isAdmin = role === "MODERATOR" || role === "ADMIN";
+  const isAdmin =
+    rules?.toString() === "MODERATOR" || rules?.toString() === "ADMIN";
   if (!isAdmin) {
     return <Redirect to={routers.home} />;
   }
@@ -179,12 +187,13 @@ BookAdd.propTypes = {
   genreList: PropTypes.array,
   clean: PropTypes.func.isRequired,
   showErrors: PropTypes.node,
-  role: PropTypes.string,
+  rules: PropTypes.array,
 };
 
 const mapStateToProps = ({genreList, showErrors, user}) => {
   const {role} = user.userinfo;
-  return {genreList, showErrors, role};
+  const rules = role?.map((item) => item.name);
+  return {genreList, showErrors, rules};
 };
 
 const mapDispathToProps = (dispatch) => {

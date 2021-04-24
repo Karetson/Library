@@ -31,13 +31,13 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Title must not be empty")
+    @NotBlank
     @Size(max = 200)
     private String title;
-    @NotBlank(message = "Author must not be empty")
+    @NotBlank
     @Size(max = 200)
     private String author;
-    @NotBlank(message = "Publisher must not be empty")
+    @NotBlank
     @Size(max = 200)
     private String publisher;
     @ManyToMany(fetch = FetchType.LAZY)

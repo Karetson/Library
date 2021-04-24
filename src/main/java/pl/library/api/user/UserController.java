@@ -20,6 +20,7 @@ import pl.library.api.user.dto.AddFavoriteResponse;
 import pl.library.api.user.dto.CreateUserRequest;
 import pl.library.api.user.dto.CreateUserResponse;
 import pl.library.api.user.dto.GetUserResponse;
+import pl.library.api.user.dto.LoginUserRequest;
 import pl.library.api.user.dto.LoginUserResponse;
 import pl.library.api.user.dto.UpdateUserRequest;
 import pl.library.domain.user.UserService;
@@ -47,9 +48,9 @@ public class UserController {
 
     // user login
     @PostMapping("/sign-in")
-    public LoginUserResponse getUserByEmailAndPassword(@Valid @RequestBody CreateUserRequest createUserRequest)
+    public LoginUserResponse getUserByEmailAndPassword(@Valid @RequestBody LoginUserRequest loginUserRequest)
             throws Exception {
-        User loggedUser = userService.loginUser(createUserRequest.getEmail(), createUserRequest.getPassword());
+        User loggedUser = userService.loginUser(loginUserRequest.getEmail(), loginUserRequest.getPassword());
 
         return new LoginUserResponse(loggedUser.getId(),
                 loggedUser.getFirstName(),

@@ -8,6 +8,8 @@ import pl.library.api.error.ErrorResponse;
 import pl.library.domain.user.exception.UserExistsException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
+import javax.validation.ValidationException;
+
 @RestControllerAdvice
 public class UserControllerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
@@ -23,6 +25,14 @@ public class UserControllerAdvice {
     public final ErrorResponse handleUserExistsException(UserExistsException exception) {
         String message = exception.getLocalizedMessage();
         ErrorResponse error = new ErrorResponse(message, 4);
+        return error;
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ErrorResponse handleValidationException(ValidationException exception) {
+        String message = exception.getLocalizedMessage();
+        ErrorResponse error = new ErrorResponse(message, 6);
         return error;
     }
 }

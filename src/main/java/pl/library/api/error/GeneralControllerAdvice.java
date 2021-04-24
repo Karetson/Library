@@ -19,8 +19,8 @@ public class GeneralControllerAdvice {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class,
-            ConstraintViolationException.class,
-            NullPointerException.class})
+            NullPointerException.class,
+            ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public final ErrorResponse handleValidationException() {
         ErrorResponse error = new ErrorResponse("Marked fields cannot be empty", 1);

@@ -1,8 +1,4 @@
 security:
-- token
-- potwierdzenie maila
-- bcrypt
-- role
 - ban
 
 others:

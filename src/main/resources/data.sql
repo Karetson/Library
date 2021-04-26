@@ -1026,7 +1026,7 @@ INSERT INTO genres (name) VALUES
     ("Comedy"), ("Fantasy"), ("Adventure"), ("Biographical"), ("Criminal"), ("Natural"), ("Historical"), ("Detective");
 
 -- initializing genres for books
-INSERT INTO books_genres (books_id, genres_id) VALUES
+INSERT INTO book_genres (book_id, genre_id) VALUES
 (1,4),
 (2,1),
 (3,3),

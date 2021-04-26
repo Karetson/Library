@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
@@ -41,6 +43,9 @@ public class Book {
     @Size(max = 200)
     private String publisher;
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_genres",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres;
     @Builder.Default
     private Integer count = 1;

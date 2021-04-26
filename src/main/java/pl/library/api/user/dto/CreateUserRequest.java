@@ -1,13 +1,7 @@
 package pl.library.api.user.dto;
 
 import lombok.Value;
-import org.hibernate.validator.constraints.Length;
 import pl.library.adapters.mysql.model.user.User;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Value
 public class CreateUserRequest {

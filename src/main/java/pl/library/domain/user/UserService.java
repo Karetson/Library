@@ -103,7 +103,7 @@ public class UserService {
 
         user.setFirstName(userDetails.getFirstName());
         user.setLastName(userDetails.getLastName());
-        user.setPassword(userDetails.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
         user.setEmail(userDetails.getEmail());
 
         return userRepository.save(user);

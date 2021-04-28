@@ -32,7 +32,7 @@ public class UserControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public final ErrorResponse handleValidationException(ValidationException exception) {
         String message = exception.getLocalizedMessage();
-        ErrorResponse error = new ErrorResponse(message, 6);
+        ErrorResponse error = new ErrorResponse(message, 5);
         return error;
     }
 }

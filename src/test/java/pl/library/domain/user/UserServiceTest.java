@@ -19,6 +19,7 @@ import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 import pl.library.infrastructure.JwtTokenUtil;
 
+import javax.validation.ValidationException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -40,7 +41,7 @@ class UserServiceTest {
             "firstName",
             "lastName",
             "email@email.com",
-            "password",
+            "Password#12",
             roles,
             favorites,
             null,
@@ -193,15 +194,27 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldNotUpdateUserProfileWhenUserEmailChangedToAlreadyExistsEmail() {
+    void shouldNotUpdateUserProfileWhenUserPasswordChangedToIncorrectPassword() {
         // given
+        user.setPassword("test");
         when(userRepository.findById(ID)).thenReturn(Optional.of(user));
-        when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
 
         // when
 
         // then
-        assertThatThrownBy(() -> systemUnderTest.updateUserProfile(ID, user)).isInstanceOf(UserExistsException.class);
+        assertThatThrownBy(() -> systemUnderTest.updateUserProfile(ID, user)).isInstanceOf(ValidationException.class);
+    }
+
+    @Test
+    void shouldNotUpdateUserProfileWhenUserEmailChangedToIncorrectEmail() {
+        // given
+        user.setEmail("test");
+        when(userRepository.findById(ID)).thenReturn(Optional.of(user));
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> systemUnderTest.updateUserProfile(ID, user)).isInstanceOf(ValidationException.class);
     }
 
     @Test

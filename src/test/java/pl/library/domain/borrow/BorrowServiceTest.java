@@ -16,11 +16,11 @@ import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
-import pl.library.domain.borrow.exception.BorrowStatusException;
 import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
+import javax.validation.ValidationException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -214,7 +214,7 @@ class BorrowServiceTest {
     }
 
     @Test
-    void shouldDeleteBorrowBasedOnId() throws BorrowStatusException {
+    void shouldDeleteBorrowBasedOnId() {
         // given
         when(borrowRepository.findById(any(Long.class))).thenReturn(Optional.of(borrow));
         when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(book));
@@ -258,6 +258,6 @@ class BorrowServiceTest {
         // when
 
         // then
-        assertThatThrownBy(() -> systemUnderTest.deleteBorrow(ID)).isInstanceOf(BorrowStatusException.class);
+        assertThatThrownBy(() -> systemUnderTest.deleteBorrow(ID)).isInstanceOf(ValidationException.class);
     }
 }

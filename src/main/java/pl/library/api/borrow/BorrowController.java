@@ -17,7 +17,6 @@ import pl.library.adapters.mysql.model.borrow.BorrowStatus;
 import pl.library.api.borrow.dto.CreateBorrowRequest;
 import pl.library.api.borrow.dto.CreateBorrowResponse;
 import pl.library.domain.borrow.BorrowService;
-import pl.library.domain.borrow.exception.BorrowStatusException;
 import pl.library.domain.user.exception.UserNotFoundException;
 
 import javax.validation.Valid;
@@ -48,7 +47,7 @@ public class BorrowController {
     // deleting borrow
     @DeleteMapping("/cancel/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelBorrow(@PathVariable Long id) throws BorrowStatusException {
+    public void cancelBorrow(@PathVariable Long id) {
         borrowService.deleteBorrow(id);
     }
 }

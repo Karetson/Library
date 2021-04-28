@@ -9,12 +9,12 @@ import pl.library.domain.book.exception.BookNotFoundException;
 import pl.library.domain.book.repository.BookRepository;
 import pl.library.domain.borrow.exception.BorrowExistsException;
 import pl.library.domain.borrow.exception.BorrowNotFoundException;
-import pl.library.domain.borrow.exception.BorrowStatusException;
 import pl.library.domain.borrow.repository.BorrowRepository;
 import pl.library.domain.user.exception.UserNotFoundException;
 import pl.library.domain.user.repository.UserRepository;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 
 @Service
@@ -75,7 +75,7 @@ public class BorrowService {
     }
 
     @Transactional
-    public void deleteBorrow(Long id) throws BorrowStatusException {
+    public void deleteBorrow(Long id) {
         Borrow borrow = borrowRepository.findById(id).orElseThrow(()
                 -> new BorrowNotFoundException("Borrow with " + id + " ID not found!"));
         Long bookId = borrow.getBook().getId();
@@ -86,7 +86,7 @@ public class BorrowService {
             book.setAvailable(book.getAvailable() + 1);
             borrowRepository.deleteById(id);
         } else {
-            throw new BorrowStatusException("You can cancel only not approved borrows");
+            throw new ValidationException("You can cancel only not approved borrows");
         }
 
     }

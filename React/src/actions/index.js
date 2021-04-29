@@ -70,19 +70,33 @@ export const EDIT_USER_FAILURE = "EDIT_USER_FAILURE";
 // export const API = "http://localhost:8080/api";
 export const API = "https://spring-react-library-service.herokuapp.com/api";
 
-export const editUser = (
-  id,
-  firstName,
-  lastName,
-  email,
-  password
-) => async () => {
-  return axios.put(API + `/user/update/${id}`, {
-    firstName,
-    lastName,
-    email,
-    password,
-  });
+export const editUser = (id, firstName, lastName, email, password) => async (
+  dispatch
+) => {
+  const key = localStorage.getItem("loginToken");
+  const headers = {
+    Authorization: key,
+  };
+  return axios
+    .put(
+      API + `/user/auth/update/${id}`,
+      {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
+      {headers}
+    )
+    .then((payload) => {
+      dispatch({
+        type: EDIT_USER_SUCCESS,
+        payload,
+      });
+    })
+    .catch((err) => {
+      console.log(err.response);
+    });
 };
 
 export const changeStatus = (id, status) => async (dispatch) => {
@@ -389,7 +403,7 @@ export const removeBook = (id) => {
 
 export const authUser = (email, password) => async (dispatch) => {
   dispatch({
-    type: AUTH_REQUEST,
+    type: REQUEST_START,
   });
   return axios
     .post(API + "/user/sign-in", {email, password})
@@ -403,6 +417,11 @@ export const authUser = (email, password) => async (dispatch) => {
       dispatch({
         type: FAILURE_MESSAGE,
         err,
+      });
+    })
+    .then(() => {
+      dispatch({
+        type: REQUEST_END,
       });
     });
 };
@@ -453,7 +472,7 @@ export const registerUser = (firstName, lastName, email, password) => async (
   dispatch
 ) => {
   dispatch({
-    type: REGISTER_REQUEST,
+    type: REQUEST_START,
   });
   return axios
     .post(API + "/user/sign-up", {
@@ -472,6 +491,11 @@ export const registerUser = (firstName, lastName, email, password) => async (
       dispatch({
         type: FAILURE_MESSAGE,
         err,
+      });
+    })
+    .then(() => {
+      dispatch({
+        type: REQUEST_END,
       });
     });
 };

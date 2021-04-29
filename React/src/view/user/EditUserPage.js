@@ -9,6 +9,7 @@ import {Input} from "../../components/atoms/Input/Input";
 import Button from "../../components/atoms/Button/Button";
 import {routers} from "../../data/routers";
 import {Link} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 const RegisterWrapper = styled.div`
   /* margin-right: 500px;
@@ -16,12 +17,23 @@ const RegisterWrapper = styled.div`
     margin-top:30px; */
 `;
 
-const EditUserPage = ({edit, isLogin, showErrors, clean, userinfo}) => {
+const EditUserPage = ({
+  edit,
+  isLogin,
+  showErrors,
+  clean,
+  userinfo,
+  succesMessage,
+}) => {
   useEffect(() => {
     return () => clean();
   }, [isLogin]);
 
   const {id, firstName, lastName, email} = userinfo;
+
+  if (succesMessage) {
+    return <Redirect to={routers.user} />;
+  }
 
   return (
     <RegisterWrapper>
@@ -51,7 +63,7 @@ const EditUserPage = ({edit, isLogin, showErrors, clean, userinfo}) => {
             <>
               <form className="box" onSubmit={handleSubmit} autoComplete="off">
                 <div className="field">
-                  <label className="label">Name</label>
+                  <label className="label">First name</label>
                   <div className="control">
                     <Input
                       type="text"
@@ -60,6 +72,7 @@ const EditUserPage = ({edit, isLogin, showErrors, clean, userinfo}) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       autoComplete="off"
+                      required
                     />
                   </div>
                 </div>
@@ -73,6 +86,7 @@ const EditUserPage = ({edit, isLogin, showErrors, clean, userinfo}) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       autoComplete="off"
+                      required
                     />
                   </div>
                 </div>
@@ -86,11 +100,12 @@ const EditUserPage = ({edit, isLogin, showErrors, clean, userinfo}) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       autoComplete="off"
+                      required
                     />
                   </div>
                 </div>
                 <div className="field">
-                  <label className="label">Password</label>
+                  <label className="label">New Password</label>
                   <div className="control">
                     <Input
                       type="password"
@@ -99,6 +114,7 @@ const EditUserPage = ({edit, isLogin, showErrors, clean, userinfo}) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       autoComplete="new-password"
+                      required
                     />
                   </div>
                 </div>
@@ -128,14 +144,16 @@ EditUserPage.propTypes = {
   showErrors: PropTypes.node,
   clean: PropTypes.func.isRequired,
   userinfo: PropTypes.object,
+  succesMessage: PropTypes.node,
 };
 
-const mapStateToProps = ({user, showErrors}) => {
+const mapStateToProps = ({user, showErrors, succesMessage}) => {
   const {isLogin, userinfo} = user;
   return {
     isLogin,
     showErrors,
     userinfo,
+    succesMessage,
   };
 };
 

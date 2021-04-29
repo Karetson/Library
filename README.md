@@ -35,19 +35,19 @@
 * *Unit tests with coverage*
 
 ## Technologies - Frontend
-* *React Redux
-* *React Router Dom
-* *Styled Component
-* *Prettier
-* *ESLint
-* *Axios
-* *Hight Order Component
-* *Action Creator
-* *Redux Thunk
-* *Storybook
-* *Bulma
-* *React Icons
-* *Formik
+* *React Redux*
+* *React Router Dom*
+* *Styled Component*
+* *Prettier*
+* *ESLint*
+* *Axios*
+* *Hight Order Component*
+* *Action Creator*
+* *Redux Thunk*
+* *Storybook*
+* *Bulma*
+* *React Icons*
+* *Formik*
 
 
 ## External Tools used

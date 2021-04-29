@@ -34,6 +34,23 @@
 * *Swagger*
 * *Unit tests with coverage*
 
+***
+## Technologies - Frontend
+* React Redux
+* React Router Dom
+* Styled Component
+* Prettier
+* ESLint
+* Axios
+* Hight Order Component
+* Action Creator
+* Redux Thunk
+* Storybook
+* Bulma
+* React Icons
+* Formik
+
+
 ## External Tools used
 * [Postman](https://www.postman.com/) - API Development Environment (Testing Documentation)
 * [Git](https://git-scm.com/) - Version control system (For better cooperation)

@@ -33,7 +33,7 @@ const BookNews = ({reqStart, reqEnd}) => {
     reqStart();
     axios
       .get(API + "/book/search/random", {
-        params: {number: 10},
+        params: {number: 8},
       })
       .then((payload) => {
         setRandomBook(payload.data);
@@ -88,7 +88,13 @@ const BookNews = ({reqStart, reqEnd}) => {
     <>
       <div className="tabs is-medium" id="tabs">
         <ul>
-          <li className="is-active" data-tab="1">
+          <li
+            className="is-active"
+            data-tab="1"
+            onClick={() => {
+              recommendedBook();
+            }}
+          >
             <a>Books</a>
           </li>
           <li
@@ -153,7 +159,9 @@ const BookNews = ({reqStart, reqEnd}) => {
               <TinyAuthor>{item.author}</TinyAuthor>
               <GenresWrapper>
                 {item.genres.map((item2) => (
-                  <Genre key={item2.id}>{item2.name}</Genre>
+                  <Genre key={item2.id} thebest>
+                    {item2.name}
+                  </Genre>
                 ))}
               </GenresWrapper>
               <ButtonWrapper>

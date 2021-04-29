@@ -21,6 +21,8 @@ import {
   FaBookMedicalIcon,
   GiCardExchangeIcon,
   FaBookReaderIcon,
+  Footer,
+  Afoot,
 } from "./MainTemplate.elements";
 import AddBook from "../view/admin/AddBook";
 import main_img from "../assets/layout/main_img.jpg";
@@ -35,6 +37,7 @@ import {Link} from "react-router-dom";
 import SearchPage from "../view/user/SearchPage";
 import BorrowedStatusPage from "../view/admin/BorrowedStatusPage";
 import EditUserPage from "../view/user/EditUserPage";
+import ReactTooltip from "react-tooltip";
 
 class MainTemplate extends React.Component {
   componentDidUpdate() {
@@ -86,19 +89,33 @@ class MainTemplate extends React.Component {
             </ImageTextContainer>
           </ImageWrapper>
           {isAdmin && (
-            <AdminWrapper>
-              <Link to={routers.addBook}>
-                <FaBookMedicalIcon />
-              </Link>
-              <Link to={routers.changeStatus}>
-                <GiCardExchangeIcon />
-              </Link>
-              <Link to={routers.addGenre}>
-                <FaBookReaderIcon />
-              </Link>
-            </AdminWrapper>
+            <>
+              <ReactTooltip
+                id="tooltip"
+                getContent={(dataTip) => `${dataTip}`}
+              />
+              <AdminWrapper>
+                <Link to={routers.addBook}>
+                  <FaBookMedicalIcon
+                    data-for="tooltip"
+                    data-tip="Add new books"
+                  />
+                </Link>
+                <Link to={routers.changeStatus}>
+                  <GiCardExchangeIcon
+                    data-for="tooltip"
+                    data-tip="Change user borrow status"
+                  />
+                </Link>
+                <Link to={routers.addGenre}>
+                  <FaBookReaderIcon
+                    data-for="tooltip"
+                    data-tip="Add new genres"
+                  />
+                </Link>
+              </AdminWrapper>
+            </>
           )}
-
           <GridContainer>
             <MainContent>
               <Route path={routers.home} exact component={MainPage} />
@@ -118,6 +135,28 @@ class MainTemplate extends React.Component {
                 exact
                 component={BorrowedStatusPage}
               />
+            </MainContent>
+          </GridContainer>
+          <GridContainer footer>
+            <MainContent footer>
+              <center>
+                <strong>
+                  <Footer>
+                    &copy; 2021 Library services. Frontend:{" "}
+                    <Afoot
+                      href="https://github.com/orzeleagle122"
+                      rel="noreferrer"
+                    >
+                      orzeleagle122
+                    </Afoot>
+                    , Backend:{" "}
+                    <Afoot href="https://github.com/Karetson" rel="noreferrer">
+                      Karetson
+                    </Afoot>
+                    .
+                  </Footer>
+                </strong>
+              </center>
             </MainContent>
           </GridContainer>
         </MainTemplateWrapper>

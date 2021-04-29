@@ -13,23 +13,26 @@ export const MainTemplateWrapper = styled.div`
 `;
 
 export const GridContainer = styled.div`
-  background-color: white;
+  background-color: ${({footer}) => (footer ? "#2D3DDF" : "white")};
+
   z-index: 99;
   position: relative;
   bottom: -25px;
   font-family: "Poppins", sans-serif;
   display: flex;
   justify-content: flex-start;
-  min-height: 100vh;
+  min-height: ${({footer}) => (footer ? "50px" : "100vh")};
   flex-wrap: nowrap;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
+  border-bottom-left-radius: ${({footer}) => (footer ? "0px" : "50px")};
+  border-bottom-right-radius: ${({footer}) => (footer ? "0px" : "50px")};
 
   margin-right: auto;
   margin-left: auto;
   max-width: 1600px;
   width: 100%;
-  padding-bottom: 100px;
+  margin-bottom: 20px;
 
   @media screen and (max-width: 1774px) {
     margin-left: 87px;
@@ -40,13 +43,21 @@ export const GridContainer = styled.div`
   @media screen and (max-width: 480px) {
     margin-left: 0px;
     width: 100%;
+
+    margin-bottom: ${({footer}) => (footer ? "80px" : "inherit")};
+    margin-top: ${({footer}) => (footer ? "10px" : "inherit")};
+    border-bottom-left-radius: ${({footer}) => (footer ? "50px" : "50px")};
+    border-bottom-right-radius: ${({footer}) => (footer ? "50px" : "50px")};
   }
 `;
 
 export const MainContent = styled.div`
-  padding: 43px 40px;
+  padding: ${({footer}) => (footer ? "20px 0" : "43px 40px")};
   width: 100%;
-  /* max-width: 2560px; */
+
+  @media screen and (max-width: 790px) {
+    font-size: ${({footer}) => (footer ? "10px" : "inherit")};
+  }
 `;
 
 export const ImageWrapper = styled.div`
@@ -113,6 +124,11 @@ export const StyledButton = styled.button`
   font-weight: 700;
   border-radius: 12px;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  cursor: pointer;
+
+  &:hover {
+    background: white;
+  }
 `;
 
 export const SuccessMessage = styled.div`
@@ -143,7 +159,7 @@ export const AdminWrapper = styled.div`
   height: 50px;
   transform: translate(-50%, 0);
   background-color: #2d3ddf;
-  z-index: 999999;
+  z-index: 100;
   color: white;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -154,6 +170,15 @@ export const AdminWrapper = styled.div`
   align-items: center;
   gap: 40px;
   top: 335px;
+
+  &.extraClass {
+    font-size: 20px !important;
+    pointer-events: auto !important;
+    &:hover {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  }
 `;
 
 export const FaBookMedicalIcon = styled(FaBookMedical)`
@@ -170,4 +195,23 @@ export const FaBookReaderIcon = styled(FaBookReader)`
   font-size: 24px;
   text-decoration: none;
   color: white;
+`;
+
+export const Footer = styled.p`
+  color: white;
+`;
+
+export const Afoot = styled.a`
+  color: white;
+  text-decoration: none;
+
+  letter-spacing: 1px;
+  text-decoration: underline;
+  &:visited,
+  &:link {
+    text-decoration: none;
+    color: white;
+    letter-spacing: 1.5px;
+    text-decoration: underline;
+  }
 `;

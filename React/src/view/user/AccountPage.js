@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import avatar from "../../assets/layout/avatar.svg";
 import stat from "../../assets/layout/stat.svg";
 import {connect} from "react-redux";
@@ -11,7 +11,8 @@ import Button from "../../components/atoms/Button/Button";
 import {Redirect} from "react-router-dom";
 import {routers} from "../../data/routers";
 import {Link} from "react-router-dom";
-import {logOut} from "../../actions";
+import {logOut, getUserLoginAction} from "../../actions";
+import $ from "jquery";
 
 const AccountWrapper = styled.div`
   display: flex;
@@ -22,6 +23,16 @@ const AccountWrapper = styled.div`
     flex-direction: column;
     align-items: center;
   }
+
+  h2 {
+    font-size: 30px;
+    margin-top: 36px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+    text-align: center;
+  }
 `;
 
 const Img = styled.img`
@@ -31,9 +42,42 @@ const Img = styled.img`
 const InfoSection = styled.div`
   display: flex;
   flex-direction: column;
+  font-size: 18px;
 `;
 
-const AccountPage = ({firstName, isLogin, lastName, email, out}) => {
+const SpanContent = styled.p`
+  display: none;
+
+  &.is-active {
+    display: block;
+  }
+`;
+
+$(document).ready(function () {
+  $("#tabs li").on("click", function () {
+    var tabs = $(this).data("tabs");
+
+    $("#tabs li").removeClass("is-active");
+    $(this).addClass("is-active");
+
+    $("#tabs-content p").removeClass("is-active");
+    $('p[data-content="' + tabs + '"]').addClass("is-active");
+  });
+});
+
+const AccountPage = ({
+  firstName,
+  isLogin,
+  lastName,
+  email,
+  out,
+  userFavorites,
+  userBorrow,
+  getUserLogin,
+}) => {
+  useEffect(() => {
+    getUserLogin(localStorage.getItem("id"));
+  }, []);
   if (!isLogin) {
     return <Redirect to={routers.login} />;
   }
@@ -42,9 +86,9 @@ const AccountPage = ({firstName, isLogin, lastName, email, out}) => {
       <AccountWrapper>
         <Img src={avatar} alt="avatar" />
         <InfoSection>
-          <Heading>
+          <h2>
             {firstName} {lastName}
-          </Heading>
+          </h2>
           {email}
           <Link to={routers.userEdit}>
             <Button>Edit profil</Button>
@@ -58,14 +102,14 @@ const AccountPage = ({firstName, isLogin, lastName, email, out}) => {
           </Button>
         </InfoSection>
       </AccountWrapper>
-      <div className="tabs is-boxed">
+      <div className="tabs is-boxed" id="tabs">
         <ul>
-          <li className="is-active" data-tab="1">
+          <li className="is-active" data-tabs="1">
             <a>
               <span>Notifications</span>
             </a>
           </li>
-          <li data-tab="2">
+          <li data-tabs="2">
             <a>
               <span>Your statistic</span>
             </a>
@@ -88,35 +132,42 @@ const AccountPage = ({firstName, isLogin, lastName, email, out}) => {
           </li> */}
         </ul>
       </div>
-      <Heading>Notifications</Heading>
-      <div className="notification is-warning">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Lorem ipsum dolor sit
-        amet, consectetur adipiscing elit. Nam vel nulla non ex dignissim
-        molestie. Mauris consectetur mollis blandit!
+      <div id="tabs-content">
+        <SpanContent className="is-active" data-content="1">
+          <Heading>Notifications</Heading>
+          <div className="notification is-warning">
+            <FontAwesomeIcon icon={faExclamationCircle} /> Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Nam vel nulla non ex dignissim
+            molestie. Mauris consectetur mollis blandit!
+          </div>
+          <div className="notification is-danger">
+            <FontAwesomeIcon icon={faExclamationCircle} /> Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Nam vel nulla non ex dignissim
+            molestie. Mauris consectetur mollis blandit!
+          </div>
+          <div className="notification is-info">
+            <FontAwesomeIcon icon={faExclamationCircle} /> Lorem ipsum dolor sit
+            amet, consectetur adipiscing elit. Nam vel nulla non ex dignissim
+            molestie. Mauris consectetur mollis blandit!
+          </div>
+        </SpanContent>
+        <SpanContent data-content="2">
+          {" "}
+          <Heading>Your statistic</Heading>
+          <AccountWrapper>
+            <Img src={stat} alt="stat" />
+            <InfoSection>
+              Favorites book: {userFavorites.length}
+              <br />
+              Borrowed book: {userBorrow.length}
+              {/* <br />
+              Borrowed so far: number
+              <br />
+              The best genre: genre 1, genre 2, genre 3<br /> */}
+            </InfoSection>
+          </AccountWrapper>
+        </SpanContent>
       </div>
-      <div className="notification is-danger">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Lorem ipsum dolor sit
-        amet, consectetur adipiscing elit. Nam vel nulla non ex dignissim
-        molestie. Mauris consectetur mollis blandit!
-      </div>
-      <div className="notification is-info">
-        <FontAwesomeIcon icon={faExclamationCircle} /> Lorem ipsum dolor sit
-        amet, consectetur adipiscing elit. Nam vel nulla non ex dignissim
-        molestie. Mauris consectetur mollis blandit!
-      </div>
-      <Heading>Your statistic</Heading>
-      <AccountWrapper>
-        <Img src={stat} alt="stat" />
-        <InfoSection>
-          Favorites book: number
-          <br />
-          Active Borrowed book: number
-          <br />
-          Borrowed so far: number
-          <br />
-          The best genre: genre 1, genre 2, genre 3<br />
-        </InfoSection>
-      </AccountWrapper>
     </>
   );
 };
@@ -127,9 +178,12 @@ AccountPage.propTypes = {
   lastName: PropTypes.string,
   isLogin: PropTypes.bool.isRequired,
   out: PropTypes.func.isRequired,
+  getUserLogin: PropTypes.func.isRequired,
+  userFavorites: PropTypes.array,
+  userBorrow: PropTypes.array,
 };
 
-const mapStateToProps = ({user}) => {
+const mapStateToProps = ({user, userFavorites, userBorrow}) => {
   const {isLogin} = user;
   const {firstName, lastName, email} = user.userinfo;
   return {
@@ -137,12 +191,15 @@ const mapStateToProps = ({user}) => {
     lastName,
     email,
     isLogin,
+    userFavorites,
+    userBorrow,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     out: () => dispatch(logOut()),
+    getUserLogin: (id) => dispatch(getUserLoginAction(id)),
   };
 };
 

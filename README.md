@@ -55,4 +55,4 @@
 * [Git](https://git-scm.com/) - Version control system (For better cooperation)
 * [MySql Workbench](https://www.mysql.com/products/workbench/) - Unified visual tool for database
 ***
-Collection from postman with all endpoints: [Download](https://github.com/Karetson/Spring-React-LibraryService/blob/main/Library service - postman collection.json)
+Collection from postman with all endpoints: [Download](https://github.com/Karetson/Spring-React-LibraryService/blob/main/Library%20service%20-%20postman%20collection.json)

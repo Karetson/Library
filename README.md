@@ -12,6 +12,7 @@
 * *Spring boot security*
 * *Spring boot JPA*
 * *Hibernate*
+* *Maven*
 * *MySql*
 * *Lombok*
 * *Swagger-UI 2.9.2*
